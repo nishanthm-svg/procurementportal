@@ -139,4 +139,11 @@ app.get('/api/enums', (_, res) => {
 
 app.get('/api/health', (_, res) => res.json({ status: 'ok', records: Object.fromEntries(Object.entries(D).map(([k,v]) => [k, Array.isArray(v) ? v.length : 1])) }));
 
+// Serve built frontend
+const DIST = path.join(__dirname, '..', 'frontend', 'dist');
+if (fs.existsSync(DIST)) {
+  app.use(express.static(DIST));
+  app.get('*', (_, res) => res.sendFile(path.join(DIST, 'index.html')));
+}
+
 app.listen(PORT, () => console.log(`Procurement API running on http://localhost:${PORT}`));
