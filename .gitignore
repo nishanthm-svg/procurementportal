@@ -1,0 +1,26 @@
+node_modules/
+dist/
+.claude/
+
+# large raw data files
+app_data.json
+mpp-data.json
+
+# unrelated projects
+apollo-diagnostics/
+apollo-tirupati/
+calculator/
+client/
+mpp-scorecard/
+portfolio/
+qa-bmc-app/
+server/
+vcg-mrg-app/
+vcg-mrg-react/
+
+# misc
+*.xlsx
+*.html
+*.bat
+*.cmd
+console.log*
