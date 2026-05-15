@@ -2,8 +2,10 @@ services:
   - type: web
     name: procurement-portal
     runtime: node
-    buildCommand: cd frontend && npm install && npm run build
-    startCommand: cd backend && npm install && node server.js
+    buildCommand: cd frontend && npm install && npm run build && cd ../backend && npm install
+    startCommand: node backend/server.js
     envVars:
       - key: NODE_ENV
         value: production
+      - key: PORT
+        value: 10000
