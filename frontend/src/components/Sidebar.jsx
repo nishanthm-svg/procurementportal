@@ -25,6 +25,9 @@ const NAV = [
     { to: '/recoveries', icon: '💳', label: 'Pending Recoveries' },
     { to: '/manpower', icon: '👷', label: 'Manpower Costs' },
   ]},
+  { section: 'Grievances', items: [
+    { to: '/grievance', icon: '📣', label: 'Grievance Dashboard', badgeKey: 'grievance_overdue' },
+  ]},
 ]
 
 export default function Sidebar({ summary, open, onClose }) {
