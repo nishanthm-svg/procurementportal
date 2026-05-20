@@ -1,8 +1,7 @@
-{
+﻿{
   "name": "procurement-portal",
   "version": "1.0.0",
   "scripts": {
-    "build": "npm install --prefix frontend && npm run build --prefix frontend",
     "start": "node backend/server.js"
   },
   "dependencies": {
