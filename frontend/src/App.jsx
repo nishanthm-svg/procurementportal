@@ -74,7 +74,7 @@ export default function App() {
       <Route path="/alerts/:type" element={<Shell><AlertsView /></Shell>} />
       <Route path="/recoveries" element={<Shell><RecoveriesView /></Shell>} />
       <Route path="/manpower" element={<Shell><ManpowerView /></Shell>} />
-      <Route path="/grievance" element={<Shell><GrievanceDashboard /></Shell>} />
+      <Route path="/grievance" element={<GrievanceDashboard />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )

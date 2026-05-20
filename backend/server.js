@@ -224,17 +224,18 @@ app.post('/api/grievance/complaints', (req, res) => {
   const num  = String(data.length + 1).padStart(4, '0');
   const year = new Date().getFullYear();
   const id   = `GRV-${year}-${num}`;
-  const { farmerName, villageName, mppCode, bmcuCode, bmcuName, transcription, categoryOverride } = req.body;
+  const { farmerName, phone, villageName, villageCode, bmcuCode, bmcuName, transcription, categoryOverride } = req.body;
   if (!farmerName || !villageName) return res.status(400).json({ error: 'farmerName and villageName are required' });
   const category = categoryOverride || autoCategory(transcription || '');
   const complaint = {
     id,
     submittedAt: new Date().toISOString(),
-    farmerName: String(farmerName).trim(),
-    villageName: String(villageName).trim(),
-    mppCode:  String(mppCode  || '').trim(),
-    bmcuCode: String(bmcuCode || '').trim(),
-    bmcuName: String(bmcuName || '').trim(),
+    farmerName:  String(farmerName  || '').trim(),
+    phone:       String(phone       || '').trim(),
+    villageName: String(villageName || '').trim(),
+    villageCode: String(villageCode || '').trim(),
+    bmcuCode:    String(bmcuCode    || '').trim(),
+    bmcuName:    String(bmcuName    || '').trim(),
     transcription: String(transcription || '').trim(),
     category,
     department: CATEGORIES[category]?.dept || 'General Management',
@@ -247,6 +248,26 @@ app.post('/api/grievance/complaints', (req, res) => {
   data.push(complaint);
   saveComplaints(data);
   res.json({ success: true, complaint: attachOverdue(complaint) });
+});
+
+// Farmer self-service status check by complaint ID
+app.get('/api/grievance/status/:id', (req, res) => {
+  const data = loadComplaints();
+  const c = data.find(c => c.id === req.params.id);
+  if (!c) return res.status(404).json({ error: 'Complaint not found' });
+  const withOverdue = attachOverdue(c);
+  res.json({
+    id: c.id,
+    status: c.status,
+    isOverdue: withOverdue.isOverdue,
+    category: c.category,
+    department: c.department,
+    submittedAt: c.submittedAt,
+    resolvedAt: c.resolvedAt,
+    resolutionHours: c.resolutionHours,
+    notes: c.notes || '',
+    statusHistory: c.statusHistory,
+  });
 });
 
 // Update complaint status / notes

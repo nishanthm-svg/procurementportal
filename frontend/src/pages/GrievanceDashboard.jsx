@@ -134,13 +134,12 @@ function ComplaintRow({ c, onStatusChange }) {
           {/* Details */}
           <div className="grid grid-cols-2 gap-3 text-sm">
             <Info label="Farmer" value={c.farmerName} />
-            <Info label="Village" value={c.villageName} />
-            {c.mppCode  && <Info label="MPP Code"  value={c.mppCode} />}
+            <Info label="Village" value={c.villageCode ? `${c.villageName} (${c.villageCode})` : c.villageName} />
             {c.bmcuCode && <Info label="BMCU Code" value={c.bmcuCode} />}
             {c.bmcuName && <Info label="BMCU Name" value={c.bmcuName} />}
-            <Info label="Dept" value={c.department} />
+            <Info label="→ Department" value={c.department} />
             <Info label="Submitted" value={new Date(c.submittedAt).toLocaleString('en-IN')} />
-            {c.resolvedAt && <Info label="Resolved" value={`${c.resolutionHours}h`} />}
+            {c.resolvedAt && <Info label="Resolved in" value={`${c.resolutionHours}h`} />}
           </div>
 
           {/* Transcription */}
@@ -242,27 +241,31 @@ export default function GrievanceDashboard() {
     : []
 
   return (
-    <div className="space-y-6">
-      {/* Page header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div>
-          <h1 className="text-xl font-bold text-gray-900">Grievance Management</h1>
-          <p className="text-sm text-gray-500">Shreeja MMPCL — Farmer Complaint Portal</p>
+    <div className="min-h-screen bg-slate-50">
+      {/* Standalone header */}
+      <div className="bg-green-900 text-white px-4 py-3 flex items-center gap-3 shadow-lg sticky top-0 z-40">
+        <div className="text-2xl">🥛</div>
+        <div className="flex-1 min-w-0">
+          <div className="font-bold text-sm leading-tight">శ్రేజ మహిళా పాల ఉత్పత్తి సంస్థ</div>
+          <div className="text-green-300 text-xs">Shreeja MMPCL · Grievance Dashboard</div>
         </div>
-        <div className="flex gap-2">
-          <button
-            onClick={fetchAll}
-            className="px-4 py-2 rounded-xl border border-gray-200 text-gray-600 text-sm hover:bg-gray-50 font-medium"
-          >
+        <div className="flex gap-2 flex-shrink-0">
+          <button onClick={fetchAll}
+            className="px-3 py-1.5 rounded-lg border border-green-600 text-green-200 text-xs hover:bg-green-800 font-medium">
             ↺ Refresh
           </button>
-          <button
-            onClick={() => setShowQR(true)}
-            className="px-4 py-2 rounded-xl bg-green-700 text-white text-sm font-bold hover:bg-green-800 shadow"
-          >
-            📱 View QR Code
+          <button onClick={() => setShowQR(true)}
+            className="px-3 py-1.5 rounded-lg bg-white text-green-900 text-xs font-bold hover:bg-green-50 shadow">
+            📱 QR Code
           </button>
         </div>
+      </div>
+
+    <div className="p-4 sm:p-6 space-y-6 max-w-5xl mx-auto">
+      {/* Page title */}
+      <div>
+        <h1 className="text-xl font-bold text-gray-900">Grievance Management</h1>
+        <p className="text-sm text-gray-500">Farmer complaints · real-time status</p>
       </div>
 
       {/* Overdue alert banner */}
@@ -326,6 +329,34 @@ export default function GrievanceDashboard() {
         </div>
       )}
 
+      {/* Department routing summary */}
+      {stats && Object.keys(stats.byDept || {}).length > 0 && (
+        <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+          <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
+            <h3 className="font-bold text-gray-700">Department Routing</h3>
+            <span className="text-xs text-gray-400">Pending complaints per department</span>
+          </div>
+          <div className="divide-y divide-gray-50">
+            {Object.entries(stats.byDept)
+              .sort((a, b) => b[1] - a[1])
+              .map(([dept, count]) => {
+                const pct = stats.total ? Math.round(count / stats.total * 100) : 0
+                return (
+                  <div key={dept} className="flex items-center gap-3 px-4 py-2.5">
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm font-semibold text-gray-800 truncate">{dept}</div>
+                      <div className="mt-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                        <div className="h-full bg-green-500 rounded-full" style={{ width: `${pct}%` }} />
+                      </div>
+                    </div>
+                    <div className="text-lg font-bold text-gray-700 w-8 text-right">{count}</div>
+                  </div>
+                )
+              })}
+          </div>
+        </div>
+      )}
+
       {/* Filters + table */}
       <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
         <div className="px-4 py-3 border-b border-gray-100 flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
@@ -370,6 +401,7 @@ export default function GrievanceDashboard() {
       </div>
 
       {showQR && <QRModal onClose={() => setShowQR(false)} />}
+    </div>
     </div>
   )
 }
