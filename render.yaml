@@ -2,7 +2,7 @@ services:
   - type: web
     name: procurement-portal
     runtime: node
-    buildCommand: cd frontend && npm install && npm run build && cd ../backend && npm install
+    buildCommand: npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend
     startCommand: node backend/server.js
     envVars:
       - key: NODE_ENV
