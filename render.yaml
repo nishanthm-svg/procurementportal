@@ -2,7 +2,7 @@ services:
   - type: web
     name: procurement-portal
     runtime: node
-    buildCommand: npm install && npm install --prefix frontend && frontend/node_modules/.bin/vite --root frontend build
+    buildCommand: npm install && npm run build
     startCommand: node backend/server.js
     envVars:
       - key: NODE_ENV
