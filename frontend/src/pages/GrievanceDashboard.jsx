@@ -142,10 +142,14 @@ function ComplaintRow({ c, onStatusChange }) {
             {c.resolvedAt && <Info label="Resolved in" value={`${c.resolutionHours}h`} />}
           </div>
 
-          {/* Transcription */}
-          <div className="bg-gray-50 rounded-xl px-4 py-3">
-            <div className="text-xs font-bold text-gray-500 uppercase mb-1">Grievance</div>
-            <p className="text-sm text-gray-800">{c.transcription || <em className="opacity-50">No description provided</em>}</p>
+          {/* Audio recording */}
+          <div className="bg-blue-50 border border-blue-200 rounded-xl px-4 py-3">
+            <div className="text-xs font-bold text-blue-600 uppercase mb-2">🎙️ Voice Recording</div>
+            {c.hasAudio ? (
+              <audio controls src={`${API}/api/grievance/audio/${c.id}`} className="w-full" />
+            ) : (
+              <p className="text-sm text-gray-400 italic">No audio recorded</p>
+            )}
           </div>
 
           {/* Admin update */}

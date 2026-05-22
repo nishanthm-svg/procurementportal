@@ -6,6 +6,9 @@ const fs = require('fs');
 let QRCode;
 try { QRCode = require('qrcode'); } catch (_) { QRCode = null; }
 
+let multer;
+try { multer = require('multer'); } catch (_) { multer = null; }
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -145,6 +148,11 @@ app.get('/api/health', (_, res) => res.json({ status: 'ok', records: Object.from
 // ─── GRIEVANCE / COMPLAINT MANAGEMENT ───────────────────────────
 
 const COMPLAINTS_PATH = path.join(__dirname, 'data', 'complaints.json');
+const AUDIO_DIR = path.join(__dirname, 'data', 'audio');
+if (!fs.existsSync(AUDIO_DIR)) fs.mkdirSync(AUDIO_DIR, { recursive: true });
+
+// multer: save to temp, then rename to complaint ID after ID is known
+const upload = multer ? multer({ dest: AUDIO_DIR }) : { single: () => (req, res, next) => next() };
 
 const CATEGORIES = {
   milk_quality:  { label: 'Milk Quality / Adulteration',   dept: 'Quality Control' },
@@ -218,15 +226,28 @@ app.get('/api/grievance/complaints', (req, res) => {
   res.json(data);
 });
 
-// Submit new complaint (called from farmer QR form)
-app.post('/api/grievance/complaints', (req, res) => {
+// Submit new complaint (called from farmer QR form) — accepts multipart/form-data with optional audio
+app.post('/api/grievance/complaints', upload.single('audio'), (req, res) => {
   const data = loadComplaints();
   const num  = String(data.length + 1).padStart(4, '0');
   const year = new Date().getFullYear();
   const id   = `GRV-${year}-${num}`;
-  const { farmerName, phone, villageName, villageCode, bmcuCode, bmcuName, transcription, categoryOverride } = req.body;
-  if (!farmerName || !villageName) return res.status(400).json({ error: 'farmerName and villageName are required' });
-  const category = categoryOverride || autoCategory(transcription || '');
+  const { farmerName, phone, villageName, villageCode, bmcuCode, bmcuName, categoryOverride } = req.body;
+  if (!farmerName || !villageName) {
+    if (req.file) try { fs.unlinkSync(req.file.path); } catch (_) {}
+    return res.status(400).json({ error: 'farmerName and villageName are required' });
+  }
+  const category = categoryOverride || 'other';
+
+  // Rename the temp audio file to <id>.webm
+  let hasAudio = false;
+  if (req.file) {
+    try {
+      fs.renameSync(req.file.path, path.join(AUDIO_DIR, `${id}.webm`));
+      hasAudio = true;
+    } catch (_) {}
+  }
+
   const complaint = {
     id,
     submittedAt: new Date().toISOString(),
@@ -236,7 +257,7 @@ app.post('/api/grievance/complaints', (req, res) => {
     villageCode: String(villageCode || '').trim(),
     bmcuCode:    String(bmcuCode    || '').trim(),
     bmcuName:    String(bmcuName    || '').trim(),
-    transcription: String(transcription || '').trim(),
+    hasAudio,
     category,
     department: CATEGORIES[category]?.dept || 'General Management',
     status: 'open',
@@ -315,6 +336,16 @@ app.get('/api/grievance/stats', (req, res) => {
     : 0;
 
   res.json({ total, open, inProgress, resolved, overdue, byCat, byDept, byStatus, avgResolutionHours, slaHours: SLA_HOURS });
+});
+
+// Serve audio recording for a complaint
+app.get('/api/grievance/audio/:id', (req, res) => {
+  const id = req.params.id;
+  if (!/^GRV-\d{4}-\d{4}$/.test(id)) return res.status(400).json({ error: 'Invalid ID' });
+  const p = path.join(AUDIO_DIR, `${id}.webm`);
+  if (!fs.existsSync(p)) return res.status(404).json({ error: 'Audio not found' });
+  res.setHeader('Content-Type', 'audio/webm');
+  res.sendFile(p);
 });
 
 // ─── END GRIEVANCE ───────────────────────────────────────────────

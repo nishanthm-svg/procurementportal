@@ -3,10 +3,8 @@ import axios from 'axios'
 
 const API = import.meta.env.VITE_API_URL || ''
 
-// ── Language key helper: 'te-IN' → 'te' ──────────────────────────
 const lk = lang => lang.slice(0, 2)
 
-// ── Categories (multi-language labels) ───────────────────────────
 const CATEGORIES = [
   { key: 'milk_quality',
     emoji: '🥛',
@@ -42,7 +40,6 @@ const CATEGORIES = [
     color: '#4b5563', bg: '#f9fafb', dept: 'General Management' },
 ]
 
-// ── Detail fields (multi-language) ───────────────────────────────
 const DETAIL_FIELDS = [
   { key: 'farmerName',
     icon: '👤', required: true, voice: true,
@@ -70,7 +67,6 @@ const DETAIL_FIELDS = [
     ph:    { te: 'ఉదా: B-001',         ta: 'எ.கா: B-001',                kn: 'ಉದಾ: B-001',            en: 'e.g. B-001' } },
 ]
 
-// ── UI strings per language ───────────────────────────────────────
 const T = {
   te: {
     welcome: 'నమస్కారం!', welcomeSub: 'Welcome · స్వాగతం',
@@ -78,13 +74,15 @@ const T = {
     changeLang: '🌐 భాష మార్చండి / Change Language',
     selectProblem: 'మీ సమస్య ఏమిటి?', selectProblemSub: 'What is your problem?',
     next: 'తదుపరి → Next',
-    speakTitle: 'మీ సమస్య చెప్పండి', speakSub: 'Speak or type your complaint',
-    tapSpeak: 'మాట్లాడటానికి నొక్కండి · Tap to speak',
-    btnListen: 'ఆపండి', btnRestart: 'వింటున్నది...', btnSpeak: 'మాట్లాడండి',
-    listeningMsg: '🔴 వింటున్నది — ఆపడానికి నొక్కండి',
-    restartMsg: '🔄 సిద్ధమవుతున్నది — మళ్ళీ మాట్లాడండి',
-    grievanceLabel: 'మీ ఫిర్యాదు / Your grievance',
-    grievancePh: 'మాట్లాడిన తర్వాత ఇక్కడ కనపడుతుంది...',
+    recordTitle: 'మీ ఫిర్యాదు రికార్డ్ చేయండి',
+    recordSub: 'మీ సమస్య స్పష్టంగా చెప్పండి · Speak your complaint clearly',
+    recordTap: 'రికార్డ్ చేయండి',
+    recordStop: 'ఆపండి',
+    recordingMsg: 'రికార్డ్ అవుతున్నది',
+    playback: '🎵 మీ రికార్డింగ్ వినండి',
+    recordAgain: 'మళ్ళీ రికార్డ్ చేయండి',
+    recordDone: '✅ రికార్డింగ్ పూర్తైంది!',
+    audioRecorded: '🎙️ వాయిస్ ఫిర్యాదు రికార్డ్ చేయబడింది',
     tapSpeakField: 'పైన నొక్కండి · Tap to speak',
     listeningField: '🔴 వింటున్నది... మాట్లాడండి',
     editHint: '✏️ సవరించవచ్చు · You can edit above',
@@ -116,13 +114,15 @@ const T = {
     changeLang: '🌐 மொழி மாற்று / Change Language',
     selectProblem: 'உங்கள் பிரச்சனை என்ன?', selectProblemSub: 'What is your problem?',
     next: 'அடுத்து → Next',
-    speakTitle: 'உங்கள் பிரச்சனை சொல்லுங்கள்', speakSub: 'Speak or type your complaint',
-    tapSpeak: 'பேச தொடுங்கள் · Tap to speak',
-    btnListen: 'நிறுத்து', btnRestart: 'கேட்கிறது...', btnSpeak: 'பேசுங்கள்',
-    listeningMsg: '🔴 கேட்கிறது — நிறுத்த தொடுங்கள்',
-    restartMsg: '🔄 தயாராகிறது — மீண்டும் பேசுங்கள்',
-    grievanceLabel: 'உங்கள் புகார்',
-    grievancePh: 'பேசிய பிறகு இங்கே தெரியும்...',
+    recordTitle: 'உங்கள் புகாரை பதிவு செய்யுங்கள்',
+    recordSub: 'உங்கள் பிரச்சனையை தெளிவாக பேசுங்கள்',
+    recordTap: 'பதிவு செய்ய தொடுங்கள்',
+    recordStop: 'நிறுத்து',
+    recordingMsg: 'பதிவாகிறது',
+    playback: '🎵 உங்கள் பதிவை கேளுங்கள்',
+    recordAgain: 'மீண்டும் பதிவு செய்யுங்கள்',
+    recordDone: '✅ பதிவு முடிந்தது!',
+    audioRecorded: '🎙️ குரல் புகார் பதிவாகிவிட்டது',
     tapSpeakField: 'மேலே தொடுங்கள் · Tap to speak',
     listeningField: '🔴 கேட்கிறது... பேசுங்கள்',
     editHint: '✏️ திருத்தலாம் · You can edit above',
@@ -154,13 +154,15 @@ const T = {
     changeLang: '🌐 ಭಾಷೆ ಬದಲಿಸಿ / Change Language',
     selectProblem: 'ನಿಮ್ಮ ಸಮಸ್ಯೆ ಏನು?', selectProblemSub: 'What is your problem?',
     next: 'ಮುಂದೆ → Next',
-    speakTitle: 'ನಿಮ್ಮ ಸಮಸ್ಯೆ ಹೇಳಿ', speakSub: 'Speak or type your complaint',
-    tapSpeak: 'ಮಾತಾಡಲು ಒತ್ತಿ · Tap to speak',
-    btnListen: 'ನಿಲ್ಲಿಸಿ', btnRestart: 'ಕೇಳುತ್ತಿದೆ...', btnSpeak: 'ಮಾತಾಡಿ',
-    listeningMsg: '🔴 ಕೇಳುತ್ತಿದೆ — ನಿಲ್ಲಿಸಲು ಒತ್ತಿ',
-    restartMsg: '🔄 ಸಿದ್ಧವಾಗುತ್ತಿದೆ — ಮತ್ತೆ ಮಾತಾಡಿ',
-    grievanceLabel: 'ನಿಮ್ಮ ದೂರು',
-    grievancePh: 'ಮಾತಾಡಿದ ನಂತರ ಇಲ್ಲಿ ತೋರಿಸುತ್ತದೆ...',
+    recordTitle: 'ನಿಮ್ಮ ದೂರು ರೆಕಾರ್ಡ್ ಮಾಡಿ',
+    recordSub: 'ನಿಮ್ಮ ಸಮಸ್ಯೆ ಸ್ಪಷ್ಟವಾಗಿ ಹೇಳಿ · Speak your complaint clearly',
+    recordTap: 'ರೆಕಾರ್ಡ್ ಮಾಡಲು ಒತ್ತಿ',
+    recordStop: 'ನಿಲ್ಲಿಸಿ',
+    recordingMsg: 'ರೆಕಾರ್ಡ್ ಆಗುತ್ತಿದೆ',
+    playback: '🎵 ನಿಮ್ಮ ರೆಕಾರ್ಡಿಂಗ್ ಕೇಳಿ',
+    recordAgain: 'ಮತ್ತೆ ರೆಕಾರ್ಡ್ ಮಾಡಿ',
+    recordDone: '✅ ರೆಕಾರ್ಡಿಂಗ್ ಮುಗಿದಿದೆ!',
+    audioRecorded: '🎙️ ಧ್ವನಿ ದೂರು ರೆಕಾರ್ಡ್ ಆಗಿದೆ',
     tapSpeakField: 'ಮೇಲೆ ಒತ್ತಿ · Tap to speak',
     listeningField: '🔴 ಕೇಳುತ್ತಿದೆ... ಮಾತಾಡಿ',
     editHint: '✏️ ತಿದ್ದಬಹುದು · You can edit above',
@@ -192,13 +194,15 @@ const T = {
     changeLang: '🌐 Change Language',
     selectProblem: 'What is your problem?', selectProblemSub: 'Select a category below',
     next: 'Next →',
-    speakTitle: 'Describe your problem', speakSub: 'Speak or type your complaint',
-    tapSpeak: 'Tap to speak',
-    btnListen: 'Stop', btnRestart: 'Listening...', btnSpeak: 'Speak',
-    listeningMsg: '🔴 Listening — tap to stop',
-    restartMsg: '🔄 Ready — speak again',
-    grievanceLabel: 'Your Grievance',
-    grievancePh: 'Spoken text appears here, or type directly...',
+    recordTitle: 'Record Your Complaint',
+    recordSub: 'Speak clearly about your problem',
+    recordTap: 'Tap to Record',
+    recordStop: 'Stop',
+    recordingMsg: 'Recording',
+    playback: '🎵 Your Recording',
+    recordAgain: 'Record Again',
+    recordDone: '✅ Recording Complete!',
+    audioRecorded: '🎙️ Voice complaint recorded',
     tapSpeakField: 'Tap above to speak',
     listeningField: '🔴 Listening... speak now',
     editHint: '✏️ You can edit above',
@@ -226,15 +230,13 @@ const T = {
   },
 }
 
-// t(lang) returns the UI strings for that language
 const t = lang => T[lk(lang)] || T.te
 
-// ── TTS prompts ───────────────────────────────────────────────────
 const PROMPTS = {
   'te-IN': {
     welcome: 'నమస్కారం! తెలుగు ఎంచుకున్నారు. మీ ఫిర్యాదు నమోదు చేయండి.',
     selectProblem: 'మీ సమస్య ఏమిటో ఎంచుకోండి',
-    speakNow: 'మీ సమస్య గురించి మాట్లాడండి',
+    speakNow: 'మీ సమస్య గురించి స్పష్టంగా మాట్లాడండి. రికార్డ్ బటన్ నొక్కి మాట్లాడండి.',
     farmerName: 'మీ పూర్తి పేరు చెప్పండి',
     phone: 'మీ ఫోన్ నంబర్ టైప్ చేయండి',
     villageName: 'మీ గ్రామం పేరు చెప్పండి',
@@ -246,7 +248,7 @@ const PROMPTS = {
   'ta-IN': {
     welcome: 'வணக்கம்! தமிழ் தேர்ந்தெடுத்தீர்கள். புகாரை பதிவு செய்யுங்கள்.',
     selectProblem: 'உங்கள் பிரச்சனையை தேர்ந்தெடுங்கள்',
-    speakNow: 'உங்கள் பிரச்சனை பற்றி பேசுங்கள்',
+    speakNow: 'உங்கள் பிரச்சனை பற்றி தெளிவாக பேசுங்கள். பதிவு பொத்தானை அழுத்தி பேசுங்கள்.',
     farmerName: 'உங்கள் முழு பெயரை சொல்லுங்கள்',
     phone: 'தொலைபேசி எண்ணை தட்டச்சு செய்யுங்கள்',
     villageName: 'கிராமத்தின் பெயரை சொல்லுங்கள்',
@@ -258,7 +260,7 @@ const PROMPTS = {
   'kn-IN': {
     welcome: 'ನಮಸ್ಕಾರ! ಕನ್ನಡ ಆಯ್ಕೆ ಮಾಡಿದ್ದೀರಿ. ದೂರು ನೋಂದಾಯಿಸಿ.',
     selectProblem: 'ನಿಮ್ಮ ಸಮಸ್ಯೆ ಆಯ್ಕೆ ಮಾಡಿ',
-    speakNow: 'ನಿಮ್ಮ ಸಮಸ್ಯೆ ಬಗ್ಗೆ ಮಾತಾಡಿ',
+    speakNow: 'ನಿಮ್ಮ ಸಮಸ್ಯೆ ಬಗ್ಗೆ ಸ್ಪಷ್ಟವಾಗಿ ಮಾತಾಡಿ. ರೆಕಾರ್ಡ್ ಬಟನ್ ಒತ್ತಿ ಮಾತಾಡಿ.',
     farmerName: 'ನಿಮ್ಮ ಪೂರ್ಣ ಹೆಸರು ಹೇಳಿ',
     phone: 'ಫೋನ್ ಸಂಖ್ಯೆ ಟೈಪ್ ಮಾಡಿ',
     villageName: 'ಗ್ರಾಮದ ಹೆಸರು ಹೇಳಿ',
@@ -270,7 +272,7 @@ const PROMPTS = {
   'en-IN': {
     welcome: 'Welcome! You selected English. Please register your complaint.',
     selectProblem: 'Please select your problem category',
-    speakNow: 'Please speak about your problem',
+    speakNow: 'Please speak clearly about your problem. Tap the record button and speak.',
     farmerName: 'Please say your full name',
     phone: 'Please type your phone number',
     villageName: 'Please say your village name',
@@ -288,7 +290,6 @@ const LANGS = [
   { code: 'en-IN', label: 'English', name: 'English' },
 ]
 
-// ── TTS ───────────────────────────────────────────────────────────
 function speak(text, lang = 'te-IN') {
   if (!window.speechSynthesis) return
   window.speechSynthesis.cancel()
@@ -298,7 +299,6 @@ function speak(text, lang = 'te-IN') {
 }
 function stopSpeaking() { window.speechSynthesis?.cancel() }
 
-// ── Shell ─────────────────────────────────────────────────────────
 function Shell({ children, step, totalSteps, onBack }) {
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-800 to-green-600 flex flex-col">
@@ -332,7 +332,6 @@ function Shell({ children, step, totalSteps, onBack }) {
   )
 }
 
-// ── Language picker ───────────────────────────────────────────────
 function LangPicker({ onSelect }) {
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-900 to-green-700 flex flex-col">
@@ -363,7 +362,6 @@ function LangPicker({ onSelect }) {
   )
 }
 
-// ── Landing ───────────────────────────────────────────────────────
 function Landing({ lang, onNew, onCheck, onChangeLang }) {
   const s = t(lang)
   return (
@@ -392,7 +390,6 @@ function Landing({ lang, onNew, onCheck, onChangeLang }) {
   )
 }
 
-// ── Category step ─────────────────────────────────────────────────
 function StepCategory({ lang, selected, onSelect, onNext, onBack }) {
   const s = t(lang)
   useEffect(() => { speak(PROMPTS[lang].selectProblem, lang) }, [lang])
@@ -425,74 +422,71 @@ function StepCategory({ lang, selected, onSelect, onNext, onBack }) {
   )
 }
 
-// ── Voice complaint step ──────────────────────────────────────────
-function StepVoice({ lang, category, transcription, onChange, onNext, onBack }) {
+// ── Audio recording step ──────────────────────────────────────────
+function StepRecord({ lang, category, onAudioReady, onNext, onBack }) {
   const s = t(lang)
-  const [recording,  setRecording]  = useState(false)
-  const [micStatus,  setMicStatus]  = useState('idle')
-  const [interim,    setInterim]    = useState('')
-  const recRef         = useRef(null)
-  const isRecordingRef = useRef(false)
-  const transcriptRef  = useRef(transcription)
+  const [recState, setRecState] = useState('idle') // idle | recording | done
+  const [duration, setDuration] = useState(0)
+  const [audioUrl, setAudioUrl] = useState(null)
+  const recorderRef = useRef(null)
+  const streamRef   = useRef(null)
+  const chunksRef   = useRef([])
+  const timerRef    = useRef(null)
   const cat = CATEGORIES.find(c => c.key === category) || CATEGORIES[7]
 
-  useEffect(() => { transcriptRef.current = transcription }, [transcription])
   useEffect(() => {
     speak(PROMPTS[lang].speakNow, lang)
-    return () => { isRecordingRef.current = false; try { recRef.current?.abort() } catch (_) {} }
-  }, [lang])
+    return () => {
+      clearInterval(timerRef.current)
+      stopSpeaking()
+      if (streamRef.current) streamRef.current.getTracks().forEach(tr => tr.stop())
+    }
+  }, [])
 
-  function createSession() {
-    const SR = window.SpeechRecognition || window.webkitSpeechRecognition
-    const r = new SR()
-    r.lang = lang; r.continuous = false; r.interimResults = true
-    r.onresult = e => {
-      let final = '', inter = ''
-      for (let i = 0; i < e.results.length; i++) {
-        if (e.results[i].isFinal) final += e.results[i][0].transcript + ' '
-        else inter += e.results[i][0].transcript
-      }
-      if (final) { const upd = (transcriptRef.current || '') + final; transcriptRef.current = upd; onChange(upd) }
-      setInterim(inter)
-    }
-    r.onerror = e => {
-      if (e.error === 'no-speech' || e.error === 'aborted') return
-      isRecordingRef.current = false; setRecording(false); setMicStatus('idle'); setInterim('')
-    }
-    r.onend = () => {
-      setInterim('')
-      if (isRecordingRef.current) {
-        setMicStatus('restarting')
-        setTimeout(() => {
-          if (!isRecordingRef.current) return
-          const next = createSession(); recRef.current = next
-          try { next.start() } catch (_) {
-            setTimeout(() => {
-              if (!isRecordingRef.current) return
-              try { const r2 = createSession(); recRef.current = r2; r2.start() }
-              catch (_) { isRecordingRef.current = false; setRecording(false); setMicStatus('idle') }
-            }, 150)
-          }
-        }, 50)
-      } else { setRecording(false); setMicStatus('idle') }
-    }
-    return r
-  }
-
-  function startRecording() {
-    const SR = window.SpeechRecognition || window.webkitSpeechRecognition
-    if (!SR) { alert('Voice not supported — please type.'); return }
+  async function startRecording() {
     stopSpeaking()
-    isRecordingRef.current = true; setRecording(true); setMicStatus('listening')
-    const r = createSession(); recRef.current = r
-    try { r.start() } catch (_) {}
+    if (!navigator.mediaDevices?.getUserMedia) {
+      alert('Microphone not supported on this browser.')
+      return
+    }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      streamRef.current = stream
+      chunksRef.current = []
+      const recorder = new MediaRecorder(stream)
+      recorderRef.current = recorder
+      recorder.ondataavailable = e => { if (e.data.size > 0) chunksRef.current.push(e.data) }
+      recorder.onstop = () => {
+        const blob = new Blob(chunksRef.current, { type: 'audio/webm' })
+        const url  = URL.createObjectURL(blob)
+        setAudioUrl(url)
+        onAudioReady(blob)
+        setRecState('done')
+        stream.getTracks().forEach(tr => tr.stop())
+      }
+      recorder.start()
+      setRecState('recording')
+      setDuration(0)
+      timerRef.current = setInterval(() => setDuration(d => d + 1), 1000)
+    } catch {
+      alert('Microphone access denied. Please allow microphone and try again.')
+    }
   }
 
   function stopRecording() {
-    isRecordingRef.current = false; setInterim(''); setMicStatus('idle')
-    try { recRef.current?.abort() } catch (_) {}
-    setRecording(false)
+    clearInterval(timerRef.current)
+    recorderRef.current?.stop()
   }
+
+  function reRecord() {
+    if (audioUrl) URL.revokeObjectURL(audioUrl)
+    setAudioUrl(null)
+    setDuration(0)
+    setRecState('idle')
+    onAudioReady(null)
+  }
+
+  const fmt = d => `${String(Math.floor(d / 60)).padStart(2, '0')}:${String(d % 60).padStart(2, '0')}`
 
   return (
     <Shell step={1} totalSteps={4} onBack={onBack}>
@@ -502,38 +496,55 @@ function StepVoice({ lang, category, transcription, onChange, onNext, onBack }) 
           <span className="text-2xl">{cat.emoji}</span>
           <div className="font-bold text-sm">{cat.label[lk(lang)] || cat.label.en}</div>
         </div>
+
         <div className="text-center">
-          <h2 className="text-xl font-bold text-green-800">{s.speakTitle}</h2>
-          <p className="text-gray-400 text-sm">{s.speakSub}</p>
+          <h2 className="text-xl font-bold text-green-800">{s.recordTitle}</h2>
+          <p className="text-gray-400 text-sm mt-1">{s.recordSub}</p>
         </div>
-        <div className="flex flex-col items-center gap-3">
-          <button onClick={recording ? stopRecording : startRecording}
-            className={`w-32 h-32 rounded-full flex flex-col items-center justify-center gap-1 shadow-xl transition-all active:scale-95 ${
-              micStatus === 'listening'  ? 'bg-red-500 animate-pulse shadow-red-400' :
-              micStatus === 'restarting' ? 'bg-orange-400 shadow-orange-300' :
-              'bg-green-700 hover:bg-green-800 shadow-green-400'
-            }`}>
-            <span className="text-5xl">
-              {micStatus === 'listening' ? '⏹️' : micStatus === 'restarting' ? '🔄' : '🎙️'}
-            </span>
-            <span className="text-white text-xs font-bold">
-              {micStatus === 'listening' ? s.btnListen : micStatus === 'restarting' ? s.btnRestart : s.btnSpeak}
-            </span>
-          </button>
-          {micStatus === 'listening'  && <p className="text-sm font-semibold text-red-600">{s.listeningMsg}</p>}
-          {micStatus === 'restarting' && <p className="text-sm font-semibold text-orange-500">{s.restartMsg}</p>}
-          {micStatus === 'idle'       && <p className="text-sm text-gray-500">{s.tapSpeak}</p>}
-          {interim && <div className="w-full bg-yellow-50 border-2 border-yellow-300 rounded-xl px-4 py-2 text-sm italic">🎙️ {interim}…</div>}
+
+        <div className="flex flex-col items-center gap-4 py-2">
+          {recState === 'idle' && (
+            <button onClick={startRecording}
+              className="w-36 h-36 rounded-full bg-green-700 hover:bg-green-800 shadow-xl shadow-green-300 flex flex-col items-center justify-center gap-2 active:scale-95 transition-all">
+              <span className="text-6xl">🎙️</span>
+              <span className="text-white font-bold text-sm">{s.recordTap}</span>
+            </button>
+          )}
+
+          {recState === 'recording' && (
+            <>
+              <button onClick={stopRecording}
+                className="w-36 h-36 rounded-full bg-red-500 shadow-xl shadow-red-300 animate-pulse flex flex-col items-center justify-center gap-2 active:scale-95 transition-all">
+                <span className="text-6xl">⏹️</span>
+                <span className="text-white font-bold text-sm">{s.recordStop}</span>
+              </button>
+              <div className="flex items-center gap-2 text-red-600 font-semibold text-lg">
+                <span className="w-3 h-3 rounded-full bg-red-500 animate-pulse" />
+                {s.recordingMsg} · {fmt(duration)}
+              </div>
+            </>
+          )}
+
+          {recState === 'done' && audioUrl && (
+            <div className="w-full space-y-4">
+              <div className="text-center">
+                <div className="text-green-600 font-bold text-lg">{s.recordDone}</div>
+              </div>
+              <div className="bg-green-50 border-2 border-green-300 rounded-2xl px-4 py-3">
+                <div className="text-xs font-bold text-green-700 uppercase mb-2">{s.playback}</div>
+                <audio src={audioUrl} controls className="w-full" />
+              </div>
+              <button onClick={reRecord}
+                className="w-full py-3 rounded-2xl border-2 border-gray-300 text-gray-600 font-semibold text-sm active:scale-95 transition-all">
+                🔄 {s.recordAgain}
+              </button>
+            </div>
+          )}
         </div>
-        <div>
-          <label className="block text-sm font-semibold text-gray-600 mb-1">{s.grievanceLabel}</label>
-          <textarea rows={4} value={transcription || ''} onChange={e => onChange(e.target.value)}
-            placeholder={s.grievancePh}
-            className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-base focus:outline-none focus:border-green-500 resize-none" />
-        </div>
-        <button onClick={() => { stopSpeaking(); onNext() }} disabled={!(transcription || '').trim()}
+
+        <button onClick={() => { stopSpeaking(); onNext() }} disabled={recState !== 'done'}
           className={`w-full py-4 rounded-2xl text-white font-bold text-lg transition-all ${
-            (transcription || '').trim() ? 'bg-green-700 hover:bg-green-800 shadow-md active:scale-95' : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+            recState === 'done' ? 'bg-green-700 hover:bg-green-800 shadow-md active:scale-95' : 'bg-gray-200 text-gray-400 cursor-not-allowed'
           }`}>
           {s.next}
         </button>
@@ -677,7 +688,7 @@ function StepDetails({ lang, data, onChange, onNext, onBack }) {
 }
 
 // ── Review ────────────────────────────────────────────────────────
-function StepReview({ lang, data, category, onSubmit, onBack, loading }) {
+function StepReview({ lang, data, category, audioUrl, onSubmit, onBack, loading }) {
   const s = t(lang)
   const cat = CATEGORIES.find(c => c.key === category) || CATEGORIES[7]
   useEffect(() => { speak(PROMPTS[lang].review, lang) }, [lang])
@@ -697,9 +708,12 @@ function StepReview({ lang, data, category, onSubmit, onBack, loading }) {
             <div className="text-xs opacity-70">→ {cat.dept}</div>
           </div>
         </div>
-        <div className="bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3">
-          <div className="text-xs font-bold text-gray-400 uppercase mb-1">{s.grievanceSection}</div>
-          <p className="text-gray-800 text-sm leading-relaxed">{data.transcription}</p>
+        <div className="bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3 space-y-2">
+          <div className="text-xs font-bold text-gray-400 uppercase">{s.grievanceSection}</div>
+          <div className="flex items-center gap-2 text-green-700 font-semibold text-sm">
+            <span>🎙️</span><span>{s.audioRecorded}</span>
+          </div>
+          {audioUrl && <audio src={audioUrl} controls className="w-full mt-1" />}
         </div>
         <div className="bg-green-50 border border-green-200 rounded-2xl px-4 py-3 space-y-1.5">
           <div className="text-xs font-bold text-green-600 uppercase mb-1">{s.detailsSection}</div>
@@ -846,19 +860,33 @@ function StatusCheck({ lang, onBack }) {
 }
 
 // ── Main ──────────────────────────────────────────────────────────
-const INITIAL = { farmerName: '', phone: '', villageName: '', villageCode: '', bmcuCode: '', bmcuName: '', transcription: '' }
+const INITIAL = { farmerName: '', phone: '', villageName: '', villageCode: '', bmcuCode: '', bmcuName: '' }
 
 export default function ComplaintForm() {
   const [screen,    setScreen]    = useState('lang')
   const [lang,      setLang]      = useState('te-IN')
   const [category,  setCategory]  = useState('')
   const [data,      setData]      = useState(INITIAL)
+  const [audioBlob, setAudioBlob] = useState(null)
+  const [audioUrl,  setAudioUrl]  = useState(null)
   const [submitted, setSubmitted] = useState(null)
   const [loading,   setLoading]   = useState(false)
   const [error,     setError]     = useState('')
 
   function update(key, val) { setData(d => ({ ...d, [key]: val })) }
-  function reset() { setScreen('lang'); setCategory(''); setData(INITIAL); setSubmitted(null); setError('') }
+
+  function handleAudioReady(blob) {
+    if (audioUrl) URL.revokeObjectURL(audioUrl)
+    setAudioBlob(blob)
+    setAudioUrl(blob ? URL.createObjectURL(blob) : null)
+  }
+
+  function reset() {
+    if (audioUrl) URL.revokeObjectURL(audioUrl)
+    setScreen('lang'); setCategory(''); setData(INITIAL)
+    setAudioBlob(null); setAudioUrl(null)
+    setSubmitted(null); setError('')
+  }
 
   function selectLang(code) {
     setLang(code); speak(PROMPTS[code].welcome, code); setScreen('landing')
@@ -867,7 +895,11 @@ export default function ComplaintForm() {
   async function submit() {
     setLoading(true); setError('')
     try {
-      const res = await axios.post(`${API}/api/grievance/complaints`, { ...data, categoryOverride: category })
+      const fd = new FormData()
+      Object.entries(data).forEach(([k, v]) => fd.append(k, v))
+      fd.append('categoryOverride', category)
+      if (audioBlob) fd.append('audio', audioBlob, 'complaint.webm')
+      const res = await axios.post(`${API}/api/grievance/complaints`, fd)
       setSubmitted(res.data.complaint); setScreen('success')
     } catch (e) {
       setError(e?.response?.data?.error || 'Submission failed. Please try again.')
@@ -879,12 +911,12 @@ export default function ComplaintForm() {
   if (screen === 'success' && submitted) return <SuccessScreen lang={lang} complaint={submitted} onAnother={reset} />
   if (screen === 'landing') return <Landing lang={lang} onNew={() => setScreen('category')} onCheck={() => setScreen('status')} onChangeLang={() => setScreen('lang')} />
   if (screen === 'category') return <StepCategory lang={lang} selected={category} onSelect={setCategory} onNext={() => setScreen('voice')} onBack={() => setScreen('landing')} />
-  if (screen === 'voice')   return <StepVoice lang={lang} category={category} transcription={data.transcription} onChange={v => update('transcription', v)} onNext={() => setScreen('details')} onBack={() => setScreen('category')} />
+  if (screen === 'voice')   return <StepRecord lang={lang} category={category} onAudioReady={handleAudioReady} onNext={() => setScreen('details')} onBack={() => setScreen('category')} />
   if (screen === 'details') return <StepDetails lang={lang} data={data} onChange={update} onNext={() => setScreen('review')} onBack={() => setScreen('voice')} />
   if (screen === 'review')  return (
     <>
       {error && <div className="fixed top-0 left-0 right-0 z-50 bg-red-500 text-white px-4 py-3 text-sm font-medium text-center">{error}</div>}
-      <StepReview lang={lang} data={data} category={category} onSubmit={submit} onBack={() => setScreen('details')} loading={loading} />
+      <StepReview lang={lang} data={data} category={category} audioUrl={audioUrl} onSubmit={submit} onBack={() => setScreen('details')} loading={loading} />
     </>
   )
   return null
