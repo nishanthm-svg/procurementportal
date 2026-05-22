@@ -895,11 +895,18 @@ export default function ComplaintForm() {
   async function submit() {
     setLoading(true); setError('')
     try {
-      const fd = new FormData()
-      Object.entries(data).forEach(([k, v]) => fd.append(k, v))
-      fd.append('categoryOverride', category)
-      if (audioBlob) fd.append('audio', audioBlob, 'complaint.webm')
-      const res = await axios.post(`${API}/api/grievance/complaints`, fd)
+      let audioBase64 = null
+      if (audioBlob) {
+        audioBase64 = await new Promise((resolve, reject) => {
+          const reader = new FileReader()
+          reader.onload = () => resolve(reader.result.split(',')[1])
+          reader.onerror = reject
+          reader.readAsDataURL(audioBlob)
+        })
+      }
+      const res = await axios.post(`${API}/api/grievance/complaints`, {
+        ...data, categoryOverride: category, audioBase64,
+      })
       setSubmitted(res.data.complaint); setScreen('success')
     } catch (e) {
       setError(e?.response?.data?.error || 'Submission failed. Please try again.')

@@ -6,14 +6,11 @@ const fs = require('fs');
 let QRCode;
 try { QRCode = require('qrcode'); } catch (_) { QRCode = null; }
 
-let multer;
-try { multer = require('multer'); } catch (_) { multer = null; }
-
 const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '20mb' }));
 
 const DATA_PATH = path.join(__dirname, 'data', 'procurement.json');
 let D = {};
@@ -151,9 +148,6 @@ const COMPLAINTS_PATH = path.join(__dirname, 'data', 'complaints.json');
 const AUDIO_DIR = path.join(__dirname, 'data', 'audio');
 if (!fs.existsSync(AUDIO_DIR)) fs.mkdirSync(AUDIO_DIR, { recursive: true });
 
-// multer: save to temp, then rename to complaint ID after ID is known
-const upload = multer ? multer({ dest: AUDIO_DIR }) : { single: () => (req, res, next) => next() };
-
 const CATEGORIES = {
   milk_quality:  { label: 'Milk Quality / Adulteration',   dept: 'Quality Control' },
   payment:       { label: 'Payment / Price Issues',        dept: 'Finance & Accounts' },
@@ -226,24 +220,20 @@ app.get('/api/grievance/complaints', (req, res) => {
   res.json(data);
 });
 
-// Submit new complaint (called from farmer QR form) — accepts multipart/form-data with optional audio
-app.post('/api/grievance/complaints', upload.single('audio'), (req, res) => {
+// Submit new complaint — JSON body with optional audioBase64 (webm encoded as base64)
+app.post('/api/grievance/complaints', (req, res) => {
   const data = loadComplaints();
   const num  = String(data.length + 1).padStart(4, '0');
   const year = new Date().getFullYear();
   const id   = `GRV-${year}-${num}`;
-  const { farmerName, phone, villageName, villageCode, bmcuCode, bmcuName, categoryOverride } = req.body;
-  if (!farmerName || !villageName) {
-    if (req.file) try { fs.unlinkSync(req.file.path); } catch (_) {}
-    return res.status(400).json({ error: 'farmerName and villageName are required' });
-  }
+  const { farmerName, phone, villageName, villageCode, bmcuCode, bmcuName, categoryOverride, audioBase64 } = req.body;
+  if (!farmerName || !villageName) return res.status(400).json({ error: 'farmerName and villageName are required' });
   const category = categoryOverride || 'other';
 
-  // Rename the temp audio file to <id>.webm
   let hasAudio = false;
-  if (req.file) {
+  if (audioBase64) {
     try {
-      fs.renameSync(req.file.path, path.join(AUDIO_DIR, `${id}.webm`));
+      fs.writeFileSync(path.join(AUDIO_DIR, `${id}.webm`), Buffer.from(audioBase64, 'base64'));
       hasAudio = true;
     } catch (_) {}
   }
