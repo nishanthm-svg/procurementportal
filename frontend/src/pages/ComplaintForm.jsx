@@ -88,6 +88,14 @@ const T = {
     editHint: '✏️ సవరించవచ్చు · You can edit above',
     skip: 'దాటవేయి / Skip',
     btnStop: 'ఆపండి', btnAgain: 'మళ్ళీ', btnTap: 'మాట్లాడండి',
+    videoTitle: 'వీడియో రిఫరెన్స్ జోడించండి',
+    videoSub: 'సమస్యను చూపించే వీడియో అప్‌లోడ్ చేయండి (ఐచ్ఛికం)',
+    videoUpload: '📹 వీడియో ఎంచుకోండి / తీయండి',
+    videoChange: '🔄 వేరే వీడియో',
+    videoDone: '✅ వీడియో సిద్ధంగా ఉంది!',
+    videoRecorded: '📹 వీడియో రిఫరెన్స్ జోడించబడింది',
+    videoSkip: 'వీడియో లేకుండా కొనసాగించండి / Skip Video',
+    videoTooBig: 'వీడియో చాలా పెద్దది. దయచేసి 40MB కంటే చిన్న వీడియో ఎంచుకోండి.',
     reviewTitle: 'సమీక్షించి సమర్పించండి', reviewSub: 'Review & Submit',
     grievanceSection: 'ఫిర్యాదు / Grievance', detailsSection: 'వివరాలు / Details',
     submit: '✅ సమర్పించు / Submit', submitting: '⏳ సమర్పిస్తున్నారు...',
@@ -128,6 +136,14 @@ const T = {
     editHint: '✏️ திருத்தலாம் · You can edit above',
     skip: 'தவிர்க்கவும் / Skip',
     btnStop: 'நிறுத்து', btnAgain: 'மீண்டும்', btnTap: 'பேசுங்கள்',
+    videoTitle: 'வீடியோ குறிப்பு சேர்க்கவும்',
+    videoSub: 'பிரச்சனையை காட்டும் வீடியோவை பதிவேற்றவும் (விருப்பத்தேர்வு)',
+    videoUpload: '📹 வீடியோ தேர்ந்தெடு / பதிவு செய்',
+    videoChange: '🔄 வேறு வீடியோ',
+    videoDone: '✅ வீடியோ தயார்!',
+    videoRecorded: '📹 வீடியோ குறிப்பு சேர்க்கப்பட்டது',
+    videoSkip: 'வீடியோ இல்லாமல் தொடர / Skip Video',
+    videoTooBig: 'வீடியோ மிகவும் பெரியது. 40MB க்கும் குறைவான வீடியோவை தேர்ந்தெடுங்கள்.',
     reviewTitle: 'சரிபார்த்து சமர்ப்பிக்கவும்', reviewSub: 'Review & Submit',
     grievanceSection: 'புகார் / Grievance', detailsSection: 'விவரங்கள் / Details',
     submit: '✅ சமர்ப்பி / Submit', submitting: '⏳ சமர்ப்பிக்கிறோம்...',
@@ -168,6 +184,14 @@ const T = {
     editHint: '✏️ ತಿದ್ದಬಹುದು · You can edit above',
     skip: 'ಬಿಟ್ಟುಬಿಡಿ / Skip',
     btnStop: 'ನಿಲ್ಲಿಸಿ', btnAgain: 'ಮತ್ತೆ', btnTap: 'ಮಾತಾಡಿ',
+    videoTitle: 'ವೀಡಿಯೋ ಉಲ್ಲೇಖ ಸೇರಿಸಿ',
+    videoSub: 'ಸಮಸ್ಯೆ ತೋರಿಸುವ ವೀಡಿಯೋ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ (ಐಚ್ಛಿಕ)',
+    videoUpload: '📹 ವೀಡಿಯೋ ಆಯ್ಕೆ / ರೆಕಾರ್ಡ್ ಮಾಡಿ',
+    videoChange: '🔄 ಬೇರೆ ವೀಡಿಯೋ',
+    videoDone: '✅ ವೀಡಿಯೋ ಸಿದ್ಧವಾಗಿದೆ!',
+    videoRecorded: '📹 ವೀಡಿಯೋ ಉಲ್ಲೇಖ ಸೇರಿಸಲಾಗಿದೆ',
+    videoSkip: 'ವೀಡಿಯೋ ಇಲ್ಲದೆ ಮುಂದುವರಿಸಿ / Skip Video',
+    videoTooBig: 'ವೀಡಿಯೋ ತುಂಬಾ ದೊಡ್ಡದು. 40MB ಕ್ಕಿಂತ ಕಡಿಮೆ ವೀಡಿಯೋ ಆಯ್ಕೆ ಮಾಡಿ.',
     reviewTitle: 'ಪರಿಶೀಲಿಸಿ ಸಲ್ಲಿಸಿ', reviewSub: 'Review & Submit',
     grievanceSection: 'ದೂರು / Grievance', detailsSection: 'ವಿವರಗಳು / Details',
     submit: '✅ ಸಲ್ಲಿಸಿ / Submit', submitting: '⏳ ಸಲ್ಲಿಸುತ್ತಿದ್ದೇವೆ...',
@@ -208,6 +232,14 @@ const T = {
     editHint: '✏️ You can edit above',
     skip: 'Skip',
     btnStop: 'Stop', btnAgain: 'Again', btnTap: 'Speak',
+    videoTitle: 'Add Video Reference',
+    videoSub: 'Upload a video showing the issue (optional)',
+    videoUpload: '📹 Choose / Record Video',
+    videoChange: '🔄 Change Video',
+    videoDone: '✅ Video Ready!',
+    videoRecorded: '📹 Video reference attached',
+    videoSkip: 'Skip — No Video',
+    videoTooBig: 'Video is too large. Please choose a video under 40 MB.',
     reviewTitle: 'Review & Submit', reviewSub: 'Check your details below',
     grievanceSection: 'Grievance', detailsSection: 'Details',
     submit: '✅ Submit', submitting: '⏳ Submitting...',
@@ -394,7 +426,7 @@ function StepCategory({ lang, selected, onSelect, onNext, onBack }) {
   const s = t(lang)
   useEffect(() => { speak(PROMPTS[lang].selectProblem, lang) }, [lang])
   return (
-    <Shell step={0} totalSteps={4} onBack={onBack}>
+    <Shell step={0} totalSteps={5} onBack={onBack}>
       <div className="space-y-4">
         <div className="text-center">
           <div className="text-4xl mb-2">🤔</div>
@@ -489,7 +521,7 @@ function StepRecord({ lang, category, onAudioReady, onNext, onBack }) {
   const fmt = d => `${String(Math.floor(d / 60)).padStart(2, '0')}:${String(d % 60).padStart(2, '0')}`
 
   return (
-    <Shell step={1} totalSteps={4} onBack={onBack}>
+    <Shell step={1} totalSteps={5} onBack={onBack}>
       <div className="space-y-5">
         <div style={{ backgroundColor: cat.bg, borderColor: cat.color, color: cat.color }}
           className="border-2 rounded-2xl px-4 py-2 flex items-center gap-3">
@@ -547,6 +579,97 @@ function StepRecord({ lang, category, onAudioReady, onNext, onBack }) {
             recState === 'done' ? 'bg-green-700 hover:bg-green-800 shadow-md active:scale-95' : 'bg-gray-200 text-gray-400 cursor-not-allowed'
           }`}>
           {s.next}
+        </button>
+      </div>
+    </Shell>
+  )
+}
+
+// ── Video upload step ─────────────────────────────────────────────
+const VIDEO_SIZE_LIMIT = 40 * 1024 * 1024 // 40 MB
+
+function StepVideo({ lang, category, onVideoReady, onNext, onBack }) {
+  const s = t(lang)
+  const [videoUrl, setVideoUrl] = useState(null)
+  const [videoFile, setVideoFile] = useState(null)
+  const [sizeError, setSizeError] = useState(false)
+  const fileInputRef = useRef(null)
+  const cat = CATEGORIES.find(c => c.key === category) || CATEGORIES[7]
+
+  useEffect(() => () => { if (videoUrl) URL.revokeObjectURL(videoUrl) }, [videoUrl])
+
+  function handleFile(file) {
+    if (!file) return
+    if (file.size > VIDEO_SIZE_LIMIT) { setSizeError(true); return }
+    setSizeError(false)
+    if (videoUrl) URL.revokeObjectURL(videoUrl)
+    const url = URL.createObjectURL(file)
+    setVideoUrl(url)
+    setVideoFile(file)
+    onVideoReady(file)
+  }
+
+  function clearVideo() {
+    if (videoUrl) URL.revokeObjectURL(videoUrl)
+    setVideoUrl(null); setVideoFile(null); setSizeError(false)
+    onVideoReady(null)
+  }
+
+  return (
+    <Shell step={2} totalSteps={5} onBack={onBack}>
+      <div className="space-y-5">
+        <div style={{ backgroundColor: cat.bg, borderColor: cat.color, color: cat.color }}
+          className="border-2 rounded-2xl px-4 py-2 flex items-center gap-3">
+          <span className="text-2xl">{cat.emoji}</span>
+          <div className="font-bold text-sm">{cat.label[lk(lang)] || cat.label.en}</div>
+        </div>
+
+        <div className="text-center">
+          <div className="text-4xl mb-2">📹</div>
+          <h2 className="text-xl font-bold text-green-800">{s.videoTitle}</h2>
+          <p className="text-gray-400 text-sm mt-1">{s.videoSub}</p>
+        </div>
+
+        <input ref={fileInputRef} type="file" accept="video/*" capture="environment"
+          className="hidden"
+          onChange={e => handleFile(e.target.files?.[0])} />
+
+        {!videoFile ? (
+          <button onClick={() => fileInputRef.current?.click()}
+            className="w-full py-8 rounded-2xl border-2 border-dashed border-green-400 bg-green-50 flex flex-col items-center gap-3 active:scale-95 transition-all">
+            <span className="text-5xl">🎥</span>
+            <span className="text-green-700 font-bold text-base">{s.videoUpload}</span>
+            <span className="text-gray-400 text-xs">Max 40 MB · MP4 / WebM</span>
+          </button>
+        ) : (
+          <div className="space-y-3">
+            <div className="text-center text-green-600 font-bold">{s.videoDone}</div>
+            <video src={videoUrl} controls playsInline
+              className="w-full rounded-2xl border-2 border-green-300 bg-black max-h-56 object-contain" />
+            <div className="text-xs text-gray-400 text-center">
+              {videoFile.name} · {(videoFile.size / 1024 / 1024).toFixed(1)} MB
+            </div>
+            <button onClick={() => { clearVideo(); fileInputRef.current?.click() }}
+              className="w-full py-3 rounded-2xl border-2 border-gray-300 text-gray-600 font-semibold text-sm active:scale-95 transition-all">
+              {s.videoChange}
+            </button>
+          </div>
+        )}
+
+        {sizeError && (
+          <div className="bg-red-50 border border-red-200 text-red-700 rounded-xl px-4 py-3 text-sm">{s.videoTooBig}</div>
+        )}
+
+        <button onClick={() => { stopSpeaking(); onNext() }} disabled={!videoFile}
+          className={`w-full py-4 rounded-2xl text-white font-bold text-lg transition-all ${
+            videoFile ? 'bg-green-700 hover:bg-green-800 shadow-md active:scale-95' : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+          }`}>
+          {s.next}
+        </button>
+
+        <button onClick={() => { clearVideo(); onNext() }}
+          className="w-full py-2 text-sm text-gray-400 active:text-gray-600">
+          {s.videoSkip}
         </button>
       </div>
     </Shell>
@@ -672,7 +795,7 @@ function StepDetails({ lang, data, onChange, onNext, onBack }) {
   function advance() { if (isLast) onNext(); else setFieldIdx(i => i + 1) }
   function goBack()  { if (fieldIdx === 0) onBack(); else setFieldIdx(i => i - 1) }
   return (
-    <Shell step={2} totalSteps={4} onBack={goBack}>
+    <Shell step={3} totalSteps={5} onBack={goBack}>
       <div className="flex gap-1.5 mb-6">
         {DETAIL_FIELDS.map((_, i) => (
           <div key={i} className={`h-1.5 flex-1 rounded-full transition-all ${
@@ -688,12 +811,12 @@ function StepDetails({ lang, data, onChange, onNext, onBack }) {
 }
 
 // ── Review ────────────────────────────────────────────────────────
-function StepReview({ lang, data, category, audioUrl, onSubmit, onBack, loading }) {
+function StepReview({ lang, data, category, audioUrl, videoUrl, onSubmit, onBack, loading }) {
   const s = t(lang)
   const cat = CATEGORIES.find(c => c.key === category) || CATEGORIES[7]
   useEffect(() => { speak(PROMPTS[lang].review, lang) }, [lang])
   return (
-    <Shell step={3} totalSteps={4} onBack={() => { stopSpeaking(); onBack() }}>
+    <Shell step={4} totalSteps={5} onBack={() => { stopSpeaking(); onBack() }}>
       <div className="space-y-4">
         <div className="text-center">
           <div className="text-4xl mb-2">📋</div>
@@ -714,6 +837,15 @@ function StepReview({ lang, data, category, audioUrl, onSubmit, onBack, loading 
             <span>🎙️</span><span>{s.audioRecorded}</span>
           </div>
           {audioUrl && <audio src={audioUrl} controls className="w-full mt-1" />}
+          {videoUrl && (
+            <div className="mt-2">
+              <div className="flex items-center gap-2 text-blue-700 font-semibold text-sm mb-1">
+                <span>📹</span><span>{s.videoRecorded}</span>
+              </div>
+              <video src={videoUrl} controls playsInline
+                className="w-full rounded-xl border border-blue-200 bg-black max-h-40 object-contain" />
+            </div>
+          )}
         </div>
         <div className="bg-green-50 border border-green-200 rounded-2xl px-4 py-3 space-y-1.5">
           <div className="text-xs font-bold text-green-600 uppercase mb-1">{s.detailsSection}</div>
@@ -869,6 +1001,8 @@ export default function ComplaintForm() {
   const [data,      setData]      = useState(INITIAL)
   const [audioBlob, setAudioBlob] = useState(null)
   const [audioUrl,  setAudioUrl]  = useState(null)
+  const [videoFile, setVideoFile] = useState(null)
+  const [videoUrl,  setVideoUrl]  = useState(null)
   const [submitted, setSubmitted] = useState(null)
   const [loading,   setLoading]   = useState(false)
   const [error,     setError]     = useState('')
@@ -881,10 +1015,18 @@ export default function ComplaintForm() {
     setAudioUrl(blob ? URL.createObjectURL(blob) : null)
   }
 
+  function handleVideoReady(file) {
+    if (videoUrl) URL.revokeObjectURL(videoUrl)
+    setVideoFile(file)
+    setVideoUrl(file ? URL.createObjectURL(file) : null)
+  }
+
   function reset() {
     if (audioUrl) URL.revokeObjectURL(audioUrl)
+    if (videoUrl) URL.revokeObjectURL(videoUrl)
     setScreen('lang'); setCategory(''); setData(INITIAL)
     setAudioBlob(null); setAudioUrl(null)
+    setVideoFile(null); setVideoUrl(null)
     setSubmitted(null); setError('')
   }
 
@@ -892,20 +1034,23 @@ export default function ComplaintForm() {
     setLang(code); speak(PROMPTS[code].welcome, code); setScreen('landing')
   }
 
+  async function toBase64(blob) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onload = () => resolve(reader.result.split(',')[1])
+      reader.onerror = reject
+      reader.readAsDataURL(blob)
+    })
+  }
+
   async function submit() {
     setLoading(true); setError('')
     try {
-      let audioBase64 = null
-      if (audioBlob) {
-        audioBase64 = await new Promise((resolve, reject) => {
-          const reader = new FileReader()
-          reader.onload = () => resolve(reader.result.split(',')[1])
-          reader.onerror = reject
-          reader.readAsDataURL(audioBlob)
-        })
-      }
+      const audioBase64 = audioBlob ? await toBase64(audioBlob) : null
+      const videoBase64 = videoFile ? await toBase64(videoFile) : null
+      const videoMime   = videoFile?.type || null
       const res = await axios.post(`${API}/api/grievance/complaints`, {
-        ...data, categoryOverride: category, audioBase64,
+        ...data, categoryOverride: category, audioBase64, videoBase64, videoMime,
       })
       setSubmitted(res.data.complaint); setScreen('success')
     } catch (e) {
@@ -918,12 +1063,13 @@ export default function ComplaintForm() {
   if (screen === 'success' && submitted) return <SuccessScreen lang={lang} complaint={submitted} onAnother={reset} />
   if (screen === 'landing') return <Landing lang={lang} onNew={() => setScreen('category')} onCheck={() => setScreen('status')} onChangeLang={() => setScreen('lang')} />
   if (screen === 'category') return <StepCategory lang={lang} selected={category} onSelect={setCategory} onNext={() => setScreen('voice')} onBack={() => setScreen('landing')} />
-  if (screen === 'voice')   return <StepRecord lang={lang} category={category} onAudioReady={handleAudioReady} onNext={() => setScreen('details')} onBack={() => setScreen('category')} />
-  if (screen === 'details') return <StepDetails lang={lang} data={data} onChange={update} onNext={() => setScreen('review')} onBack={() => setScreen('voice')} />
+  if (screen === 'voice')   return <StepRecord lang={lang} category={category} onAudioReady={handleAudioReady} onNext={() => setScreen('video')} onBack={() => setScreen('category')} />
+  if (screen === 'video')   return <StepVideo lang={lang} category={category} onVideoReady={handleVideoReady} onNext={() => setScreen('details')} onBack={() => setScreen('voice')} />
+  if (screen === 'details') return <StepDetails lang={lang} data={data} onChange={update} onNext={() => setScreen('review')} onBack={() => setScreen('video')} />
   if (screen === 'review')  return (
     <>
       {error && <div className="fixed top-0 left-0 right-0 z-50 bg-red-500 text-white px-4 py-3 text-sm font-medium text-center">{error}</div>}
-      <StepReview lang={lang} data={data} category={category} audioUrl={audioUrl} onSubmit={submit} onBack={() => setScreen('details')} loading={loading} />
+      <StepReview lang={lang} data={data} category={category} audioUrl={audioUrl} videoUrl={videoUrl} onSubmit={submit} onBack={() => setScreen('details')} loading={loading} />
     </>
   )
   return null

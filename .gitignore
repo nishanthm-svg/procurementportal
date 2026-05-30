@@ -20,6 +20,7 @@ vcg-mrg-react/
 # misc
 *.xlsx
 *.html
+!frontend/index.html
 *.bat
 *.cmd
 console.log*

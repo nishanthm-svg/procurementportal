@@ -10,7 +10,7 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(cors());
-app.use(express.json({ limit: '20mb' }));
+app.use(express.json({ limit: '60mb' }));
 
 const DATA_PATH = path.join(__dirname, 'data', 'procurement.json');
 let D = {};
@@ -146,7 +146,9 @@ app.get('/api/health', (_, res) => res.json({ status: 'ok', records: Object.from
 
 const COMPLAINTS_PATH = path.join(__dirname, 'data', 'complaints.json');
 const AUDIO_DIR = path.join(__dirname, 'data', 'audio');
+const VIDEO_DIR = path.join(__dirname, 'data', 'video');
 if (!fs.existsSync(AUDIO_DIR)) fs.mkdirSync(AUDIO_DIR, { recursive: true });
+if (!fs.existsSync(VIDEO_DIR)) fs.mkdirSync(VIDEO_DIR, { recursive: true });
 
 const CATEGORIES = {
   milk_quality:  { label: 'Milk Quality / Adulteration',   dept: 'Quality Control' },
@@ -226,7 +228,7 @@ app.post('/api/grievance/complaints', (req, res) => {
   const num  = String(data.length + 1).padStart(4, '0');
   const year = new Date().getFullYear();
   const id   = `GRV-${year}-${num}`;
-  const { farmerName, phone, villageName, villageCode, bmcuCode, bmcuName, categoryOverride, audioBase64 } = req.body;
+  const { farmerName, phone, villageName, villageCode, bmcuCode, bmcuName, categoryOverride, audioBase64, videoBase64, videoMime } = req.body;
   if (!farmerName || !villageName) return res.status(400).json({ error: 'farmerName and villageName are required' });
   const category = categoryOverride || 'other';
 
@@ -235,6 +237,15 @@ app.post('/api/grievance/complaints', (req, res) => {
     try {
       fs.writeFileSync(path.join(AUDIO_DIR, `${id}.webm`), Buffer.from(audioBase64, 'base64'));
       hasAudio = true;
+    } catch (_) {}
+  }
+
+  let hasVideo = false;
+  if (videoBase64) {
+    try {
+      const ext = (videoMime || 'video/mp4').includes('webm') ? 'webm' : 'mp4';
+      fs.writeFileSync(path.join(VIDEO_DIR, `${id}.${ext}`), Buffer.from(videoBase64, 'base64'));
+      hasVideo = true;
     } catch (_) {}
   }
 
@@ -248,6 +259,7 @@ app.post('/api/grievance/complaints', (req, res) => {
     bmcuCode:    String(bmcuCode    || '').trim(),
     bmcuName:    String(bmcuName    || '').trim(),
     hasAudio,
+    hasVideo,
     category,
     department: CATEGORIES[category]?.dept || 'General Management',
     status: 'open',
@@ -336,6 +348,23 @@ app.get('/api/grievance/audio/:id', (req, res) => {
   if (!fs.existsSync(p)) return res.status(404).json({ error: 'Audio not found' });
   res.setHeader('Content-Type', 'audio/webm');
   res.sendFile(p);
+});
+
+// Serve video reference for a complaint
+app.get('/api/grievance/video/:id', (req, res) => {
+  const id = req.params.id;
+  if (!/^GRV-\d{4}-\d{4}$/.test(id)) return res.status(400).json({ error: 'Invalid ID' });
+  const mp4 = path.join(VIDEO_DIR, `${id}.mp4`);
+  const webm = path.join(VIDEO_DIR, `${id}.webm`);
+  if (fs.existsSync(mp4)) {
+    res.setHeader('Content-Type', 'video/mp4');
+    return res.sendFile(mp4);
+  }
+  if (fs.existsSync(webm)) {
+    res.setHeader('Content-Type', 'video/webm');
+    return res.sendFile(webm);
+  }
+  res.status(404).json({ error: 'Video not found' });
 });
 
 // ─── END GRIEVANCE ───────────────────────────────────────────────
