@@ -1183,22 +1183,156 @@
       background: linear-gradient(90deg, transparent, var(--gold), transparent);
     }
 
-    /* ── GALLERY IMAGE ZOOM ── */
+    /* ── GALLERY IMAGE TRANSITIONS ── */
     .gallery-strip {
       opacity: 0;
       animation: fadeInScale 1s cubic-bezier(0.22,1,0.36,1) 0.3s forwards;
     }
-    #gallery img {
+    .gallery-strip img {
+      opacity: 0;
+      animation: slideInFromRight 0.9s cubic-bezier(0.22,1,0.36,1) forwards;
       transition: transform 0.8s cubic-bezier(0.22,1,0.36,1), filter 0.8s ease;
       border-radius: 2px;
       box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      cursor: pointer;
     }
+    .gallery-strip img:nth-child(1) { animation-delay: 0s; }
+    .gallery-strip img:nth-child(2) { animation-delay: 0.15s; }
+    .gallery-strip img:nth-child(3) { animation-delay: 0.3s; }
+    .gallery-strip img:nth-child(4) { animation-delay: 0.45s; }
+
     #gallery img:hover {
-      transform: scale(1.06);
+      transform: scale(1.08);
       filter: brightness(1.2) contrast(1.1);
-      box-shadow: 0 30px 80px rgba(201,168,76,0.2);
+      box-shadow: 0 30px 80px rgba(201,168,76,0.3);
+    }
+    @keyframes slideInFromRight {
+      from {
+        opacity: 0;
+        transform: translateX(100px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
     }
     @keyframes fadeInScale { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+    /* ── ZOOM MODAL ── */
+    .zoom-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.95);
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      animation: fadeIn 0.3s ease;
+    }
+    .zoom-modal.active {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .zoom-modal-content {
+      position: relative;
+      max-width: 90vw;
+      max-height: 90vh;
+      animation: zoomIn 0.4s cubic-bezier(0.22,1,0.36,1);
+    }
+    .zoom-modal-content img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 50px 150px rgba(0,0,0,0.8);
+      transition: transform 0.3s cubic-bezier(0.22,1,0.36,1);
+      transform-origin: center center;
+    }
+    .zoom-modal-close {
+      position: absolute;
+      top: 2rem;
+      right: 2rem;
+      font-size: 2.5rem;
+      color: var(--gold);
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      z-index: 1001;
+    }
+    .zoom-modal-close:hover {
+      color: var(--gold-light);
+      transform: scale(1.2);
+    }
+    .zoom-controls {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 1rem;
+      z-index: 1001;
+    }
+    .zoom-btn {
+      background: rgba(201,168,76,0.2);
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      padding: 0.8rem 1.5rem;
+      cursor: pointer;
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+      border-radius: 4px;
+      transition: all 0.3s cubic-bezier(0.22,1,0.36,1);
+    }
+    .zoom-btn:hover {
+      background: var(--gold);
+      color: var(--dark);
+      transform: translateY(-2px);
+    }
+    @keyframes zoomIn {
+      from {
+        opacity: 0;
+        transform: scale(0.7);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* ── INTERACTIVE TEXT ZOOM ── */
+    .interactive-text {
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.22,1,0.36,1);
+      position: relative;
+    }
+    .interactive-text:hover {
+      color: var(--gold-light);
+      transform: scale(1.02);
+    }
+    .interactive-text::after {
+      content: '🔍';
+      margin-left: 0.3rem;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .interactive-text:hover::after {
+      opacity: 0.6;
+    }
+
+    /* ── ABOUT IMAGES INTERACTIVE ── */
+    .about-img-main,
+    .about-img-accent {
+      cursor: pointer;
+      transition: all 0.6s cubic-bezier(0.22,1,0.36,1);
+    }
+    .about-img-main:hover,
+    .about-img-accent:hover {
+      cursor: zoom-in;
+    }
 
     /* ── TESTIMONIAL CARDS ── */
     .testimonial-card {
@@ -1632,6 +1766,148 @@
     </div>
   </div>
 </footer>
+
+<!-- ZOOM MODAL -->
+<div class="zoom-modal" id="zoomModal">
+  <button class="zoom-modal-close" onclick="closeZoom()">✕</button>
+  <div class="zoom-modal-content">
+    <img id="zoomImage" src="" alt="Zoomed image" />
+    <div class="zoom-controls">
+      <button class="zoom-btn" onclick="zoomOut()">− Zoom Out</button>
+      <button class="zoom-btn" onclick="resetZoom()">Reset</button>
+      <button class="zoom-btn" onclick="zoomIn()">Zoom In +</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── ZOOM FUNCTIONALITY ──
+  let currentZoom = 1;
+  const zoomImage = document.getElementById('zoomImage');
+  const zoomModal = document.getElementById('zoomModal');
+
+  function openZoom(imgSrc) {
+    zoomImage.src = imgSrc;
+    zoomModal.classList.add('active');
+    currentZoom = 1;
+    zoomImage.style.transform = `scale(${currentZoom})`;
+  }
+
+  function closeZoom() {
+    zoomModal.classList.remove('active');
+    currentZoom = 1;
+  }
+
+  function zoomIn() {
+    currentZoom += 0.2;
+    if (currentZoom > 3) currentZoom = 3;
+    zoomImage.style.transform = `scale(${currentZoom})`;
+  }
+
+  function zoomOut() {
+    currentZoom -= 0.2;
+    if (currentZoom < 1) currentZoom = 1;
+    zoomImage.style.transform = `scale(${currentZoom})`;
+  }
+
+  function resetZoom() {
+    currentZoom = 1;
+    zoomImage.style.transform = `scale(${currentZoom})`;
+  }
+
+  // Close modal on background click
+  zoomModal.addEventListener('click', (e) => {
+    if (e.target === zoomModal) closeZoom();
+  });
+
+  // Close on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeZoom();
+  });
+
+  // ── GALLERY IMAGE CLICK TO ZOOM ──
+  document.querySelectorAll('#gallery img').forEach(img => {
+    img.addEventListener('click', function() {
+      openZoom(this.src);
+    });
+  });
+
+  // ── ABOUT IMAGES CLICK TO ZOOM ──
+  document.querySelectorAll('.about-img-main, .about-img-accent').forEach(img => {
+    img.addEventListener('click', function() {
+      openZoom(this.src);
+    });
+  });
+
+  // ── MENU CARD IMAGES CLICK TO ZOOM ──
+  document.querySelectorAll('.menu-card img').forEach(img => {
+    img.addEventListener('click', function(e) {
+      e.stopPropagation();
+      openZoom(this.src);
+    });
+  });
+
+  // ── INTERACTIVE TEXT ZOOM (SECTION TITLES) ──
+  document.querySelectorAll('.section-title, .hero-title').forEach(title => {
+    if (title) {
+      title.classList.add('interactive-text');
+    }
+  });
+
+  // ── KEYBOARD CONTROLS IN ZOOM ──
+  document.addEventListener('keydown', (e) => {
+    if (zoomModal.classList.contains('active')) {
+      if (e.key === '+' || e.key === '=') zoomIn();
+      if (e.key === '-') zoomOut();
+      if (e.key === '0') resetZoom();
+      if (e.key === 'ArrowUp') zoomIn();
+      if (e.key === 'ArrowDown') zoomOut();
+    }
+  });
+
+  // ── TOUCH ZOOM SUPPORT ──
+  let touchDistance = 0;
+  zoomModal.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 2) {
+      const touch1 = e.touches[0];
+      const touch2 = e.touches[1];
+      touchDistance = Math.hypot(
+        touch2.clientX - touch1.clientX,
+        touch2.clientY - touch1.clientY
+      );
+    }
+  });
+
+  zoomModal.addEventListener('touchmove', (e) => {
+    if (e.touches.length === 2) {
+      e.preventDefault();
+      const touch1 = e.touches[0];
+      const touch2 = e.touches[1];
+      const newDistance = Math.hypot(
+        touch2.clientX - touch1.clientX,
+        touch2.clientY - touch1.clientY
+      );
+      const scale = newDistance / touchDistance;
+      currentZoom *= scale;
+      if (currentZoom < 1) currentZoom = 1;
+      if (currentZoom > 3) currentZoom = 3;
+      zoomImage.style.transform = `scale(${currentZoom})`;
+      touchDistance = newDistance;
+    }
+  });
+
+  // ── DOUBLE TAP TO ZOOM ──
+  let lastTap = 0;
+  document.querySelectorAll('#gallery img, .menu-card img, .about-img-main, .about-img-accent').forEach(img => {
+    img.addEventListener('touchend', function(e) {
+      const currentTime = new Date().getTime();
+      const tapLength = currentTime - lastTap;
+      if (tapLength < 300 && tapLength > 0) {
+        openZoom(this.src);
+      }
+      lastTap = currentTime;
+    });
+  });
 
 <script>
   // ── NAV SCROLL ──
