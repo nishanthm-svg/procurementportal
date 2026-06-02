@@ -1,0 +1,1783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Maison Noir — Fine Dining & Café</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #f5f0e8;
+      --dark: #1a1712;
+      --gold: #c9a84c;
+      --gold-light: #e8c97a;
+      --brown: #6b4e2a;
+      --muted: #9a8f82;
+      --white: #fefdfb;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      background: var(--dark);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem 4rem;
+      transition: background 0.4s, padding 0.4s;
+    }
+    nav.scrolled {
+      background: rgba(26, 23, 18, 0.95);
+      backdrop-filter: blur(12px);
+      padding: 1rem 4rem;
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--white);
+      text-decoration: none;
+      opacity: 0.8;
+      transition: opacity 0.2s, color 0.2s;
+    }
+    .nav-links a:hover { opacity: 1; color: var(--gold); }
+    .nav-cta {
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--dark);
+      background: var(--gold);
+      padding: 0.65rem 1.6rem;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .nav-cta:hover { background: var(--gold-light); }
+    .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .nav-hamburger span { display: block; width: 24px; height: 1.5px; background: var(--white); transition: 0.3s; }
+
+    /* ── HERO ── */
+    #hero {
+      position: relative;
+      height: 100vh;
+      min-height: 640px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      cursor: none;
+    }
+
+    /* Video bg layer */
+    .hero-bg {
+      position: absolute;
+      inset: -6%;
+      will-change: transform;
+    }
+    .hero-bg video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Dark gradient overlays */
+    .hero-overlay-left {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(100deg,
+        rgba(10,9,7,0.92) 0%,
+        rgba(10,9,7,0.70) 45%,
+        rgba(10,9,7,0.15) 75%,
+        transparent 100%);
+      z-index: 1;
+    }
+    .hero-overlay-bottom {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 220px;
+      background: linear-gradient(to top, rgba(26,23,18,1) 0%, transparent 100%);
+      z-index: 1;
+    }
+
+    /* Particle canvas */
+    #hero-canvas {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* Cursor spotlight */
+    .hero-cursor {
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,168,76,0.10) 0%, transparent 70%);
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 3;
+      transition: opacity 0.3s;
+    }
+    .hero-cursor-dot {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--gold);
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 4;
+      transition: transform 0.1s;
+    }
+    #hero:hover .hero-cursor { opacity: 1; }
+
+    /* Content - positioned at extreme left */
+    .hero-content {
+      position: absolute;
+      top: 50%;
+      left: 60px;
+      transform: translateY(-50%);
+      z-index: 5;
+      max-width: 400px;
+      text-align: left;
+    }
+
+    /* Journey text blocks */
+    .journey-block {
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+    .journey-block.active {
+      opacity: 1;
+    }
+    .journey-block .block-sub {
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.8rem;
+    }
+    .journey-block .block-main {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--white);
+    }
+    .hero-eyebrow {
+      font-size: 0.72rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.6rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      opacity: 0;
+      transform: translateY(18px);
+      animation: heroFadeUp 0.8s cubic-bezier(0.22,1,0.36,1) 0.3s forwards;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 0;
+      height: 1px;
+      background: var(--gold);
+      animation: lineGrow 0.7s ease 0.8s forwards;
+    }
+    @keyframes lineGrow { to { width: 40px; } }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.5rem, 7vw, 6rem);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--white);
+      margin-bottom: 1.6rem;
+      overflow: hidden;
+    }
+    .hero-title .line {
+      display: block;
+      opacity: 0;
+      transform: translateY(100%);
+      animation: lineDrop 0.9s cubic-bezier(0.22,1,0.36,1) forwards;
+    }
+    .hero-title .line:nth-child(1) { animation-delay: 0.5s; }
+    .hero-title .line:nth-child(2) { animation-delay: 0.65s; }
+    .hero-title .line:nth-child(3) { animation-delay: 0.8s; }
+    @keyframes lineDrop { to { opacity: 1; transform: translateY(0); } }
+
+    .hero-title em { font-style: italic; color: var(--gold-light); }
+
+    .hero-desc {
+      font-size: 1rem;
+      font-weight: 300;
+      line-height: 1.8;
+      color: rgba(254,253,251,0.72);
+      max-width: 440px;
+      margin-bottom: 2.8rem;
+      opacity: 0;
+      transform: translateY(18px);
+      animation: heroFadeUp 0.8s cubic-bezier(0.22,1,0.36,1) 1.0s forwards;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1.2rem;
+      align-items: center;
+      flex-wrap: wrap;
+      opacity: 0;
+      transform: translateY(18px);
+      animation: heroFadeUp 0.8s cubic-bezier(0.22,1,0.36,1) 1.15s forwards;
+    }
+    @keyframes heroFadeUp { to { opacity: 1; transform: translateY(0); } }
+
+    .btn-primary {
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--dark);
+      background: var(--gold);
+      padding: 1rem 2.4rem;
+      text-decoration: none;
+      display: inline-block;
+      position: relative;
+      overflow: hidden;
+      transition: color 0.3s;
+    }
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--gold-light);
+      transform: translateX(-101%);
+      transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
+    }
+    .btn-primary:hover::before { transform: translateX(0); }
+    .btn-primary span { position: relative; z-index: 1; }
+
+    .btn-ghost {
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--white);
+      border: 1px solid rgba(255,255,255,0.35);
+      padding: 1rem 2.4rem;
+      text-decoration: none;
+      display: inline-block;
+      position: relative;
+      overflow: hidden;
+      transition: color 0.3s, border-color 0.3s;
+    }
+    .btn-ghost::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(201,168,76,0.12);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
+    }
+    .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+    .btn-ghost:hover::before { transform: scaleX(1); }
+    .btn-ghost span { position: relative; z-index: 1; }
+
+    /* Floating stats bar */
+    .hero-stats {
+      display: none;
+    }
+    .hero-stat {
+      text-align: right;
+      border-right: 2px solid rgba(201,168,76,0.4);
+      padding-right: 1.2rem;
+    }
+    .hero-stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      font-weight: 400;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .hero-stat-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(254,253,251,0.45);
+      margin-top: 0.2rem;
+    }
+
+    /* Scroll indicator */
+    .hero-scroll {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: rgba(254,253,251,0.4);
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: heroFadeUp 0.8s ease 1.5s forwards;
+    }
+    .scroll-line {
+      width: 1px;
+      height: 48px;
+      background: linear-gradient(to bottom, rgba(201,168,76,0.8), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+      transform-origin: top;
+    }
+    @keyframes scrollPulse { 0%,100%{opacity:1;transform:scaleY(1)} 50%{opacity:0.3;transform:scaleY(0.5)} }
+
+    /* ── SECTION COMMON ── */
+    section { padding: 7rem 4rem; }
+    .section-eyebrow {
+      font-size: 0.68rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .section-eyebrow::before {
+      content: '';
+      display: block;
+      width: 32px;
+      height: 1px;
+      background: var(--gold);
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 4vw, 3.4rem);
+      font-weight: 300;
+      line-height: 1.15;
+      margin-bottom: 1.4rem;
+    }
+    .section-title em { font-style: italic; color: var(--gold-light); }
+    .divider {
+      width: 48px;
+      height: 1px;
+      background: var(--gold);
+      margin-bottom: 1.6rem;
+    }
+
+    /* ── ABOUT ── */
+    #about {
+      background: var(--dark);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+    .about-images {
+      position: relative;
+      height: 540px;
+    }
+    .about-img-main {
+      position: absolute;
+      top: 0; left: 0;
+      width: 75%;
+      height: 80%;
+      object-fit: cover;
+    }
+    .about-img-accent {
+      position: absolute;
+      bottom: 0; right: 0;
+      width: 55%;
+      height: 55%;
+      object-fit: cover;
+      border: 6px solid var(--dark);
+    }
+    .about-badge {
+      position: absolute;
+      top: 50%;
+      left: 55%;
+      transform: translate(-50%, -50%);
+      width: 90px;
+      height: 90px;
+      background: var(--gold);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+    .about-badge-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 500;
+      color: var(--dark);
+      line-height: 1;
+    }
+    .about-badge-text {
+      font-size: 0.55rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--dark);
+      text-align: center;
+    }
+    .about-text p {
+      font-size: 0.95rem;
+      font-weight: 300;
+      line-height: 1.9;
+      color: rgba(254,253,251,0.7);
+      margin-bottom: 1.2rem;
+    }
+    .about-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+      padding-top: 2.5rem;
+      border-top: 1px solid rgba(201,168,76,0.2);
+    }
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      font-weight: 400;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+    .stat-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── MENU HIGHLIGHT ── */
+    #menu {
+      background: #141210;
+      padding: 7rem 4rem;
+    }
+    .menu-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      max-width: 1300px;
+      margin: 0 auto 4rem;
+    }
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+    .menu-card {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 3/4;
+      cursor: pointer;
+      border-radius: 2px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+      transition: box-shadow 0.6s ease;
+    }
+    .menu-card img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s cubic-bezier(0.22,1,0.36,1), filter 0.8s ease;
+    }
+    .menu-card:hover img {
+      transform: scale(1.08);
+      filter: brightness(1.1);
+    }
+    .menu-card:hover {
+      box-shadow: 0 30px 80px rgba(201,168,76,0.3);
+    }
+    .menu-card-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(26,23,18,0.92) 0%, rgba(26,23,18,0.1) 55%, transparent 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 2rem 1.8rem;
+      transition: background 0.3s;
+    }
+    .menu-card:hover .menu-card-overlay {
+      background: linear-gradient(to top, rgba(26,23,18,0.95) 0%, rgba(26,23,18,0.4) 55%, rgba(26,23,18,0.1) 100%);
+    }
+    .menu-card-cat {
+      font-size: 0.62rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.4rem;
+    }
+    .menu-card-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: 0.5rem;
+    }
+    .menu-card-desc {
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: rgba(254,253,251,0.65);
+      line-height: 1.6;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+    .menu-card:hover .menu-card-desc { max-height: 80px; }
+    .menu-card-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      color: var(--gold-light);
+      margin-top: 0.8rem;
+    }
+
+    /* ── EXPERIENCE ── */
+    #experience {
+      background: var(--dark);
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+    .experience-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3rem;
+      margin-top: 4rem;
+    }
+    .exp-card {
+      padding: 2.5rem;
+      border: 1px solid rgba(201,168,76,0.15);
+      position: relative;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .exp-card:hover {
+      border-color: rgba(201,168,76,0.5);
+      transform: translateY(-4px);
+    }
+    .exp-icon {
+      font-size: 1.8rem;
+      margin-bottom: 1.4rem;
+      display: block;
+    }
+    .exp-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: 0.8rem;
+    }
+    .exp-card p {
+      font-size: 0.85rem;
+      font-weight: 300;
+      line-height: 1.8;
+      color: rgba(254,253,251,0.6);
+    }
+    .exp-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px;
+      height: 0;
+      background: var(--gold);
+      transition: height 0.4s ease;
+    }
+    .exp-card:hover::before { height: 100%; }
+
+    /* ── GALLERY ── */
+    #gallery { background: #141210; padding: 7rem 0; }
+    .gallery-header { padding: 0 4rem; max-width: 1300px; margin: 0 auto 3rem; }
+    .gallery-strip {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 2fr;
+      gap: 2px;
+      height: 420px;
+    }
+    .gallery-strip img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: filter 0.4s;
+      filter: brightness(0.85) saturate(0.9);
+    }
+    .gallery-strip img:hover { filter: brightness(1) saturate(1.1); }
+
+    /* ── TESTIMONIALS ── */
+    #testimonials {
+      background: var(--dark);
+      padding: 7rem 4rem;
+    }
+    .testimonials-inner {
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+    .testimonial-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2.5rem;
+      margin-top: 4rem;
+    }
+    .testimonial-card {
+      padding: 2.5rem;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      position: relative;
+    }
+    .testimonial-card::before {
+      content: '\201C';
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 5rem;
+      color: var(--gold);
+      opacity: 0.3;
+      position: absolute;
+      top: 0.5rem;
+      left: 1.5rem;
+      line-height: 1;
+    }
+    .testimonial-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      font-weight: 300;
+      line-height: 1.8;
+      color: rgba(254,253,251,0.82);
+      margin-bottom: 1.8rem;
+      padding-top: 2rem;
+    }
+    .testimonial-stars { color: var(--gold); font-size: 0.85rem; margin-bottom: 1rem; letter-spacing: 0.1em; }
+    .testimonial-author { font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+
+    /* ── RESERVATION ── */
+    #reservation {
+      background: url('https://picsum.photos/seed/cafe-reservation/1800/900') center/cover no-repeat;
+      position: relative;
+      padding: 8rem 4rem;
+    }
+    #reservation::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(20, 18, 14, 0.88);
+    }
+    .reservation-inner {
+      position: relative;
+      max-width: 650px;
+      margin: 0 auto;
+    }
+    .reservation-inner .section-eyebrow,
+    .reservation-inner .section-title,
+    .reservation-inner p {
+      text-align: center;
+    }
+    .reservation-inner .section-eyebrow::before { display: none; }
+    .reservation-inner .divider { margin: 0 auto 2rem; }
+    .reservation-inner > p {
+      font-size: 0.9rem;
+      font-weight: 300;
+      color: rgba(254,253,251,0.65);
+      margin-bottom: 2.5rem;
+      line-height: 1.8;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .form-grid .full { grid-column: 1 / -1; }
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .form-field label {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .form-field input,
+    .form-field select,
+    .form-field textarea {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--white);
+      padding: 0.85rem 1rem;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 300;
+      outline: none;
+      transition: all 0.4s cubic-bezier(0.22,1,0.36,1);
+      width: 100%;
+      backdrop-filter: blur(10px);
+    }
+    .form-field input:focus,
+    .form-field select:focus,
+    .form-field textarea:focus {
+      border-color: var(--gold);
+      background: rgba(255,255,255,0.08);
+      box-shadow: 0 0 20px rgba(201,168,76,0.15);
+    }
+    .form-field select option { background: var(--dark); }
+    .form-field textarea { resize: vertical; min-height: 90px; }
+    .form-submit {
+      margin-top: 1.5rem;
+      width: 100%;
+      background: var(--gold);
+      color: var(--dark);
+      border: none;
+      padding: 1.1rem;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.22,1,0.36,1);
+      position: relative;
+      overflow: hidden;
+    }
+    .form-submit::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--gold-light);
+      transition: left 0.4s cubic-bezier(0.22,1,0.36,1);
+      z-index: -1;
+    }
+    .form-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(201,168,76,0.3);
+    }
+    .form-submit:hover::before { left: 0; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #0e0c0a;
+      padding: 5rem 4rem 2.5rem;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3.5rem;
+      max-width: 1300px;
+      margin: 0 auto 4rem;
+    }
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      color: var(--gold);
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+      display: block;
+    }
+    .footer-about {
+      font-size: 0.82rem;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.9;
+      margin-bottom: 1.5rem;
+    }
+    .footer-social { display: flex; gap: 1rem; }
+    .social-link {
+      width: 36px; height: 36px;
+      border: 1px solid rgba(201,168,76,0.3);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold);
+      font-size: 0.8rem;
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .social-link:hover { background: var(--gold); color: var(--dark); border-color: var(--gold); }
+    .footer-col h4 {
+      font-size: 0.68rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 1.5rem;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li {
+      margin-bottom: 0.7rem;
+      font-size: 0.82rem;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .footer-col ul li a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .footer-col ul li a:hover { color: var(--gold); }
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+    .footer-copy {
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+    .footer-legal { display: flex; gap: 2rem; }
+    .footer-legal a {
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      transition: color 0.2s;
+    }
+    .footer-legal a:hover { color: var(--gold); }
+
+    /* ── MOBILE NAV OVERLAY ── */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--dark);
+      z-index: 99;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2.5rem;
+    }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.5rem;
+      font-weight: 300;
+      color: var(--white);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      transition: color 0.2s;
+    }
+    .mobile-nav a:hover { color: var(--gold); }
+    .mobile-nav-close {
+      position: absolute;
+      top: 2rem; right: 2rem;
+      font-size: 1.5rem;
+      color: var(--white);
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+
+    /* ── RESERVATION SECTION ── */
+    #reservation {
+      background: linear-gradient(135deg, var(--dark) 0%, rgba(26,23,18,0.95) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    #reservation::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(201,168,76,0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .reservation-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1100px) {
+      .menu-grid { grid-template-columns: 1fr 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .gallery-strip { grid-template-columns: 1fr 1fr; height: auto; }
+      .gallery-strip img { height: 220px; }
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 1.2rem 1.5rem; }
+      nav.scrolled { padding: 0.8rem 1.5rem; }
+      .nav-links, .nav-cta { display: none; }
+      .nav-hamburger { display: flex; }
+      section { padding: 5rem 1.5rem; }
+      #hero { height: 100svh; }
+      .hero-content { padding: 0 1.5rem; }
+      #about { grid-template-columns: 1fr; gap: 3rem; }
+      .about-images { height: 360px; }
+      .menu-grid { grid-template-columns: 1fr; }
+      .menu-header { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+      #menu { padding: 5rem 1.5rem; }
+      .experience-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+      .gallery-strip { grid-template-columns: 1fr 1fr; }
+      .testimonial-grid { grid-template-columns: 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+      .footer-legal { flex-direction: column; align-items: center; gap: 1rem; }
+      #reservation { padding: 5rem 1.5rem; }
+      footer { padding: 4rem 1.5rem 2rem; }
+      .gallery-header { padding: 0 1.5rem; }
+    }
+
+    /* ── FADE IN ANIMATION ── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.8s cubic-bezier(0.22,1,0.36,1);
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── SECTION TRANSITIONS ── */
+    section {
+      scroll-behavior: smooth;
+      position: relative;
+    }
+
+    /* ── PARALLAX IMAGES ── */
+    .parallax-img {
+      position: relative;
+      overflow: hidden;
+    }
+    .parallax-img img {
+      transition: transform 0.6s cubic-bezier(0.22,1,0.36,1);
+    }
+
+    /* ── ABOUT SECTION ENHANCEMENTS ── */
+    #about {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(26,23,18,0.95) 0%, rgba(26,23,18,0.88) 100%);
+      box-shadow: inset 0 0 100px rgba(0,0,0,0.5);
+    }
+    .about-images {
+      perspective: 1000px;
+    }
+    .about-img-main {
+      transition: transform 0.8s cubic-bezier(0.22,1,0.36,1), filter 0.8s ease;
+    }
+    .about-img-main:hover {
+      filter: brightness(1.1);
+    }
+    .about-img-accent {
+      transition: transform 0.8s cubic-bezier(0.22,1,0.36,1);
+    }
+    #about.visible .about-img-main {
+      animation: slideInLeft 0.9s cubic-bezier(0.22,1,0.36,1) forwards;
+    }
+    #about.visible .about-img-accent {
+      animation: slideInBottom 0.9s cubic-bezier(0.22,1,0.36,1) 0.2s forwards;
+    }
+    #about.visible .about-badge {
+      animation: scaleIn 0.8s cubic-bezier(0.22,1,0.36,1) 0.4s forwards;
+    }
+    @keyframes slideInLeft { from { opacity: 0; transform: translateX(-80px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes slideInBottom { from { opacity: 0; transform: translateY(60px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes scaleIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+
+    /* ── MENU CARD STAGGERED ANIMATION ── */
+    .menu-card {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.6s cubic-bezier(0.22,1,0.36,1), transform 0.6s cubic-bezier(0.22,1,0.36,1);
+    }
+    .menu-grid.visible .menu-card {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .menu-grid.visible .menu-card:nth-child(1) { transition-delay: 0s; }
+    .menu-grid.visible .menu-card:nth-child(2) { transition-delay: 0.15s; }
+    .menu-grid.visible .menu-card:nth-child(3) { transition-delay: 0.3s; }
+    .menu-grid.visible .menu-card:nth-child(4) { transition-delay: 0.45s; }
+    .menu-grid.visible .menu-card:nth-child(5) { transition-delay: 0.6s; }
+    .menu-grid.visible .menu-card:nth-child(6) { transition-delay: 0.75s; }
+
+    /* ── EXPERIENCE CARDS ANIMATION ── */
+    .exp-card {
+      opacity: 0;
+      transform: translateY(40px) scale(0.95);
+      transition: all 0.7s cubic-bezier(0.22,1,0.36,1);
+      position: relative;
+      overflow: hidden;
+      padding: 2.5rem;
+      background: linear-gradient(135deg, rgba(201,168,76,0.05) 0%, rgba(201,168,76,0) 100%);
+      border: 1px solid rgba(201,168,76,0.15);
+      border-radius: 4px;
+      backdrop-filter: blur(10px);
+    }
+    .exp-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(201,168,76,0.15), transparent);
+      transition: left 0.6s ease;
+    }
+    .exp-card:hover {
+      background: linear-gradient(135deg, rgba(201,168,76,0.1) 0%, rgba(201,168,76,0.02) 100%);
+      border-color: rgba(201,168,76,0.3);
+      box-shadow: 0 10px 40px rgba(201,168,76,0.1);
+      transform: translateY(-10px);
+    }
+    #experience.visible .exp-card {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    #experience.visible .exp-card:nth-child(1) { transition-delay: 0.1s; }
+    #experience.visible .exp-card:nth-child(2) { transition-delay: 0.2s; }
+    #experience.visible .exp-card:nth-child(3) { transition-delay: 0.3s; }
+    #experience.visible .exp-card:nth-child(4) { transition-delay: 0.4s; }
+    #experience.visible .exp-card:nth-child(5) { transition-delay: 0.5s; }
+    #experience.visible .exp-card:nth-child(6) { transition-delay: 0.6s; }
+    .exp-card:hover::before { left: 100%; }
+
+    /* ── GALLERY SECTION ── */
+    #gallery {
+      background: linear-gradient(to bottom, var(--dark), #0f0d0a);
+      position: relative;
+    }
+    #gallery::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    /* ── GALLERY IMAGE ZOOM ── */
+    .gallery-strip {
+      opacity: 0;
+      animation: fadeInScale 1s cubic-bezier(0.22,1,0.36,1) 0.3s forwards;
+    }
+    #gallery img {
+      transition: transform 0.8s cubic-bezier(0.22,1,0.36,1), filter 0.8s ease;
+      border-radius: 2px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+    #gallery img:hover {
+      transform: scale(1.06);
+      filter: brightness(1.2) contrast(1.1);
+      box-shadow: 0 30px 80px rgba(201,168,76,0.2);
+    }
+    @keyframes fadeInScale { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+    /* ── TESTIMONIAL CARDS ── */
+    .testimonial-card {
+      opacity: 0;
+      transform: translateY(40px) rotateX(10deg);
+      transition: all 0.7s cubic-bezier(0.22,1,0.36,1);
+      backdrop-filter: blur(20px);
+      padding: 2.2rem;
+      background: linear-gradient(135deg, rgba(201,168,76,0.08) 0%, rgba(201,168,76,0) 100%);
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 4px;
+      position: relative;
+      overflow: hidden;
+    }
+    .testimonial-card::before {
+      content: '"';
+      position: absolute;
+      top: 1rem;
+      left: 1.5rem;
+      font-size: 4rem;
+      color: rgba(201,168,76,0.1);
+      font-family: 'Cormorant Garamond', serif;
+    }
+    .testimonials-inner.visible .testimonial-card {
+      opacity: 1;
+      transform: translateY(0) rotateX(0deg);
+    }
+    .testimonials-inner.visible .testimonial-card:nth-child(1) { transition-delay: 0.1s; }
+    .testimonials-inner.visible .testimonial-card:nth-child(2) { transition-delay: 0.2s; }
+    .testimonials-inner.visible .testimonial-card:nth-child(3) { transition-delay: 0.3s; }
+    .testimonial-card:hover {
+      background: linear-gradient(135deg, rgba(201,168,76,0.12) 0%, rgba(201,168,76,0.03) 100%);
+      border-color: rgba(201,168,76,0.35);
+      box-shadow: 0 15px 50px rgba(201,168,76,0.12);
+      transform: translateY(-8px);
+    }
+
+    /* ── SMOOTH SECTION TRANSITIONS ── */
+    section {
+      transition: background 0.6s ease;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">Maison Noir</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+  </ul>
+  <a href="#reservation" class="nav-cta">Reserve a Table</a>
+  <div class="nav-hamburger" id="hamburger" onclick="openMobileNav()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobileNav">
+  <button class="mobile-nav-close" onclick="closeMobileNav()">✕</button>
+  <a href="#about" onclick="closeMobileNav()">About</a>
+  <a href="#menu" onclick="closeMobileNav()">Menu</a>
+  <a href="#experience" onclick="closeMobileNav()">Experience</a>
+  <a href="#gallery" onclick="closeMobileNav()">Gallery</a>
+  <a href="#testimonials" onclick="closeMobileNav()">Reviews</a>
+  <a href="#reservation" onclick="closeMobileNav()">Reserve</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg" id="heroBg">
+    <video autoplay muted loop playsinline>
+      <source src="hero.mp4" type="video/mp4" />
+    </video>
+  </div>
+  <div class="hero-overlay-left"></div>
+  <div class="hero-overlay-bottom"></div>
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-cursor" id="heroCursor"></div>
+  <div class="hero-cursor-dot" id="heroCursorDot"></div>
+
+  <div class="hero-content">
+    <div class="journey-block active" id="journey1">
+      <div class="block-sub">400 kms above the earth</div>
+      <div class="block-main">The Journey Begins</div>
+    </div>
+    <div class="journey-block" id="journey2">
+      <div class="block-sub">Entering from the cloud</div>
+      <div class="block-main">Descending through Clouds</div>
+    </div>
+    <div class="journey-block" id="journey3">
+      <div class="block-sub">City reveals itself</div>
+      <div class="block-main">One iconic Destination</div>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-num" data-count="48">0</div>
+      <div class="hero-stat-label">Menu Items</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num" data-count="12">0</div>
+      <div class="hero-stat-label">Awards Won</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num" data-count="98">0</div>
+      <div class="hero-stat-label">% Happy Guests</div>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="fade-up">
+  <div class="about-images">
+    <img src="https://picsum.photos/seed/cafe-interior/800/600" alt="Café interior" class="about-img-main" />
+    <img src="https://picsum.photos/seed/cafe-coffee/600/400" alt="Coffee preparation" class="about-img-accent" />
+    <div class="about-badge">
+      <span class="about-badge-num">10</span>
+      <span class="about-badge-text">Years of<br>Excellence</span>
+    </div>
+  </div>
+  <div class="about-text">
+    <div class="section-eyebrow">Our Story</div>
+    <h2 class="section-title">A Passion for <em>Craft</em><br>& Community</h2>
+    <div class="divider"></div>
+    <p>Maison Noir was born from a simple belief: that exceptional food and drink, served in a space that feels like home, can transform an ordinary afternoon into something extraordinary.</p>
+    <p>Our chefs source locally, cook seasonally, and present each dish with the care and precision of a painting. From the first espresso of the morning to the last glass of wine at night, we are here for every chapter of your day.</p>
+    <div class="about-stats">
+      <div>
+        <div class="stat-num">48+</div>
+        <div class="stat-label">Menu Items</div>
+      </div>
+      <div>
+        <div class="stat-num">12</div>
+        <div class="stat-label">Awards Won</div>
+      </div>
+      <div>
+        <div class="stat-num">98%</div>
+        <div class="stat-label">Happy Guests</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<div id="menu">
+  <div class="menu-header fade-up">
+    <div>
+      <div class="section-eyebrow">Curated Selections</div>
+      <h2 class="section-title">Our <em>Signature</em> Dishes</h2>
+    </div>
+    <a href="#reservation" class="btn-ghost">View Full Menu</a>
+  </div>
+  <div class="menu-grid fade-up">
+    <div class="menu-card">
+      <img src="https://picsum.photos/seed/risotto/600/800" alt="Truffle Risotto" />
+      <div class="menu-card-overlay">
+        <div class="menu-card-cat">Mains</div>
+        <div class="menu-card-name">Black Truffle Risotto</div>
+        <div class="menu-card-desc">Arborio rice, aged Parmesan, fresh black truffle, microgreens</div>
+        <div class="menu-card-price">$38</div>
+      </div>
+    </div>
+    <div class="menu-card">
+      <img src="https://picsum.photos/seed/eggs/600/800" alt="Eggs Benedict" />
+      <div class="menu-card-overlay">
+        <div class="menu-card-cat">Breakfast</div>
+        <div class="menu-card-name">Eggs Florentine</div>
+        <div class="menu-card-desc">Poached eggs, wilted spinach, house hollandaise, brioche</div>
+        <div class="menu-card-price">$22</div>
+      </div>
+    </div>
+    <div class="menu-card">
+      <img src="https://picsum.photos/seed/cocktail/600/800" alt="Cocktail" />
+      <div class="menu-card-overlay">
+        <div class="menu-card-cat">Drinks</div>
+        <div class="menu-card-name">Noir Old Fashioned</div>
+        <div class="menu-card-desc">Smoked bourbon, black walnut bitters, activated charcoal sugar</div>
+        <div class="menu-card-price">$18</div>
+      </div>
+    </div>
+    <div class="menu-card">
+      <img src="https://picsum.photos/seed/pasta/600/800" alt="Pasta" />
+      <div class="menu-card-overlay">
+        <div class="menu-card-cat">Pasta</div>
+        <div class="menu-card-name">Squid Ink Tagliolini</div>
+        <div class="menu-card-desc">Hand-rolled pasta, king crab, cherry tomato, bottarga</div>
+        <div class="menu-card-price">$42</div>
+      </div>
+    </div>
+    <div class="menu-card">
+      <img src="https://picsum.photos/seed/toast/600/800" alt="French Toast" />
+      <div class="menu-card-overlay">
+        <div class="menu-card-cat">Breakfast</div>
+        <div class="menu-card-name">Brioche French Toast</div>
+        <div class="menu-card-desc">Thick-cut brioche, seasonal berries, Chantilly, maple</div>
+        <div class="menu-card-price">$19</div>
+      </div>
+    </div>
+    <div class="menu-card">
+      <img src="https://picsum.photos/seed/coffeecup/600/800" alt="Coffee" />
+      <div class="menu-card-overlay">
+        <div class="menu-card-cat">Coffee</div>
+        <div class="menu-card-name">Single Origin Pour Over</div>
+        <div class="menu-card-desc">Ethiopian Yirgacheffe, notes of jasmine, bergamot, stone fruit</div>
+        <div class="menu-card-price">$9</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EXPERIENCE -->
+<section id="experience" class="fade-up">
+  <div class="section-eyebrow">Why Guests Love Us</div>
+  <h2 class="section-title">The <em>Maison Noir</em> Experience</h2>
+  <div class="divider"></div>
+  <div class="experience-grid">
+    <div class="exp-card">
+      <span class="exp-icon">☕</span>
+      <h3>Specialty Coffee</h3>
+      <p>Our baristas are championship-trained. Every cup is a ritual — from bean selection to the final pour, we treat coffee as a craft.</p>
+    </div>
+    <div class="exp-card">
+      <span class="exp-icon">🌿</span>
+      <h3>Farm to Table</h3>
+      <p>We partner with local farms and change our menu seasonally. If it isn't fresh, it isn't on the plate. Simple as that.</p>
+    </div>
+    <div class="exp-card">
+      <span class="exp-icon">🍷</span>
+      <h3>Curated Wine List</h3>
+      <p>Our sommelier selects natural and biodynamic wines from small-batch producers around the world to complement every dish.</p>
+    </div>
+    <div class="exp-card">
+      <span class="exp-icon">🕯</span>
+      <h3>Intimate Atmosphere</h3>
+      <p>Thoughtfully designed lighting, warm textures, and unhurried service create a space where time slows down beautifully.</p>
+    </div>
+    <div class="exp-card">
+      <span class="exp-icon">🎂</span>
+      <h3>Private Events</h3>
+      <p>Celebrate milestones with us. Our private dining room seats up to 30 guests with bespoke menus and dedicated service.</p>
+    </div>
+    <div class="exp-card">
+      <span class="exp-icon">🌅</span>
+      <h3>All-Day Dining</h3>
+      <p>Open from early morning through late evening. Breakfast, brunch, lunch, afternoon tea, dinner — we have your whole day covered.</p>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<div id="gallery">
+  <div class="gallery-header fade-up">
+    <div class="section-eyebrow">Inside Maison Noir</div>
+    <h2 class="section-title">A Glimpse of <em>Our World</em></h2>
+  </div>
+  <div class="gallery-strip">
+    <img src="https://picsum.photos/seed/restaurant1/900/420" alt="Restaurant interior" />
+    <img src="https://picsum.photos/seed/latteart/600/420" alt="Latte art" />
+    <img src="https://picsum.photos/seed/chef/600/420" alt="Chef preparing food" />
+    <img src="https://picsum.photos/seed/diningroom/900/420" alt="Dining room" />
+  </div>
+</div>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="testimonials-inner">
+    <div class="fade-up">
+      <div class="section-eyebrow">What Guests Say</div>
+      <h2 class="section-title">Stories from <em>Our Table</em></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="testimonial-grid fade-up">
+      <div class="testimonial-card">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">The truffle risotto was an experience in itself. Every bite felt intentional. This is the kind of place that reminds you why food matters.</p>
+        <div class="testimonial-author">— Sarah M., New York</div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">We held our anniversary dinner in the private room. The staff remembered every detail we had mentioned in the reservation. Absolutely magical.</p>
+        <div class="testimonial-author">— James & Clara T.</div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">I come here every Saturday morning for the pour over. It's become a ritual. The quiet, the light, the coffee — there's nowhere else I'd rather be.</p>
+        <div class="testimonial-author">— Marco R., Brooklyn</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESERVATION -->
+<section id="reservation">
+  <div class="reservation-inner fade-up">
+    <div class="section-eyebrow">Book Your Table</div>
+    <h2 class="section-title">Make a <em>Reservation</em></h2>
+    <div class="divider"></div>
+    <p>Join us for an unforgettable dining experience. We recommend booking at least 48 hours in advance for dinner service.</p>
+    <form onsubmit="handleReservation(event)">
+      <div class="form-grid">
+        <div class="form-field">
+          <label>First Name</label>
+          <input type="text" placeholder="James" required />
+        </div>
+        <div class="form-field">
+          <label>Last Name</label>
+          <input type="text" placeholder="Anderson" required />
+        </div>
+        <div class="form-field">
+          <label>Email Address</label>
+          <input type="email" placeholder="james@example.com" required />
+        </div>
+        <div class="form-field">
+          <label>Phone Number</label>
+          <input type="tel" placeholder="+1 (555) 000-0000" />
+        </div>
+        <div class="form-field">
+          <label>Date</label>
+          <input type="date" required />
+        </div>
+        <div class="form-field">
+          <label>Time</label>
+          <select required>
+            <option value="">Select a time</option>
+            <option>08:00 AM</option>
+            <option>09:00 AM</option>
+            <option>10:00 AM</option>
+            <option>11:00 AM</option>
+            <option>12:00 PM</option>
+            <option>01:00 PM</option>
+            <option>02:00 PM</option>
+            <option>06:00 PM</option>
+            <option>07:00 PM</option>
+            <option>08:00 PM</option>
+            <option>09:00 PM</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Number of Guests</label>
+          <select required>
+            <option value="">Select guests</option>
+            <option>1 Guest</option>
+            <option>2 Guests</option>
+            <option>3 Guests</option>
+            <option>4 Guests</option>
+            <option>5–6 Guests</option>
+            <option>7–10 Guests</option>
+            <option>10+ Guests (Private Event)</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Occasion</label>
+          <select>
+            <option value="">None</option>
+            <option>Birthday</option>
+            <option>Anniversary</option>
+            <option>Business Dinner</option>
+            <option>Date Night</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-field full">
+          <label>Special Requests</label>
+          <textarea placeholder="Dietary requirements, seating preferences, or any other notes…"></textarea>
+        </div>
+      </div>
+      <button type="submit" class="form-submit">Confirm Reservation</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <span class="footer-logo">Maison Noir</span>
+      <p class="footer-about">A premium café and dining destination in the heart of New York City. Serving exceptional food and specialty coffee since 2014.</p>
+      <div class="footer-social">
+        <a href="#" class="social-link">f</a>
+        <a href="#" class="social-link">in</a>
+        <a href="#" class="social-link">tw</a>
+        <a href="#" class="social-link">ig</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#menu">Our Menu</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#reservation">Reservations</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Hours</h4>
+      <ul>
+        <li>Mon–Fri: 7am – 11pm</li>
+        <li>Saturday: 8am – 12am</li>
+        <li>Sunday: 9am – 10pm</li>
+        <li style="margin-top:0.8rem; color: var(--gold)">Last orders 30 min before close</li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li>142 West 14th Street<br>New York, NY 10011</li>
+        <li>+1 (212) 555-0192</li>
+        <li>hello@maisonnoir.com</li>
+        <li style="margin-top:0.8rem"><a href="#reservation" style="color:var(--gold)">Book a Table →</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2024 Maison Noir. All rights reserved.</p>
+    <div class="footer-legal">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Accessibility</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ── NAV SCROLL ──
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // ── MOBILE NAV ──
+  function openMobileNav() { document.getElementById('mobileNav').classList.add('open'); }
+  function closeMobileNav() { document.getElementById('mobileNav').classList.remove('open'); }
+
+  // ── HERO: PARALLAX + CURSOR + PARTICLES + COUNTER ──
+  (function() {
+    const hero    = document.getElementById('hero');
+    const bg      = document.getElementById('heroBg');
+    const cursor  = document.getElementById('heroCursor');
+    const dot     = document.getElementById('heroCursorDot');
+    const canvas  = document.getElementById('hero-canvas');
+    const ctx     = canvas.getContext('2d');
+
+    let mx = 0, my = 0, tx = 0, ty = 0, raf;
+
+    // ── Resize canvas ──
+    function resizeCanvas() {
+      canvas.width  = hero.offsetWidth;
+      canvas.height = hero.offsetHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    // ── Particles ──
+    const PARTICLE_COUNT = 55;
+    const particles = Array.from({ length: PARTICLE_COUNT }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: 0.6 + Math.random() * 1.4,
+      vx: (Math.random() - 0.5) * 0.25,
+      vy: -0.15 - Math.random() * 0.3,
+      alpha: 0.1 + Math.random() * 0.45,
+      gold: Math.random() > 0.6,
+    }));
+
+    function drawParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.y < -4) { p.y = canvas.height + 4; p.x = Math.random() * canvas.width; }
+        if (p.x < -4) p.x = canvas.width + 4;
+        if (p.x > canvas.width + 4) p.x = -4;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = p.gold
+          ? `rgba(201,168,76,${p.alpha})`
+          : `rgba(254,253,251,${p.alpha * 0.5})`;
+        ctx.fill();
+      });
+    }
+
+    // ── Mouse tracking ──
+    hero.addEventListener('mousemove', e => {
+      const rect = hero.getBoundingClientRect();
+      mx = e.clientX - rect.left;
+      my = e.clientY - rect.top;
+    });
+    hero.addEventListener('mouseleave', () => {
+      mx = hero.offsetWidth / 2;
+      my = hero.offsetHeight / 2;
+    });
+    mx = hero.offsetWidth / 2;
+    my = hero.offsetHeight / 2;
+
+    // ── Animation loop ──
+    function loop() {
+      raf = requestAnimationFrame(loop);
+
+      // Smooth cursor tracking
+      tx += (mx - tx) * 0.10;
+      ty += (my - ty) * 0.10;
+
+      // Parallax bg (subtle, opposite direction)
+      const px = (mx / hero.offsetWidth  - 0.5) * -28;
+      const py = (my / hero.offsetHeight - 0.5) * -18;
+      bg.style.transform = `translate(${px}px, ${py}px) scale(1.08)`;
+
+      // Cursor elements
+      cursor.style.left = tx + 'px';
+      cursor.style.top  = ty + 'px';
+      dot.style.left = mx + 'px';
+      dot.style.top  = my + 'px';
+
+      drawParticles();
+    }
+    loop();
+
+    // ── Animated counters (start after hero stats animate in) ──
+    setTimeout(() => {
+      document.querySelectorAll('.hero-stat-num').forEach(el => {
+        const target = +el.dataset.count;
+        const suffix = el.parentElement.querySelector('.hero-stat-label').textContent.startsWith('%') ? '%' : '+';
+        let start = 0;
+        const step = target / 60;
+        const timer = setInterval(() => {
+          start = Math.min(start + step, target);
+          el.textContent = Math.floor(start) + (start >= target ? (suffix === '%' ? '' : '+') : '');
+          if (start >= target) clearInterval(timer);
+        }, 22);
+      });
+    }, 1500);
+
+    // Stop RAF when hero leaves viewport
+    const heroObs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) loop(); else cancelAnimationFrame(raf);
+    });
+    heroObs.observe(hero);
+  })();
+
+  // ── JOURNEY TEXT ANIMATION ──
+  (function() {
+    const journey1 = document.getElementById('journey1');
+    const journey2 = document.getElementById('journey2');
+    const journey3 = document.getElementById('journey3');
+    const hero = document.getElementById('hero');
+
+    function cycleJourneyText() {
+      // Timeline in milliseconds
+      const timeline = [
+        { block: journey1, start: 0, duration: 4000 },      // 0-4s
+        { block: journey2, start: 4000, duration: 4000 },   // 4-8s
+        { block: journey3, start: 8000, duration: 6000 }    // 8-14s
+      ];
+
+      let startTime = Date.now();
+      let animationId;
+
+      function update() {
+        const elapsed = Date.now() - startTime;
+
+        timeline.forEach(item => {
+          const isActive = elapsed >= item.start && elapsed < item.start + item.duration;
+          if (isActive) {
+            item.block.classList.add('active');
+          } else {
+            item.block.classList.remove('active');
+          }
+        });
+
+        if (elapsed < 14000) {
+          animationId = requestAnimationFrame(update);
+        }
+      }
+
+      animationId = requestAnimationFrame(update);
+
+      // Reset when hero leaves viewport
+      const heroObs = new IntersectionObserver(([e]) => {
+        if (!e.isIntersecting && animationId) {
+          cancelAnimationFrame(animationId);
+        }
+      });
+      heroObs.observe(hero);
+    }
+
+    cycleJourneyText();
+  })();
+
+  // ── ENHANCED INTERSECTION OBSERVER FOR ANIMATIONS ──
+  const observerOptions = { threshold: 0.15, rootMargin: '0px 0px -100px 0px' };
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+      }
+    });
+  }, observerOptions);
+
+  // Observe fade-up elements and sections
+  document.querySelectorAll('.fade-up, section, .testimonials-inner, .menu-grid').forEach(el => {
+    sectionObserver.observe(el);
+  });
+
+  // ── PARALLAX EFFECT FOR IMAGES ──
+  window.addEventListener('scroll', () => {
+    document.querySelectorAll('.about-img-main, .about-img-accent').forEach(img => {
+      const rect = img.getBoundingClientRect();
+      const speed = 0.5;
+      const yPos = -(rect.top * speed);
+      img.style.transform = `translateY(${yPos}px)`;
+    });
+  });
+
+  // ── SMOOTH SCROLL EASING ──
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // ── ENHANCED SCROLL ANIMATIONS ──
+  let scrollTimeout;
+  window.addEventListener('scroll', () => {
+    clearTimeout(scrollTimeout);
+    document.body.style.scrollBehavior = 'auto';
+
+    scrollTimeout = setTimeout(() => {
+      document.body.style.scrollBehavior = 'smooth';
+    }, 150);
+
+    // Add scroll depth animation
+    const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+    document.documentElement.style.setProperty('--scroll-progress', scrollPercent + '%');
+  });
+
+  // ── CARD HOVER LIFT EFFECT ──
+  document.querySelectorAll('.menu-card, .exp-card, .testimonial-card').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+
+      card.style.transform = `perspective(1000px) rotateX(${y * 5}deg) rotateY(${x * 5}deg) translateZ(10px)`;
+    });
+
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
+    });
+  });
+
+  // Reservation form
+  function handleReservation(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('.form-submit');
+    btn.textContent = '✓ Reservation Confirmed!';
+    btn.style.background = '#4a7c59';
+    btn.style.color = '#fff';
+    setTimeout(() => {
+      btn.textContent = 'Confirm Reservation';
+      btn.style.background = '';
+      btn.style.color = '';
+      e.target.reset();
+    }, 3500);
+  }
+</script>
+</body>
+</html>
