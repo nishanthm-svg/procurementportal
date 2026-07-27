@@ -1,5 +1,6 @@
 node_modules/
 .claude/
+dist/
 
 # large raw data files
 app_data.json
@@ -20,6 +21,7 @@ vcg-mrg-react/
 # misc
 *.xlsx
 *.html
+!incentive-portal/index.html
 *.bat
 *.cmd
 console.log*
