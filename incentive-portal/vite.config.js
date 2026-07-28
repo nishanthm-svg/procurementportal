@@ -2,7 +2,12 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
+// When built for GitHub Pages (a project page served at /<repo>/), assets
+// must be referenced relative to that subpath instead of the domain root.
+const base = process.env.GH_PAGES ? '/procurementportal/' : '/'
+
 export default defineConfig({
+  base,
   plugins: [
     react(),
     VitePWA({
@@ -15,7 +20,8 @@ export default defineConfig({
         theme_color: '#0ea5e9',
         background_color: '#f0f9ff',
         display: 'standalone',
-        start_url: '/',
+        start_url: base,
+        scope: base,
         icons: [
           { src: 'icon-192.svg', sizes: '192x192', type: 'image/svg+xml' },
           { src: 'icon-512.svg', sizes: '512x512', type: 'image/svg+xml' },
