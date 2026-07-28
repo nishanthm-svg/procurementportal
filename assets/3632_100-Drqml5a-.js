@@ -1,0 +1,1 @@
+const A=[{code:"2802623800020066",name:"AKULA LAKSHMI NARAYANAMMA",qty:10170.1,bonus:5593.56,medical:250,total:5843.56,status:"Active"},{code:"2802623800020076",name:"AKULA SYAMALAMMA",qty:2462.3,bonus:1354.27,medical:250,total:1604.27,status:"Active"}];export{A as default};

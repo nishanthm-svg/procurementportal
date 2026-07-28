@@ -1,0 +1,1 @@
+const t=[{code:"2802622600170011",name:"THOLISAKU SARASWATHI",qty:6015.95,bonus:3308.77,medical:250,total:3558.77,status:"Active"}];export{t as default};
