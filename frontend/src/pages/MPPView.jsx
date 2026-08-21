@@ -3,6 +3,7 @@ import { api } from '../api'
 import Loader, { PageHeader } from '../components/Loader'
 import DataTable, { fmtNum, fmtLpd } from '../components/DataTable'
 import FilterBar from '../components/FilterBar'
+import { useSummary } from '../SummaryContext'
 
 const COLS = [
   { key: 'plant_code', label: 'Plant', sortable: true },
@@ -20,6 +21,7 @@ const COLS = [
 ]
 
 export default function MPPView() {
+  const { month } = useSummary()
   const [rows, setRows] = useState([])
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(1)
@@ -44,7 +46,7 @@ export default function MPPView() {
 
   return (
     <div>
-      <PageHeader title="MPP Performance" sub="Village-level milk procurement points · Mar'26" badge={`${total} MPPs`} />
+      <PageHeader title="MPP Performance" sub={`Village-level milk procurement points${month ? ` · ${month}` : ''}`} badge={`${total} MPPs`} />
 
       <FilterBar count={total} label="MPPs">
         <select className="select" value={cluster} onChange={e => { setCluster(e.target.value); setAo('') }}>

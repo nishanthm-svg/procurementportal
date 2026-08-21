@@ -3,6 +3,7 @@ import { api } from '../api'
 import Loader, { PageHeader } from '../components/Loader'
 import DataTable, { fmtNum, fmtLpd, fmtRs } from '../components/DataTable'
 import FilterBar from '../components/FilterBar'
+import { useSummary } from '../SummaryContext'
 
 const COLS = [
   { key: 'plant_code', label: 'Code', sortable: true },
@@ -20,6 +21,7 @@ const COLS = [
 ]
 
 export default function BMCUView() {
+  const { month } = useSummary()
   const [rows, setRows] = useState([])
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(1)
@@ -44,7 +46,7 @@ export default function BMCUView() {
 
   return (
     <div>
-      <PageHeader title="BMCU Performance" sub="Plant-level milk procurement data · Mar'26" badge={`${total} Plants`} />
+      <PageHeader title="BMCU Performance" sub={`Plant-level milk procurement data${month ? ` · ${month}` : ''}`} badge={`${total} Plants`} />
 
       <FilterBar count={total} label="BMCUs">
         <select className="select" value={cluster} onChange={e => { setCluster(e.target.value); setAo('') }}>

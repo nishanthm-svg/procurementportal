@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Cell } from 'recharts'
-import { api } from '../api'
+import { api, prevYearLabel } from '../api'
 import { fmtNum, fmtRs, fmtLpd } from '../components/DataTable'
 
 function fmt(v) { return v == null ? 0 : v }
@@ -147,6 +147,7 @@ export default function AODetailView() {
   const [cans, setCans] = useState([])
   const [manpower, setManpower] = useState([])
   const [recoveries, setRecoveries] = useState([])
+  const [summary, setSummary] = useState(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -163,7 +164,8 @@ export default function AODetailView() {
       api.cans({ ao }),
       api.manpower(),
       api.recoveries({ ao, limit: 200 }),
-    ]).then(([aoArr, bm, mp, ll, lt, sp, cm, lf, bv, ca, mn, rc]) => {
+      api.summary(),
+    ]).then(([aoArr, bm, mp, ll, lt, sp, cm, lf, bv, ca, mn, rc, sm]) => {
       setAoData(aoArr[0] || null)
       setBmcus(bm.data || [])
       setMpps(mp.data || [])
@@ -176,8 +178,12 @@ export default function AODetailView() {
       setCans(ca || [])
       setManpower((mn || []).filter(r => r.ao === ao))
       setRecoveries(rc.data || [])
+      setSummary(sm || null)
     }).finally(() => setLoading(false))
   }, [ao])
+
+  const month = summary?.month || ''
+  const prevMonth = month ? prevYearLabel(month) : ''
 
   function scrollTo(id) {
     setActiveSection(id)
@@ -244,7 +250,7 @@ export default function AODetailView() {
           <span style={{ background: '#e0f2fe', color: '#0284c7', padding: '3px 10px', borderRadius: 20, fontWeight: 700 }}>
             {mpps.length} MPPs
           </span>
-          <span style={{ color: '#94a3b8', fontSize: 11 }}>Mar&#39;26</span>
+          <span style={{ color: '#94a3b8', fontSize: 11 }}>{month || '—'}</span>
         </div>
       </div>
 
@@ -280,7 +286,7 @@ export default function AODetailView() {
               <h2 style={{ color: '#0c4a6e', fontSize: 18, fontWeight: 800, marginBottom: 2 }}>
                 {ao} — Procurement Dashboard
               </h2>
-              <p style={{ color: '#64748b', fontSize: 12 }}>March 2026 · All metrics below are for this AO only</p>
+              <p style={{ color: '#64748b', fontSize: 12 }}>{month ? `${month} · ` : ''}All metrics below are for this AO only</p>
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: 12, marginBottom: 16 }}>
@@ -336,7 +342,7 @@ export default function AODetailView() {
           </Section>
 
           {/* ── LFL COMPARISON ── */}
-          <Section id="lfl" title="Like-for-Like Comparison (Mar'25 vs Mar'26)" icon="⚖️" badge={lfl.length + ' BMCUs'}>
+          <Section id="lfl" title={`Like-for-Like Comparison${month ? ` (${prevMonth} vs ${month})` : ''}`} icon="⚖️" badge={lfl.length + ' BMCUs'}>
             {lfl.length === 0 ? (
               <div style={{ textAlign: 'center', color: '#94a3b8', padding: '24px 0', fontSize: 13 }}>No LFL data for this AO</div>
             ) : (
@@ -345,8 +351,8 @@ export default function AODetailView() {
                   <tr>
                     <Th>Code</Th>
                     <Th>BMCU Name</Th>
-                    <Th right>Mar'25 LPD</Th>
-                    <Th right>Mar'26 LPD</Th>
+                    <Th right>{prevMonth || 'Prev'} LPD</Th>
+                    <Th right>{month || 'Curr'} LPD</Th>
                     <Th right>Diff</Th>
                     <Th right>Growth%</Th>
                   </tr>

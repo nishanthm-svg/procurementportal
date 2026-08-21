@@ -79,8 +79,11 @@ export default function Sidebar({ summary, open, onClose }) {
           ))}
         </nav>
 
-        <div className="px-3 py-3 border-t border-slate-100">
-          <div className="text-[10px] text-slate-400 text-center">Data: Mar&apos;26</div>
+        <div className="px-3 py-3 border-t border-slate-100 space-y-1">
+          <div className="text-[10px] text-slate-400 text-center">Data: {summary?.month || '—'}</div>
+          <div className="text-center">
+            <span className="text-[10px] text-slate-300 hover:text-slate-500 cursor-pointer" onClick={() => go('/admin')}>Admin</span>
+          </div>
         </div>
       </aside>
     </>

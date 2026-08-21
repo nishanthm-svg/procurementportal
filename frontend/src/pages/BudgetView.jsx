@@ -4,6 +4,7 @@ import { api } from '../api'
 import Loader, { PageHeader, SectionHeader } from '../components/Loader'
 import DataTable, { fmtNum, fmtLpd } from '../components/DataTable'
 import FilterBar from '../components/FilterBar'
+import { useSummary } from '../SummaryContext'
 
 const BVA_COLS = [
   { key: 'plant_code', label: 'Code', sortable: true },
@@ -17,6 +18,7 @@ const BVA_COLS = [
 ]
 
 export default function BudgetView() {
+  const { month } = useSummary()
   const [bva, setBva] = useState([])
   const [enums, setEnums] = useState({ clusters: [] })
   const [cluster, setCluster] = useState('')
@@ -51,7 +53,7 @@ export default function BudgetView() {
 
   return (
     <div>
-      <PageHeader title="Budget vs Actual" sub="Mar'26 LPD achievement against monthly budget targets" />
+      <PageHeader title="Budget vs Actual" sub={`${month || 'Current month'} LPD achievement against monthly budget targets`} />
 
       {/* Summary */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">

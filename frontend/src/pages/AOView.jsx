@@ -4,6 +4,7 @@ import { api } from '../api'
 import Loader, { PageHeader } from '../components/Loader'
 import DataTable, { fmtNum, fmtRs, fmtLpd } from '../components/DataTable'
 import FilterBar from '../components/FilterBar'
+import { useSummary } from '../SummaryContext'
 
 const COLS = [
   { key: 'ao', label: 'Area Officer' },
@@ -20,6 +21,7 @@ const COLS = [
 ]
 
 export default function AOView() {
+  const { month } = useSummary()
   const [data, setData] = useState([])
   const [clusters, setClusters] = useState([])
   const [cluster, setCluster] = useState('')
@@ -48,7 +50,7 @@ export default function AOView() {
 
   return (
     <div>
-      <PageHeader title="Area Officer Performance" sub="AO-wise cow & buffalo milk procurement · Mar'26" />
+      <PageHeader title="Area Officer Performance" sub={`AO-wise cow & buffalo milk procurement${month ? ` · ${month}` : ''}`} />
 
       <FilterBar count={filtered.length} label="AOs">
         <select className="select" value={cluster} onChange={e => setCluster(e.target.value)}>

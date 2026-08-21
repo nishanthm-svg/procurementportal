@@ -1,5 +1,6 @@
 node_modules/
 .claude/
+frontend/dist/
 
 # large raw data files
 app_data.json
@@ -20,6 +21,10 @@ vcg-mrg-react/
 # misc
 *.xlsx
 *.html
+!frontend/index.html
 *.bat
 *.cmd
 console.log*
+
+# admin upload backups (regenerated on every rebuild)
+backend/data/backups/

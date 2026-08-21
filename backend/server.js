@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
+const crypto = require('crypto');
+const { extractFromBuffer, BUDGET_MONTHS } = require('./extractData');
 
 let QRCode;
 try { QRCode = require('qrcode'); } catch (_) { QRCode = null; }
@@ -10,7 +12,7 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(cors());
-app.use(express.json({ limit: '20mb' }));
+app.use(express.json({ limit: '60mb' }));
 
 const DATA_PATH = path.join(__dirname, 'data', 'procurement.json');
 let D = {};
@@ -339,6 +341,87 @@ app.get('/api/grievance/audio/:id', (req, res) => {
 });
 
 // ─── END GRIEVANCE ───────────────────────────────────────────────
+
+// ─── ADMIN: MONTHLY DATA UPLOAD ──────────────────────────────────
+
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'shreeja2026';
+const BACKUP_DIR = path.join(__dirname, 'data', 'backups');
+if (!fs.existsSync(BACKUP_DIR)) fs.mkdirSync(BACKUP_DIR, { recursive: true });
+
+const sessions = new Set();
+
+function requireAdmin(req, res, next) {
+  const auth = req.headers.authorization || '';
+  const token = auth.startsWith('Bearer ') ? auth.slice(7) : null;
+  if (!token || !sessions.has(token)) return res.status(401).json({ error: 'Not authenticated' });
+  next();
+}
+
+app.post('/api/admin/login', (req, res) => {
+  const { password } = req.body;
+  if (password !== ADMIN_PASSWORD) return res.status(401).json({ error: 'Incorrect password' });
+  const token = crypto.randomBytes(24).toString('hex');
+  sessions.add(token);
+  res.json({ token });
+});
+
+app.post('/api/admin/logout', requireAdmin, (req, res) => {
+  const token = req.headers.authorization.slice(7);
+  sessions.delete(token);
+  res.json({ success: true });
+});
+
+app.get('/api/admin/status', requireAdmin, (_, res) => {
+  const stat = fs.existsSync(DATA_PATH) ? fs.statSync(DATA_PATH) : null;
+  res.json({
+    month: D.summary?.month || null,
+    lastUpdated: stat ? stat.mtime : null,
+    recordCounts: Object.fromEntries(Object.entries(D).map(([k, v]) => [k, Array.isArray(v) ? v.length : 1])),
+    months: BUDGET_MONTHS,
+  });
+});
+
+// Upload the monthly Excel workbook (base64 JSON body, matches the audio-upload pattern
+// already used for grievances — avoids adding a multipart/multer dependency).
+app.post('/api/admin/upload', requireAdmin, (req, res) => {
+  const { fileBase64, monthKey, monthLabel } = req.body;
+  if (!fileBase64) return res.status(400).json({ error: 'fileBase64 is required' });
+  if (!BUDGET_MONTHS.includes(monthKey)) return res.status(400).json({ error: `monthKey must be one of: ${BUDGET_MONTHS.join(', ')}` });
+  if (!monthLabel) return res.status(400).json({ error: 'monthLabel is required' });
+
+  let buffer;
+  try {
+    buffer = Buffer.from(fileBase64, 'base64');
+  } catch (e) {
+    return res.status(400).json({ error: 'Invalid file data' });
+  }
+
+  let newData;
+  try {
+    newData = extractFromBuffer(buffer, monthKey, monthLabel);
+  } catch (e) {
+    return res.status(400).json({ error: `Failed to parse workbook: ${e.message}` });
+  }
+
+  // Back up the current dataset before overwriting it.
+  try {
+    if (fs.existsSync(DATA_PATH)) {
+      const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+      fs.copyFileSync(DATA_PATH, path.join(BACKUP_DIR, `procurement-${stamp}.json`));
+    }
+  } catch (_) {}
+
+  fs.writeFileSync(DATA_PATH, JSON.stringify(newData, null, 2));
+  loadData();
+
+  res.json({
+    success: true,
+    summary: D.summary,
+    recordCounts: Object.fromEntries(Object.entries(D).map(([k, v]) => [k, Array.isArray(v) ? v.length : 1])),
+  });
+});
+
+// ─── END ADMIN ────────────────────────────────────────────────────
 
 // Serve built frontend
 const DIST = path.join(__dirname, '..', 'frontend', 'dist');

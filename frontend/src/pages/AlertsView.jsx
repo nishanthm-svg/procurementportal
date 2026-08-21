@@ -4,6 +4,7 @@ import Loader, { PageHeader } from '../components/Loader'
 import DataTable, { fmtNum, fmtLpd } from '../components/DataTable'
 import FilterBar from '../components/FilterBar'
 import { useParams } from 'react-router-dom'
+import { useSummary } from '../SummaryContext'
 
 const TABS = {
   'low-lpd':       { label: '<30 LPD MPPs', icon: '⚠️', color: 'amber', desc: 'MPPs with average daily procurement below 30 litres' },
@@ -38,6 +39,7 @@ const SINGLE_COLS = [
 
 export default function AlertsView() {
   const { type } = useParams()
+  const { month } = useSummary()
   const tab = TABS[type] || TABS['low-lpd']
 
   const [rows, setRows] = useState([])
@@ -80,7 +82,7 @@ export default function AlertsView() {
             <div className={`text-3xl ${colorMap[tab.color]}`}>{tab.icon}</div>
             <div>
               <div className={`text-4xl font-bold font-display ${colorMap[tab.color]}`}>{total}</div>
-              <div className="text-sm text-slate-500 mt-0.5">{tab.label} in Mar'26</div>
+              <div className="text-sm text-slate-500 mt-0.5">{tab.label}{month ? ` in ${month}` : ''}</div>
             </div>
           </div>
         </div>

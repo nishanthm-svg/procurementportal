@@ -16,7 +16,9 @@ import RecoveriesView from './pages/RecoveriesView'
 import ManpowerView from './pages/ManpowerView'
 import GrievanceDashboard from './pages/GrievanceDashboard'
 import ComplaintForm from './pages/ComplaintForm'
+import AdminPortal from './pages/AdminPortal'
 import { api } from './api'
+import { SummaryProvider } from './SummaryContext'
 
 const API_BASE = import.meta.env.VITE_API_URL || ''
 
@@ -39,15 +41,17 @@ function Shell({ children }) {
   }, [])
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <Header onMenuClick={() => setSidebarOpen(true)} />
-      <div className="flex">
-        <Sidebar summary={summary} open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-        <main className="flex-1 lg:ml-56 p-4 sm:p-6 min-w-0">
-          {children}
-        </main>
+    <SummaryProvider value={summary}>
+      <div className="min-h-screen bg-slate-50">
+        <Header onMenuClick={() => setSidebarOpen(true)} summary={summary} />
+        <div className="flex">
+          <Sidebar summary={summary} open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+          <main className="flex-1 lg:ml-56 p-4 sm:p-6 min-w-0">
+            {children}
+          </main>
+        </div>
       </div>
-    </div>
+    </SummaryProvider>
   )
 }
 
@@ -62,6 +66,9 @@ export default function App() {
 
       {/* Farmer complaint form — public, no shell (accessed via QR code) */}
       <Route path="/complaint" element={<ComplaintForm />} />
+
+      {/* Admin — password gated, no shell */}
+      <Route path="/admin" element={<AdminPortal />} />
 
       {/* Admin / data views — wrapped in shell */}
       <Route path="/cluster" element={<Shell><ClusterView /></Shell>} />

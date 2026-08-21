@@ -3,6 +3,7 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGri
 import { api } from '../api'
 import Loader, { PageHeader } from '../components/Loader'
 import DataTable, { fmtNum, fmtRs, fmtLpd } from '../components/DataTable'
+import { useSummary } from '../SummaryContext'
 
 function fmt(v, mul) { return v == null ? 0 : mul ? v * mul : v }
 
@@ -20,6 +21,7 @@ const COW_COLS = [
 ]
 
 export default function ClusterView() {
+  const { month } = useSummary()
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -50,7 +52,7 @@ export default function ClusterView() {
 
   return (
     <div>
-      <PageHeader title="Cluster Performance" sub="Cluster manager-wise milk procurement summary · Mar'26" />
+      <PageHeader title="Cluster Performance" sub={`Cluster manager-wise milk procurement summary${month ? ` · ${month}` : ''}`} />
 
       {/* Summary Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">

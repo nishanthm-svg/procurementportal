@@ -56,7 +56,7 @@ export default function Dashboard() {
     <div>
       <PageHeader
         title="Procurement Overview"
-        sub={`Monthly performance report · ${s.month || "Mar'26"}`}
+        sub={`Monthly performance report${s.month ? ` · ${s.month}` : ''}`}
         badge={`${fmtNum(Math.round(totalLpd / 1000))}K LPD`}
       />
 
@@ -85,7 +85,7 @@ export default function Dashboard() {
           <div className="card-body">
             <div className="flex items-center justify-between mb-3">
               <h3 className="section-title">Cluster-wise LPD</h3>
-              <span className="badge-blue">Mar&apos;26</span>
+              <span className="badge-blue">{s.month || '—'}</span>
             </div>
             <ResponsiveContainer width="100%" height={220}>
               <BarChart data={clusterChartData} margin={{ top: 0, right: 10, left: 0, bottom: 0 }}>

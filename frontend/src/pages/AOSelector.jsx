@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { api } from '../api'
+import shreejaLogo from '../assets/shreeja-logo.png'
+import nddbLogo from '../assets/nddb-logo.png'
+import nddbDairyServicesLogo from '../assets/nddb-dairy-services-logo.png'
 
 export default function AOSelector() {
   const navigate = useNavigate()
@@ -39,14 +42,24 @@ export default function AOSelector() {
       justifyContent: 'center',
       padding: '20px',
       fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
+      position: 'relative',
     }}>
+      <Link to="/admin" style={{
+        position: 'absolute', top: 16, right: 16,
+        display: 'flex', alignItems: 'center', gap: 6,
+        padding: '7px 14px', borderRadius: 20, fontSize: 12, fontWeight: 700,
+        background: '#fff', border: '1px solid #bae6fd', color: '#0284c7',
+        textDecoration: 'none', boxShadow: '0 2px 8px rgba(14,165,233,0.12)',
+      }}>
+        ⚙ Admin
+      </Link>
       <div style={{ maxWidth: 500, width: '100%', textAlign: 'center' }}>
         {/* Logo */}
-        <div style={{ fontSize: 52, marginBottom: 12 }}>🥛</div>
+        <img src={shreejaLogo} alt="Shreeja Mahila Milk Producer Company" style={{ height: 56, margin: '0 auto 12px', display: 'block', borderRadius: 6 }} />
         <h1 style={{ color: '#0c4a6e', fontSize: 26, fontWeight: 800, marginBottom: 4, letterSpacing: -0.5 }}>
           Procurement Portal
         </h1>
-        <p style={{ color: '#64748b', fontSize: 13, marginBottom: 6 }}>SMMPCL · Mar 2026</p>
+        <p style={{ color: '#64748b', fontSize: 13, marginBottom: 6 }}>SMMPCL{summary?.month ? ` · ${summary.month}` : ''}</p>
         <p style={{ color: '#0ea5e9', fontSize: 12, fontWeight: 600, marginBottom: 24 }}>
           {loading ? 'Loading…' : `${aos.length} Area Offices · ${summary?.total_bmcu || 0} BMCUs · ${summary?.total_mpp?.toLocaleString('en-IN') || 0} MPPs`}
         </p>
@@ -149,6 +162,15 @@ export default function AOSelector() {
             }}>
             {selected ? `📊 View Dashboard — ${selected}` : 'Select an AO to continue'}
           </button>
+        </div>
+
+        {/* Supported by */}
+        <div style={{ marginTop: 22, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+          <span style={{ fontSize: 10, color: '#94a3b8', fontWeight: 600, letterSpacing: 0.4, textTransform: 'uppercase' }}>Supported by</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+            <img src={nddbLogo} alt="National Dairy Development Board" style={{ height: 30, width: 'auto' }} />
+            <img src={nddbDairyServicesLogo} alt="NDDB Dairy Services" style={{ height: 30, width: 'auto' }} />
+          </div>
         </div>
       </div>
     </div>

@@ -1,32 +1,42 @@
 import { useEffect, useState } from 'react'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Cell } from 'recharts'
-import { api } from '../api'
+import { api, prevYearLabel } from '../api'
 import Loader, { PageHeader, SectionHeader } from '../components/Loader'
 import DataTable, { fmtNum, fmtLpd, fmtGrowth } from '../components/DataTable'
 import FilterBar from '../components/FilterBar'
+import { useSummary } from '../SummaryContext'
 
-const BMCU_COLS = [
-  { key: 'plant_code', label: 'Code' },
-  { key: 'plant_name', label: 'BMCU Name' },
-  { key: 'ao', label: 'AO' },
-  { key: 'cluster', label: 'Cluster' },
-  { key: 'lpd_prev', label: "Mar'25 LPD", align: 'right', fmt: 'lpd', sortable: true },
-  { key: 'lpd_curr', label: "Mar'26 LPD", align: 'right', fmt: 'lpd', sortable: true },
-  { key: 'diff', label: 'Diff', align: 'right', sortable: true, render: v => v != null ? <span className={v >= 0 ? 'pos' : 'neg'}>{v >= 0 ? '+' : ''}{v.toFixed(1)}</span> : '—' },
-  { key: 'growth_pct', label: 'Growth', align: 'right', sortable: true, render: v => { if (v == null) return '—'; const p = (Math.abs(v) <= 1 ? v * 100 : v).toFixed(1); return <span className={v >= 0 ? 'pos' : 'neg'}>{v >= 0 ? '+' : ''}{p}%</span> } },
-]
+function bmcuCols(curr, prev) {
+  return [
+    { key: 'plant_code', label: 'Code' },
+    { key: 'plant_name', label: 'BMCU Name' },
+    { key: 'ao', label: 'AO' },
+    { key: 'cluster', label: 'Cluster' },
+    { key: 'lpd_prev', label: `${prev} LPD`, align: 'right', fmt: 'lpd', sortable: true },
+    { key: 'lpd_curr', label: `${curr} LPD`, align: 'right', fmt: 'lpd', sortable: true },
+    { key: 'diff', label: 'Diff', align: 'right', sortable: true, render: v => v != null ? <span className={v >= 0 ? 'pos' : 'neg'}>{v >= 0 ? '+' : ''}{v.toFixed(1)}</span> : '—' },
+    { key: 'growth_pct', label: 'Growth', align: 'right', sortable: true, render: v => { if (v == null) return '—'; const p = (Math.abs(v) <= 1 ? v * 100 : v).toFixed(1); return <span className={v >= 0 ? 'pos' : 'neg'}>{v >= 0 ? '+' : ''}{p}%</span> } },
+  ]
+}
 
-const FEED_COLS = [
-  { key: 'plant_code', label: 'Code' },
-  { key: 'plant_name', label: 'BMCU Name' },
-  { key: 'ao', label: 'AO' },
-  { key: 'cluster', label: 'Cluster' },
-  { key: 'feed_prev', label: "Mar'25 Feed", align: 'right', fmt: 'num', sortable: true },
-  { key: 'feed_curr', label: "Mar'26 Feed", align: 'right', fmt: 'num', sortable: true },
-  { key: 'diff', label: 'Diff', align: 'right', sortable: true, render: v => v != null ? <span className={v >= 0 ? 'pos' : 'neg'}>{v >= 0 ? '+' : ''}{fmtNum(v)}</span> : '—' },
-]
+function feedCols(curr, prev) {
+  return [
+    { key: 'plant_code', label: 'Code' },
+    { key: 'plant_name', label: 'BMCU Name' },
+    { key: 'ao', label: 'AO' },
+    { key: 'cluster', label: 'Cluster' },
+    { key: 'feed_prev', label: `${prev} Feed`, align: 'right', fmt: 'num', sortable: true },
+    { key: 'feed_curr', label: `${curr} Feed`, align: 'right', fmt: 'num', sortable: true },
+    { key: 'diff', label: 'Diff', align: 'right', sortable: true, render: v => v != null ? <span className={v >= 0 ? 'pos' : 'neg'}>{v >= 0 ? '+' : ''}{fmtNum(v)}</span> : '—' },
+  ]
+}
 
 export default function LFLView() {
+  const { month } = useSummary()
+  const curr = month || "this month"
+  const prev = month ? prevYearLabel(month) : 'last year'
+  const BMCU_COLS = bmcuCols(curr, prev)
+  const FEED_COLS = feedCols(curr, prev)
   const [bmcu, setBmcu] = useState([])
   const [feed, setFeed] = useState([])
   const [enums, setEnums] = useState({ clusters: [] })
@@ -56,18 +66,18 @@ export default function LFLView() {
 
   return (
     <div>
-      <PageHeader title="LFL Analysis" sub="Like-for-Like comparison: Mar'25 vs Mar'26" />
+      <PageHeader title="LFL Analysis" sub={`Like-for-Like comparison: ${prev} vs ${curr}`} />
 
       <div className="grid grid-cols-3 gap-3 mb-4">
         <div className="kpi-card border-t-4 border-t-success">
           <div className="text-[10px] font-bold uppercase text-slate-400 mb-1">Growing BMCUs</div>
           <div className="text-2xl font-bold font-display text-success">{growing.length}</div>
-          <div className="text-[11px] text-slate-400">vs Mar'25</div>
+          <div className="text-[11px] text-slate-400">vs {prev}</div>
         </div>
         <div className="kpi-card border-t-4 border-t-danger">
           <div className="text-[10px] font-bold uppercase text-slate-400 mb-1">Declining BMCUs</div>
           <div className="text-2xl font-bold font-display text-danger">{declining.length}</div>
-          <div className="text-[11px] text-slate-400">vs Mar'25</div>
+          <div className="text-[11px] text-slate-400">vs {prev}</div>
         </div>
         <div className={`kpi-card border-t-4 ${avgGrowth >= 0 ? 'border-t-success' : 'border-t-danger'}`}>
           <div className="text-[10px] font-bold uppercase text-slate-400 mb-1">Avg Growth Rate</div>

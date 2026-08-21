@@ -4,6 +4,7 @@ import { api } from '../api'
 import Loader, { PageHeader } from '../components/Loader'
 import DataTable, { fmtNum } from '../components/DataTable'
 import FilterBar from '../components/FilterBar'
+import { useSummary } from '../SummaryContext'
 
 const AO_COLS = [
   { key: 'ao', label: 'Area Officer', sortable: true },
@@ -28,6 +29,7 @@ const BMCU_COLS = [
 ]
 
 export default function GPRSView() {
+  const { month } = useSummary()
   const [aoData, setAoData] = useState([])
   const [bmcuData, setBmcuData] = useState([])
   const [enums, setEnums] = useState({ clusters: [] })
@@ -59,7 +61,7 @@ export default function GPRSView() {
 
   return (
     <div>
-      <PageHeader title="GPRS Tracking" sub="GPS-based milk collection shift compliance · Mar'26" />
+      <PageHeader title="GPRS Tracking" sub={`GPS-based milk collection shift compliance${month ? ` · ${month}` : ''}`} />
 
       <div className="grid grid-cols-3 gap-3 mb-5">
         <div className="kpi-card border-t-4 border-t-primary">
