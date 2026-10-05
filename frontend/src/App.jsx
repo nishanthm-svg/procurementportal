@@ -16,6 +16,7 @@ import RecoveriesView from './pages/RecoveriesView'
 import ManpowerView from './pages/ManpowerView'
 import GrievanceDashboard from './pages/GrievanceDashboard'
 import ComplaintForm from './pages/ComplaintForm'
+import DividendView from './pages/DividendView'
 import { api } from './api'
 
 const API_BASE = import.meta.env.VITE_API_URL || ''
@@ -74,6 +75,7 @@ export default function App() {
       <Route path="/alerts/:type" element={<Shell><AlertsView /></Shell>} />
       <Route path="/recoveries" element={<Shell><RecoveriesView /></Shell>} />
       <Route path="/manpower" element={<Shell><ManpowerView /></Shell>} />
+      <Route path="/dividend" element={<Shell><DividendView /></Shell>} />
       <Route path="/grievance" element={<GrievanceDashboard />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
