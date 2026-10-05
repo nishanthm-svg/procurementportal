@@ -6,3 +6,4 @@ dist/
 web/
 *.log
 __pycache__/
+site/

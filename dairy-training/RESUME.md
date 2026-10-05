@@ -50,3 +50,8 @@ After changing clips, republish `dist/index.html` together with the changed `aud
 - Narration for all five languages uses the same voice (Kavya, pace 0.9). `python tts.py --lang ta` records one language.
 - Status: v10 is published with full recorded voice in all five languages (890 clips, 178 per language).
   New bundles are larger than one 64 MB publish, so send them in two batches.
+
+## Public website (GitHub Pages)
+- Live: https://nishanthm-svg.github.io/dairy-training/ (repo `nishanthm-svg/dairy-training`, Pages serves `main` from the root).
+- The site plays each clip as its own mp3 (no audiojs bundles). `python build.py && python build_site.py` writes `site/`,
+  which is its own git repo pointing at that GitHub repo: commit there and `git push` to update the live site.
