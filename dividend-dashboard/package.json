@@ -5,7 +5,7 @@
   "scripts": {
     "data": "python build_dividend_data.py",
     "dev": "vite",
-    "build": "vite build && node scripts/build-standalone.js"
+    "build": "vite build && node scripts/build-standalone.js && node scripts/encrypt-standalone.js"
   },
   "dependencies": {
     "react": "^18.2.0",
