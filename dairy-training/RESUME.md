@@ -48,7 +48,5 @@ After changing clips, republish `dist/index.html` together with the changed `aud
   a Start button, and "Supported by" NDDB and NDDB Dairy Services. `#lessons` is the lesson grid; the brand name returns to the landing screen.
 - The language picker in the top bar is a dropdown with తెలుగు, English, தமிழ், ಕನ್ನಡ and हिन्दी.
 - Narration for all five languages uses the same voice (Kavya, pace 0.9). `python tts.py --lang ta` records one language.
-- Status: v8 is published with the landing page and all five languages of text. Sarvam credits ran out mid-recording, so 402 clips
-  (about 27,000 characters) are still missing: Tamil lessons 9–14 and nearly all of Kannada and Hindi. Missing clips fall back to the phone voice.
-  To finish: top up Sarvam credits, run `python tts.py`, then `python build.py`, and republish `dist/index.html` with the
-  new `audiojs/*-{ta,kn,hi}.js` bundles (each publish can carry at most 64 MB).
+- Status: v10 is published with full recorded voice in all five languages (890 clips, 178 per language).
+  New bundles are larger than one 64 MB publish, so send them in two batches.
