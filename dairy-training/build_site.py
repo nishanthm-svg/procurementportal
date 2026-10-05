@@ -31,5 +31,10 @@ for dst, src in copies.items():
     os.makedirs(os.path.dirname(f"{OUT}/{dst}"), exist_ok=True)
     shutil.copy2(src, f"{OUT}/{dst}")
 
+os.makedirs(f"{OUT}/poster", exist_ok=True)       # printable poster linked from the launch email
+for n in ("Shreeja-Dairy-School-poster.pdf", "Shreeja-Dairy-School-poster.png"):
+    if os.path.exists(f"poster/{n}"):
+        shutil.copy2(f"poster/{n}", f"{OUT}/poster/{n}")
+
 size = sum(os.path.getsize(os.path.join(d, f)) for d, _, fs in os.walk(OUT) if ".git" not in d for f in fs)
 print(f"site/: {len(copies) + 2} files, {size / 1e6:.1f} MB")
