@@ -26,3 +26,4 @@ console.log*
 
 # standalone dividend dashboard entry page
 !dividend-dashboard/index.html
+dividend-dashboard/dist/
