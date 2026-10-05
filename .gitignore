@@ -27,3 +27,6 @@ console.log*
 # standalone dividend dashboard entry page
 !dividend-dashboard/index.html
 dividend-dashboard/dist/
+# member data (names, codes, amounts) is never committed — build it locally
+dividend-dashboard/public/dividend.json.gz
+dividend-dashboard/.password
