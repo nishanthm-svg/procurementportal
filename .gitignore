@@ -23,3 +23,6 @@ vcg-mrg-react/
 *.bat
 *.cmd
 console.log*
+
+# standalone dividend dashboard entry page
+!dividend-dashboard/index.html

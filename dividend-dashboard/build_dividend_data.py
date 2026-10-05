@@ -1,5 +1,5 @@
 """
-Build backend/data/dividend.json.gz from the Members Dividend workbook.
+Build public/dividend.json.gz from the Members Dividend workbook.
 
 Usage:  python build_dividend_data.py "C:/path/to/Members Dividend.xlsx"
 
@@ -11,7 +11,7 @@ from pathlib import Path
 import pandas as pd
 
 SRC = sys.argv[1] if len(sys.argv) > 1 else str(Path.home() / 'Downloads' / 'Members Dividend.xlsx')
-OUT = Path(__file__).parent / 'backend' / 'data' / 'dividend.json.gz'
+OUT = Path(__file__).parent / 'public' / 'dividend.json.gz'
 YEARS = ['14-15', '15-16', '16-17', '17-18', '18-19', '19-20', '20-21', '21-22', '22-23', '23-24', '24-25', '25-26']
 
 df = pd.read_excel(SRC, dtype={'Unkey': str, 'PLANT CODE': str, 'MPP CODE': str, 'MEMBER CODE': str, 'FOLIO': str})

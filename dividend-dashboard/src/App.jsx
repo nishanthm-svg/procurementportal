@@ -1,12 +1,51 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Cell } from 'recharts'
-import { api } from '../api'
-import Loader, { PageHeader } from '../components/Loader'
-import DividendPresentation from '../components/DividendPresentation'
-import { INVEST, DIVIDEND, inr, inrShort, num, pct, allotLabel, Sparkline, ReturnBar, RankBadge, MemberCard } from '../components/DividendKit'
+import { loadData, getMeta, getScope } from './data'
+import DividendPresentation from './DividendPresentation'
+import { INVEST, DIVIDEND, inr, inrShort, num, pct, allotLabel, Sparkline, ReturnBar, RankBadge, MemberCard } from './DividendKit'
 
 const TOP_OPTIONS = [5, 10, 20]
+
+// Selection lives in the URL hash so links work from a file:// copy as well as when hosted
+function readHash() {
+  return new URLSearchParams(window.location.hash.replace(/^#/, ''))
+}
+function useHashParams() {
+  const [params, setState] = useState(readHash)
+  useEffect(() => {
+    const onHash = () => setState(readHash())
+    window.addEventListener('hashchange', onHash)
+    return () => window.removeEventListener('hashchange', onHash)
+  }, [])
+  function setParams(obj) {
+    window.location.hash = new URLSearchParams(obj).toString()
+  }
+  return [params, setParams]
+}
+
+function Loader({ text }) {
+  return (
+    <div className="flex flex-col items-center justify-center py-24 gap-3 text-sm text-slate-500">
+      <div className="w-9 h-9 border-4 border-emerald-100 border-t-emerald-600 rounded-full animate-spin" />
+      {text}
+    </div>
+  )
+}
+
+function TopBar({ total }) {
+  return (
+    <header className="bg-white border-b border-slate-200 sticky top-0 z-30">
+      <div className="max-w-7xl mx-auto px-4 h-14 flex items-center gap-3">
+        <div className="w-9 h-9 rounded-xl flex items-center justify-center text-white text-lg" style={{ background: DIVIDEND }}>₹</div>
+        <div className="min-w-0">
+          <div className="font-display font-bold text-slate-800 leading-tight">Members Dividend</div>
+          <div className="text-[11px] text-slate-400 truncate">Shreeja Mahila Milk Producer Company</div>
+        </div>
+        {total && <span className="ml-auto badge-green whitespace-nowrap">{num(total.members)} members</span>}
+      </div>
+    </header>
+  )
+}
 const BAND_COLORS = ['#cbd5e1', '#a7f3d0', '#6ee7b7', '#34d399', '#059669', '#065f46']
 
 function YearTooltip({ active, payload }) {
@@ -110,8 +149,8 @@ function MembersTable({ members, startRank }) {
   )
 }
 
-export default function DividendView() {
-  const [params, setParams] = useSearchParams()
+export default function App() {
+  const [params, setParams] = useHashParams()
   const aco = params.get('aco') || ''
   const bmcu = params.get('bmcu') || ''
   const mpp = params.get('mpp') || ''
@@ -123,11 +162,17 @@ export default function DividendView() {
   const [error, setError] = useState(null)
   const [presenting, setPresenting] = useState(false)
 
-  useEffect(() => { api.dividendMeta().then(setMeta).catch(e => setError(e.message)) }, [])
+  useEffect(() => { loadData().then(() => setMeta(getMeta())).catch(e => setError(e.message)) }, [])
   useEffect(() => {
+    if (!meta) return
     setLoading(true)
-    api.dividendScope({ aco, bmcu, mpp, top }).then(setData).catch(e => setError(e.message)).finally(() => setLoading(false))
-  }, [aco, bmcu, mpp, top])
+    // Let the progress bar paint before the (sub-second) aggregation runs
+    const t = setTimeout(() => {
+      try { setData(getScope({ aco, bmcu, mpp, top })) } catch (e) { setError(e.message) }
+      setLoading(false)
+    }, 0)
+    return () => clearTimeout(t)
+  }, [meta, aco, bmcu, mpp, top])
 
   function update(next) {
     const p = { aco, bmcu, mpp, top, ...next }
@@ -149,8 +194,8 @@ export default function DividendView() {
     for (const a of meta.tree) for (const b of a.bmcus) if (b.mpps.some(p => p.k === key)) return update({ aco: a.aco, bmcu: b.bmcu, mpp: key })
   }
 
-  if (error) return <div className="card card-body text-danger text-sm">Could not load dividend data: {error}</div>
-  if (!meta || !data) return <Loader />
+  if (error) return <><TopBar /><div className="max-w-7xl mx-auto p-4"><div className="card card-body text-red-600 text-sm">Could not load dividend data: {error}</div></div></>
+  if (!meta || !data) return <><TopBar /><Loader text="Loading 1.5 lakh member records…" /></>
 
   const k = data.kpis
   const level = data.level
@@ -160,11 +205,13 @@ export default function DividendView() {
   const topMembers = level === 'mpp' ? data.members.slice(0, top) : data.topMembers
 
   return (
-    <div>
-      <PageHeader title="Members Dividend" sub="Share capital invested vs cumulative dividend received · FY 2014-15 to FY 2025-26" badge={`${num(meta.total.members)} members`} />
+    <>
+    <TopBar total={meta.total} />
+    <main className="max-w-7xl mx-auto px-4 py-5">
+      <p className="text-sm text-slate-500 mb-4">Share capital invested vs cumulative dividend received · FY 2014-15 to FY 2025-26</p>
 
       {/* Cascading filter: ACO → BMCU → Village */}
-      <div className="card card-body mb-4 flex flex-wrap items-end gap-3 lg:sticky lg:top-14 z-20">
+      <div className="card card-body mb-4 flex flex-wrap items-end gap-3 lg:sticky lg:top-16 z-20">
         <label className="flex flex-col gap-1">
           <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">ACO</span>
           <select className="select min-w-[190px]" value={aco} onChange={e => update({ aco: e.target.value, bmcu: '', mpp: '' })}>
@@ -315,6 +362,7 @@ export default function DividendView() {
       )}
 
       {presenting && <DividendPresentation data={data} scopeName={scopeName} top={top} onClose={() => setPresenting(false)} />}
-    </div>
+    </main>
+    </>
   )
 }

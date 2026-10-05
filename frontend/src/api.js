@@ -30,6 +30,4 @@ export const api = {
   cans: (p) => get('/cans', p),
   mbrt: (p) => get('/mbrt', p),
   enums: () => get('/enums'),
-  dividendMeta: () => get('/dividend/meta'),
-  dividendScope: (p) => get('/dividend/scope', p),
 }

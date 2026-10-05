@@ -340,9 +340,6 @@ app.get('/api/grievance/audio/:id', (req, res) => {
 
 // ─── END GRIEVANCE ───────────────────────────────────────────────
 
-// Members dividend dashboard
-require('./dividend')(app);
-
 // Serve built frontend
 const DIST = path.join(__dirname, '..', 'frontend', 'dist');
 if (fs.existsSync(DIST)) {
