@@ -1,0 +1,438 @@
+[
+{
+"id": 1,
+"t": "Signs of a good dairy farm",
+"cards": [
+"A good dairy farm means healthy animals, one calf every year and more milk. Out of every 10 animals, about 7 should be giving milk.",
+"A cow should give one calf every 12–13 months (buffalo: 13–14 months). She should become pregnant again within 2–3 months after calving (buffalo: 3–5 months).",
+"Stop milking 2 months (60 days) before the next calving. This rest gives a stronger calf and more milk in the next lactation."
+],
+"quiz": [
+{
+"q": "A cow should give one calf every…",
+"opts": [
+"12–13 months",
+"2 years"
+]
+},
+{
+"q": "How long before calving should milking stop?",
+"opts": [
+"60 days",
+"5 days"
+]
+}
+]
+},
+{
+"id": 2,
+"t": "Heat signs and the right time for AI",
+"cards": [
+"The surest sign of heat: she stands still when another animal mounts her. If you see this, she is in heat.",
+"Other signs: tail lifted to one side, swollen and wet vulva, and clear glassy mucus hanging like a string.",
+"She walks about restlessly, bellows often, sniffs and licks other animals, urinates often, and eats and milks a little less. Buffaloes show weak signs, so watch them at dawn and dusk.",
+"Heat seen in the evening: get AI done the next morning. Heat seen in the morning: the same evening. Use semen only from good, high-merit bulls.",
+"If she did not become pregnant, she comes into heat again after 18–21 days. Watch her closely at dawn and dusk on those days. Get the pregnancy confirmed by the vet."
+],
+"quiz": [
+{
+"q": "What is the surest sign of heat?",
+"opts": [
+"Stands still when mounted",
+"Eats more feed"
+]
+},
+{
+"q": "Heat seen in the evening. When should AI be done?",
+"opts": [
+"Next morning",
+"After 3 days"
+]
+},
+{
+"q": "If she is not pregnant, when does heat come again?",
+"opts": [
+"After 18–21 days",
+"After 6 months"
+]
+}
+]
+},
+{
+"id": 3,
+"t": "Care of the newborn calf",
+"cards": [
+"Right after birth, wipe the mucus from the nose and mouth. Sit the calf up on its chest and rub the chest with dry straw so it breathes well.",
+"Let the mother lick the calf. It warms the calf and makes it strong. If she does not lick, sprinkle a little bran or salt on the calf, or dry it with a dry cloth or gunny bag.",
+"A healthy calf stands within 15–20 minutes and looks for milk. Watch the first 7 days closely. If it suckles poorly, is dull, or has diarrhoea or fever, call the vet.",
+"Tie the navel cord with clean thread 2–3 cm from the belly and cut below the knot. Dip it in tincture iodine for 30 seconds. Dip again after 12 hours.",
+"Feed 2 litres of first milk (colostrum) within 2 hours of birth, and 1–2 litres more within 12 hours. Colostrum protects the calf from disease. The first 2 hours are golden."
+],
+"quiz": [
+{
+"q": "When should the calf get its first milk (colostrum)?",
+"opts": [
+"Within 2 hours of birth",
+"The next day"
+]
+},
+{
+"q": "What should go on the cut navel?",
+"opts": [
+"Tincture iodine",
+"Mud or dung"
+]
+},
+{
+"q": "How soon should a healthy calf stand?",
+"opts": [
+"Within 15–20 minutes",
+"After 2 days"
+]
+}
+]
+},
+{
+"id": 4,
+"t": "Raising healthy calves",
+"cards": [
+"Calf has loose motions? Mix 5 teaspoons of glucose, 1 teaspoon of baking soda and 1 teaspoon of salt in 1 litre of clean water. Give 2–4 litres a day, in addition to milk. Call the vet.",
+"Deworm the calf at about 2 weeks of age (buffalo calf: 3–7 days), then every month until 6 months. Put an ear tag in the first 1–2 weeks.",
+"From 2 weeks, give calf starter feed and soft green grass. Clean water from day 3. Weigh the calf often to check it is growing.",
+"No vaccines before 3 months, because colostrum protects the calf until then. Foot and mouth vaccine at 4–6 months. Brucellosis vaccine for female calves only, once, at 4–8 months."
+],
+"quiz": [
+{
+"q": "For a calf with diarrhoea, what goes into 1 litre of water?",
+"opts": [
+"5 tsp glucose, 1 tsp soda, 1 tsp salt",
+"Only sugar"
+]
+},
+{
+"q": "When is the first deworming for a calf?",
+"opts": [
+"At about 2 weeks",
+"At 1 year"
+]
+},
+{
+"q": "Who gets the brucellosis vaccine?",
+"opts": [
+"Female calves, 4–8 months",
+"Newborn calves"
+]
+}
+]
+},
+{
+"id": 5,
+"t": "Stopping mastitis, clean milking",
+"cards": [
+"Before milking, wash the udder with clean water and dry it with a clean towel. Never reuse a dirty towel. Finish milking within 8 minutes.",
+"Hidden mastitis causes most of the loss. Test the milk of each teat with the CMT paddle every week. If the milk turns to jelly, the teat is infected. Tell the vet.",
+"Right after milking, dip every teat in teat-dip solution. This is the most important step to stop mastitis.",
+"Give fodder after milking so the cow stays standing for 30–45 minutes while the teat openings close.",
+"Milk healthy cows first and sick or mastitis cows last, into a separate bucket. Do not sell the milk of a treated cow for the days the vet tells you.",
+"Keep the floor clean, dry and without holes. Dirty, wet floors cause mastitis."
+],
+"quiz": [
+{
+"q": "What should you do right after milking?",
+"opts": [
+"Dip the teats in teat-dip",
+"Let the cow lie down"
+]
+},
+{
+"q": "Which shed is right?",
+"opts": [
+"Dry, clean shed, the tick side",
+"Wet, dirty shed, the cross side"
+]
+},
+{
+"q": "When should a sick cow be milked?",
+"opts": [
+"Last of all",
+"First of all"
+]
+}
+]
+},
+{
+"id": 6,
+"t": "After-calving problems and body condition",
+"cards": [
+"Cannot stand after calving, neck turned to one side, body feels cold: this is milk fever (low calcium). Call the vet at once.",
+"In the first 2 months after calving, call the vet if the cow suddenly eats less, gives less milk, or passes red or coffee-coloured urine. Feed her well for the milk she gives.",
+"Not too thin, not too fat. A medium, well-rounded body at calving (score 3 to 3.5) means fewer diseases and easier pregnancy. Fat cows get more milk fever and ketosis."
+],
+"quiz": [
+{
+"q": "After calving the cow cannot stand and her neck is turned. What should you do?",
+"opts": [
+"Milk fever: call the vet now",
+"Wait one week"
+]
+},
+{
+"q": "Which body is best at calving?",
+"opts": [
+"Medium, well-rounded",
+"Very fat",
+"Very thin"
+]
+}
+]
+},
+{
+"id": 7,
+"t": "Warning signs of dangerous diseases",
+"cards": [
+"Foot and mouth disease: fever, blisters in the mouth and feet, ropy saliva, limping. Separate the animal, inform the vet and clean with 4% washing soda. Vaccinate every 6 months.",
+"Lumpy skin disease: round lumps of 2–5 cm all over the skin. Ticks, flies and mosquitoes spread it. Control insects and vaccinate every year.",
+"Swollen throat and neck, drooling, fever, noisy breathing: this is haemorrhagic septicaemia. Separate the sick animal and do not give its feed or water to others. Vaccinate every year.",
+"Ticks spread theileriosis and babesiosis (fever, red or coffee-coloured urine). Check the skin often and keep the shed free of ticks.",
+"Fever, not eating, sudden drop in milk, diarrhoea, cough or limping: separate the animal and call the vet at once. Report any sudden death straight away.",
+"Dog bite? Wear gloves. Wash the wound with soap and running water for 10 minutes, and get the rabies vaccine from the vet the same day."
+],
+"quiz": [
+{
+"q": "Mouth blisters, ropy saliva and limping. Which disease?",
+"opts": [
+"Foot and mouth disease",
+"Sunstroke"
+]
+},
+{
+"q": "An animal falls sick. What is the first step?",
+"opts": [
+"Separate it and call the vet",
+"Keep it with the herd"
+]
+},
+{
+"q": "How long should a dog-bite wound be washed?",
+"opts": [
+"10 minutes with soap and running water",
+"No need to wash"
+]
+}
+]
+},
+{
+"id": 8,
+"t": "Vaccines and deworming",
+"cards": [
+"Foot and mouth vaccine: first at 4 months, a booster 1 month later, then every 6 months. Take all your animals to the government camp.",
+"Every year: HS and black quarter (from 6 months) and lumpy skin (from 4 months). Brucellosis: female calves once, at 4–8 months. Mark the dates on a calendar.",
+"A vaccine works only if it is kept cold. Do not let it freeze and thaw. At least 8 out of 10 animals in the village must be vaccinated to protect all.",
+"Deworm adult animals 1–2 times a year, before and after the rainy season. Deworm 2 weeks before vaccination. Give the full dose for the body weight."
+],
+"quiz": [
+{
+"q": "Foot and mouth vaccine is repeated every…",
+"opts": [
+"6 months",
+"5 years"
+]
+},
+{
+"q": "How long before vaccination should you deworm?",
+"opts": [
+"2 weeks before",
+"Not needed"
+]
+},
+{
+"q": "How should a vaccine be kept?",
+"opts": [
+"Cold, in an ice box",
+"In the sun"
+]
+}
+]
+},
+{
+"id": 9,
+"t": "Abortion and keeping disease out",
+"cards": [
+"If a cow aborts, separate her at once and call the vet. Keep other animals away from the aborted calf, the afterbirth and the bedding.",
+"Wear gloves and boots. Bury the aborted calf and afterbirth 4 feet deep with lime. Wash the shed with disinfectant. Brucellosis can infect people too.",
+"Buy animals only from trusted, tested farms. Keep a new animal apart for at least 30 days before it joins your herd. Test it for mastitis first.",
+"Keep visitors and vehicles out of the shed. Wash hands and dip feet at the entrance. Protect feed and water from rats, birds and dogs."
+],
+"quiz": [
+{
+"q": "How long should a newly bought animal be kept apart?",
+"opts": [
+"At least 30 days",
+"Not needed"
+]
+},
+{
+"q": "What should be done with an aborted calf?",
+"opts": [
+"Bury 4 feet deep with lime",
+"Throw it outside"
+]
+}
+]
+},
+{
+"id": 10,
+"t": "Hoof care",
+"cards": [
+"Lame cows eat less and give less milk. Watch every day how your cows walk. A cow holding up a leg needs the vet.",
+"Have a trained person trim the hooves twice a year. Overgrown hooves damage the legs.",
+"Where hoof disease is common, walk cows through a foot bath 2–3 times a week. Too much grain also causes hoof inflammation.",
+"Floors should be clean, dry and gently sloped with a drain. Avoid wet mud and sharp gravel."
+],
+"quiz": [
+{
+"q": "How often should hooves be trimmed?",
+"opts": [
+"Twice a year",
+"Never"
+]
+},
+{
+"q": "Which floor is right?",
+"opts": [
+"Dry, clean floor, the tick side",
+"Wet mud and gravel, the cross side"
+]
+}
+]
+},
+{
+"id": 11,
+"t": "Strength of our native breeds",
+"cards": [
+"Our native cows (Ongole, Gir, Sahiwal) and Murrah buffaloes are strong in our climate.",
+"Native cows bear heat up to 40°C, drought and ticks well. They get less mastitis, and their milk has 4.5–5.5% fat.",
+"Buffaloes cool themselves in water and shade and resist many diseases. In summer give them a pond, a sprinkler or shade.",
+"No breed is fully safe from disease. Native cows and buffaloes still need vaccines, deworming, good feed and the vet."
+],
+"quiz": [
+{
+"q": "Do native cows need vaccines?",
+"opts": [
+"Yes, they still do",
+"No, they never fall sick"
+]
+},
+{
+"q": "How much fat is in native cow milk?",
+"opts": [
+"4.5–5.5%",
+"1%"
+]
+}
+]
+},
+{
+"id": 12,
+"t": "Feeding the right way",
+"cards": [
+"Feed is 60–70% of the cost of milk. Milking, pregnant and dry animals, heifers and calves each need a different diet, so feed them in groups.",
+"Concentrate rule: half a kg for every 100 kg of body weight, plus 400 g for each litre of cow milk (500 g for buffalo). In months 6–9 of pregnancy, 1 kg extra.",
+"Give green fodder as 1 part legumes (cowpea, lucerne) to 2 parts grasses (maize, sorghum). Chopping with a chaff cutter means less waste.",
+"Low fat in milk? Give enough dry and green fodder. Do not overfeed grain or oil. Milk out completely, because the last milk has the most fat.",
+"Give mineral mixture every day (100–200 g for a milking cow). Keep clean water available all the time. A milking cow drinks 50–100 litres a day.",
+"Silage is green fodder stored for summer. Cut maize or sorghum when the grain is milky, chop to 1–2 cm, press hard in layers, seal airtight and open after 45 days. Good silage is golden-yellow with a fruity smell.",
+"Never feed mouldy or spoiled feed. It contains poison (aflatoxin). Store feed dry, raised and away from rats. Change the feed slowly, never suddenly."
+],
+"quiz": [
+{
+"q": "How much water does a milking cow drink a day?",
+"opts": [
+"50–100 litres",
+"5 litres"
+]
+},
+{
+"q": "How much concentrate for each litre of cow milk?",
+"opts": [
+"400 g",
+"5 kg"
+]
+},
+{
+"q": "What should you do with mouldy feed?",
+"opts": [
+"Throw it away",
+"Feed it to animals"
+]
+},
+{
+"q": "What does good silage look like?",
+"opts": [
+"Golden-yellow, fruity smell",
+"Black, rotten smell"
+]
+}
+]
+},
+{
+"id": 13,
+"t": "Protecting animals from summer heat",
+"cards": [
+"Signs of heat stress: panting with open mouth, drooling, crowding near water and shade, eating less, less milk.",
+"Never leave animals in the hot sun. Give shade, an airy shed and cool water all day. In summer animals can drink twice as much water.",
+"Fans, sprinklers and foggers cool animals quickly. Use them in the hottest hours.",
+"In summer give most feed in the cool early morning and evening, in small meals more often. Do not move or handle animals in the heat."
+],
+"quiz": [
+{
+"q": "Which animals are comfortable?",
+"opts": [
+"With shade, fan and water, the tick side",
+"The one in the sun, the cross side"
+]
+},
+{
+"q": "In summer, when should you feed?",
+"opts": [
+"Cool morning and evening",
+"Hot afternoon"
+]
+}
+]
+},
+{
+"id": 14,
+"t": "Records and the cost of a litre of milk",
+"cards": [
+"Write down every day: morning and evening milk, heat and AI dates, calvings, vaccines, deworming, treatments and money spent. Records show which cow makes a profit and which makes a loss.",
+"Pour milk at the collection centre and keep the slip. Note the litres, fat and SNF every day. It shows how well your feeding is working.",
+"Cost per litre = total cost for the month ÷ litres produced in the month. Example: ₹6,500 spent. 2 cows give 8 litres a day × 30 days = 240 litres. Cost is ₹27 per litre. You make a profit only if you get more than this.",
+"Feed is the biggest cost. Growing your own green fodder and feeding a balanced ration lowers the cost of every litre.",
+"Prevention is cheaper than treatment. Vaccines, deworming and clean milking cost little. Disease costs medicine and lost milk."
+],
+"quiz": [
+{
+"q": "Monthly cost ₹6,500, milk 240 litres. What is the cost per litre?",
+"opts": [
+"About ₹27",
+"About ₹10"
+]
+},
+{
+"q": "When should milk be written down?",
+"opts": [
+"Every day",
+"Once a year"
+]
+},
+{
+"q": "Which is cheaper?",
+"opts": [
+"Prevention with vaccines",
+"Treatment after disease"
+]
+}
+]
+}
+]

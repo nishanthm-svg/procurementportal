@@ -1,0 +1,8 @@
+.sarvam_key
+sheet.jpg
+preview.html
+audiojs/
+dist/
+web/
+*.log
+__pycache__/
