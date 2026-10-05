@@ -59,8 +59,8 @@ export function ReturnBar({ share, div, compact }) {
 const MEDALS = ['🥇', '🥈', '🥉']
 
 export function RankBadge({ rank }) {
-  if (rank <= 3) return <span className="text-xl leading-none">{MEDALS[rank - 1]}</span>
-  return <span className="w-6 h-6 rounded-full bg-slate-100 text-slate-500 text-[11px] font-bold inline-flex items-center justify-center">{rank}</span>
+  if (rank <= 3) return <span className="text-xl leading-none flex-shrink-0">{MEDALS[rank - 1]}</span>
+  return <span className="w-6 h-6 flex-shrink-0 rounded-full bg-slate-100 text-slate-500 text-[11px] font-bold inline-flex items-center justify-center">{rank}</span>
 }
 
 export function MemberCard({ m, showPlace, onPlace }) {

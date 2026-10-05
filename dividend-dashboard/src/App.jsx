@@ -74,17 +74,15 @@ function Leaderboard({ title, data, nameLabel, onPick, sub }) {
           <button key={r.key || r.name} onClick={() => onPick?.(r)} className="w-full text-left px-4 py-2.5 hover:bg-sky-50 transition flex items-center gap-3">
             <RankBadge rank={i + 1} />
             <div className="flex-1 min-w-0">
-              <div className="flex justify-between gap-2">
-                <span className="text-[13px] font-semibold text-slate-800 truncate">{r.name}</span>
-                <span className="text-[13px] font-bold tabular-nums" style={{ color: DIVIDEND }}>{inrShort(r.div)}</span>
+              <div className="flex justify-between gap-2 min-w-0">
+                <span className="text-[13px] font-semibold text-slate-800 truncate min-w-0">{r.name}</span>
+                <span className="text-[13px] font-bold tabular-nums whitespace-nowrap flex-shrink-0" style={{ color: DIVIDEND }}>{inrShort(r.div)}</span>
               </div>
               <div className="h-1.5 bg-slate-100 rounded-full mt-1 overflow-hidden">
                 <div className="h-full rounded-full" style={{ width: `${(r.div / max) * 100}%`, background: DIVIDEND }} />
               </div>
-              <div className="flex justify-between text-[10px] text-slate-400 mt-1">
-                <span className="truncate">{sub?.(r) ?? `${num(r.members)} members`}</span>
-                <span className="tabular-nums whitespace-nowrap">Invested {inrShort(r.share)} · {pct(r.ret, 0)} back</span>
-              </div>
+              <div className="text-[10px] text-slate-400 mt-1 truncate">{sub?.(r) ?? `${num(r.members)} members`}</div>
+              <div className="text-[10px] text-slate-500 tabular-nums truncate">Invested {inrShort(r.share)} · {pct(r.ret, 0)} came back as dividend</div>
             </div>
           </button>
         ))}
