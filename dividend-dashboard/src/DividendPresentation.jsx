@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, LabelList } from 'recharts'
+import { BarChart, Bar, XAxis, YAxis, LabelList } from 'recharts'
+import { LogoStrip, shreejaLogo } from './Brand'
 import { INVEST, DIVIDEND, inr, inrShort, num, pct, allotLabel, RankBadge, Sparkline } from './DividendKit'
 
 const ROWS_PER_SLIDE = 14
@@ -13,6 +14,7 @@ function chunk(arr, n) {
 }
 
 const PRINT_CSS = `
+.dp-chart .recharts-wrapper, .dp-chart svg { width: 100% !important; height: 100% !important; }
 .dp-slide { container-type: inline-size; aspect-ratio: 16 / 9; width: min(96vw, calc((100vh - 120px) * 16 / 9)); }
 @media print {
   @page { size: A4 landscape; margin: 0; }
@@ -62,7 +64,7 @@ function SlideHead({ title, sub, page, total }) {
         <div className="text-[1.1cqw] font-bold uppercase tracking-widest text-emerald-600">{sub}</div>
         <div className="text-[2.6cqw] font-bold font-display leading-tight">{title}</div>
       </div>
-      <div className="text-[0.9cqw] text-slate-400 text-right">Shreeja Mahila Milk Producer Company<br />{page} / {total}</div>
+      <div className="text-[0.9cqw] text-slate-400 text-right flex flex-col items-end gap-[0.3cqw]"><img src={shreejaLogo} alt="Shreeja" className="h-[2.6cqw] w-auto" />{page} / {total}</div>
     </div>
   )
 }
@@ -127,6 +129,7 @@ export default function DividendPresentation({ data, scopeName, top, onClose }) 
             </div>
             <div className="text-[1.7cqw] mt-[4%] text-emerald-50">For every <b className="text-white">₹100</b> invested, members have already received <b className="text-white">₹{per100}</b> back as dividend — and still own their shares.</div>
           </div>
+          <div className="bg-white px-[5%] py-[1.4%]"><LogoStrip size="slide" className="justify-between" /></div>
         </Slide>
 
         {/* 2 — Year trend */}
@@ -134,15 +137,17 @@ export default function DividendPresentation({ data, scopeName, top, onClose }) 
           <SlideHead title="Dividend paid, year after year" sub={scopeName} page={slides.indexOf('trend') + 1} total={total} />
           <div className="flex-1 grid grid-cols-[1fr_28%] gap-[3%] px-[4%] py-[2.5%] min-h-0">
             <div className="min-h-0">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={data.years} margin={{ top: 24, right: 8, left: 8, bottom: 0 }}>
-                  <XAxis dataKey="year" tick={{ fontSize: 12, fill: '#475569' }} tickFormatter={s => s.replace('FY ', '')} axisLine={false} tickLine={false} />
+              {/* Drawn at a fixed design size and scaled like an image: renders while the slide is
+                  hidden, keeps labels proportional to the slide, and prints correctly */}
+              <div className="dp-chart w-full h-full">
+                <BarChart width={880} height={540} data={data.years} margin={{ top: 30, right: 6, left: 6, bottom: 0 }}>
+                  <XAxis dataKey="year" tick={{ fontSize: 15, fill: '#475569' }} tickFormatter={s => s.replace('FY ', '')} axisLine={false} tickLine={false} interval={0} />
                   <YAxis hide />
-                  <Bar dataKey="div" fill={DIVIDEND} radius={[5, 5, 0, 0]} isAnimationActive={false}>
-                    <LabelList dataKey="div" position="top" formatter={inrShort} style={{ fontSize: 11, fill: '#334155', fontWeight: 600 }} />
+                  <Bar dataKey="div" fill={DIVIDEND} radius={[6, 6, 0, 0]} isAnimationActive={false}>
+                    <LabelList dataKey="div" position="top" formatter={v => inrShort(v).replace(' ', String.fromCharCode(160))} style={{ fontSize: 13.5, fill: '#334155', fontWeight: 600 }} />
                   </Bar>
                 </BarChart>
-              </ResponsiveContainer>
+              </div>
             </div>
             <div className="flex flex-col justify-center gap-[8%]">
               {[
@@ -255,6 +260,7 @@ export default function DividendPresentation({ data, scopeName, top, onClose }) 
             <div className="text-[4.4cqw] font-bold font-display leading-tight mt-3">{inr(k.div)} returned to our members</div>
             <div className="text-[1.7cqw] text-emerald-50 mt-4 max-w-[80%]">Your shares keep earning every year. Keep pouring milk to Shreeja — the more the company grows, the more it returns to you.</div>
           </div>
+          <div className="bg-white px-[5%] py-[1.4%]"><LogoStrip size="slide" className="justify-between" /></div>
         </Slide>
       </div>
 

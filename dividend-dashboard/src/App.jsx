@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from 'react'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Cell } from 'recharts'
 import { loadData, getMeta, getScope } from './data'
 import DividendPresentation from './DividendPresentation'
+import Landing from './Landing'
+import { shreejaLogo, nddbLogo, nddsLogo } from './Brand'
 import { INVEST, DIVIDEND, inr, inrShort, num, pct, allotLabel, Sparkline, ReturnBar, RankBadge, MemberCard } from './DividendKit'
 
 const TOP_OPTIONS = [5, 10, 20]
@@ -32,16 +34,22 @@ function Loader({ text }) {
   )
 }
 
-function TopBar({ total }) {
+function TopBar({ total, onHome }) {
   return (
     <header className="bg-white border-b border-slate-200 sticky top-0 z-30">
-      <div className="max-w-7xl mx-auto px-4 h-14 flex items-center gap-3">
-        <div className="w-9 h-9 rounded-xl flex items-center justify-center text-white text-lg" style={{ background: DIVIDEND }}>₹</div>
-        <div className="min-w-0">
+      <div className="max-w-7xl mx-auto px-4 h-16 flex items-center gap-3">
+        <button onClick={onHome} title="Back to home" className="flex-shrink-0">
+          <img src={shreejaLogo} alt="Shreeja Mahila Milk Producer Company" className="h-10 w-auto" />
+        </button>
+        <div className="min-w-0 border-l border-slate-200 pl-3">
           <div className="font-display font-bold text-slate-800 leading-tight">Members Dividend</div>
-          <div className="text-[11px] text-slate-400 truncate">Shreeja Mahila Milk Producer Company</div>
+          <div className="text-[11px] text-slate-400 truncate">FY 2014-15 to FY 2025-26{total ? ` · ${num(total.members)} members` : ''}</div>
         </div>
-        {total && <span className="ml-auto badge-green whitespace-nowrap">{num(total.members)} members</span>}
+        <div className="ml-auto hidden md:flex items-center gap-2.5">
+          <span className="text-[10px] font-semibold uppercase tracking-widest text-slate-400">Supported by</span>
+          <img src={nddbLogo} alt="National Dairy Development Board" className="h-8 w-auto" />
+          <img src={nddsLogo} alt="NDDB Dairy Services" className="h-8 w-auto" />
+        </div>
       </div>
     </header>
   )
@@ -172,8 +180,12 @@ export default function App() {
     return () => clearTimeout(t)
   }, [meta, aco, bmcu, mpp, top])
 
+  const onDashboard = params.get('page') === 'dashboard' || !!(aco || bmcu || mpp)
+  useEffect(() => { window.scrollTo(0, 0) }, [onDashboard])
+  const goHome = () => setParams({})
+
   function update(next) {
-    const p = { aco, bmcu, mpp, top, ...next }
+    const p = { page: 'dashboard', aco, bmcu, mpp, top, ...next }
     const clean = Object.fromEntries(Object.entries(p).filter(([k, v]) => v && !(k === 'top' && v === 5)))
     setParams(clean)
   }
@@ -192,8 +204,9 @@ export default function App() {
     for (const a of meta.tree) for (const b of a.bmcus) if (b.mpps.some(p => p.k === key)) return update({ aco: a.aco, bmcu: b.bmcu, mpp: key })
   }
 
-  if (error) return <><TopBar /><div className="max-w-7xl mx-auto p-4"><div className="card card-body text-red-600 text-sm">Could not load dividend data: {error}</div></div></>
-  if (!meta || !data) return <><TopBar /><Loader text="Loading 1.5 lakh member records…" /></>
+  if (error) return <><TopBar onHome={goHome} /><div className="max-w-7xl mx-auto p-4"><div className="card card-body text-red-600 text-sm">Could not load dividend data: {error}</div></div></>
+  if (!meta || !data) return <><TopBar onHome={goHome} /><Loader text="Loading 1.5 lakh member records…" /></>
+  if (!onDashboard) return <Landing meta={meta} overview={data} onOpen={sel => setParams({ page: 'dashboard', ...sel })} />
 
   const k = data.kpis
   const level = data.level
@@ -204,7 +217,7 @@ export default function App() {
 
   return (
     <>
-    <TopBar total={meta.total} />
+    <TopBar total={meta.total} onHome={goHome} />
     <main className="max-w-7xl mx-auto px-4 py-5">
       <p className="text-sm text-slate-500 mb-4">Share capital invested vs cumulative dividend received · FY 2014-15 to FY 2025-26</p>
 
@@ -235,7 +248,7 @@ export default function App() {
           <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Show top</span>
           <div className="flex rounded-lg border border-slate-200 overflow-hidden">
             {TOP_OPTIONS.map(n => (
-              <button key={n} onClick={() => update({ top: n })} className={`px-3 py-1.5 text-sm font-semibold ${top === n ? 'bg-sky-500 text-white' : 'bg-white text-slate-500 hover:bg-slate-50'}`}>{n}</button>
+              <button key={n} onClick={() => update({ top: n })} className={`px-3 py-1.5 text-sm font-semibold ${top === n ? 'bg-emerald-600 text-white' : 'bg-white text-slate-500 hover:bg-slate-50'}`}>{n}</button>
             ))}
           </div>
         </div>
