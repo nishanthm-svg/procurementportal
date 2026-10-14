@@ -1,0 +1,4 @@
+# Member data and passwords never go to git
+data/
+dist/
+.credentials.json

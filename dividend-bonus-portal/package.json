@@ -1,0 +1,9 @@
+{
+  "name": "members-dividend-bonus-portal",
+  "private": true,
+  "scripts": {
+    "data": "python -I build_data.py",
+    "build": "node build.js",
+    "logins": "python -I make_credentials_xlsx.py"
+  }
+}

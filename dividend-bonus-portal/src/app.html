@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Members Dividend &amp; Bonus</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --green: #047857; --green-d: #064e3b; --ink: #0b0b0b; --ink2: #52514e; --muted: #898781;
+    --line: #e1e0d9; --base: #c3c2b7; --surface: #ffffff; --plane: #f6f6f3;
+    --share: #2a78d6; --div: #047857; --bon: #d98a00; --tot: #4a3aa7; --red: #d03b3b;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; color: var(--ink); background: var(--plane); font-size: 14px; }
+  button, select, input { font: inherit; }
+  .hidden { display: none !important; }
+
+  /* Login */
+  #login { min-height: 100vh; display: flex; flex-direction: column; }
+  .brand { background: #fff; border-bottom: 1px solid var(--line); padding: 12px 16px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+  .brand img.main { height: 44px; }
+  .support { display: flex; align-items: center; gap: 10px; }
+  .support span { font-size: 10px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: #94a3b8; }
+  .support img { height: 32px; }
+  #login main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 32px 16px; background: linear-gradient(125deg, #064e3b 0%, #047857 55%, #0f766e 100%); }
+  #login form { width: 100%; max-width: 380px; background: #fff; border-radius: 16px; padding: 28px 24px; box-shadow: 0 20px 50px rgba(0,0,0,.25); }
+  #login h1 { font-size: 20px; margin: 0 0 4px; }
+  #login p { margin: 0 0 18px; color: var(--ink2); font-size: 14px; line-height: 1.45; }
+  #login label { display: block; margin-top: 12px; font-size: 12px; font-weight: 700; color: var(--ink2); text-transform: uppercase; letter-spacing: .06em; }
+  #login input { width: 100%; margin-top: 6px; padding: 11px 12px; font-size: 16px; border: 1px solid var(--line); border-radius: 10px; outline: none; }
+  #login input:focus { border-color: #34d399; box-shadow: 0 0 0 3px #d1fae5; }
+  #login button { width: 100%; margin-top: 16px; padding: 11px; font-size: 15px; font-weight: 700; color: #fff; background: var(--green); border: 0; border-radius: 10px; cursor: pointer; }
+  #login button:disabled { opacity: .6; cursor: wait; }
+  .err { color: var(--red); font-size: 13px; min-height: 18px; margin-top: 10px; }
+
+  /* App shell */
+  header.top { background: var(--green-d); color: #fff; padding: 10px 16px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  header.top img { height: 34px; background: #fff; border-radius: 6px; padding: 3px 6px; }
+  header.top .t { flex: 1; min-width: 180px; }
+  header.top .t b { display: block; font-size: 16px; }
+  header.top .t span { font-size: 12px; opacity: .8; }
+  .who { font-size: 12px; text-align: right; }
+  .who b { display: block; font-size: 13px; }
+  .btn { border: 1px solid var(--line); background: #fff; color: var(--ink); border-radius: 8px; padding: 6px 12px; cursor: pointer; font-size: 13px; white-space: nowrap; }
+  .btn:hover { background: #f0efec; }
+  .btn.ghost { background: transparent; color: #fff; border-color: rgba(255,255,255,.4); }
+  .btn.ghost:hover { background: rgba(255,255,255,.12); }
+  .btn.pri { background: var(--green); color: #fff; border-color: var(--green); font-weight: 600; }
+  .btn.pri:hover { background: var(--green-d); }
+  .btn.sm { padding: 3px 8px; font-size: 12px; }
+
+  nav.tabs { background: #fff; border-bottom: 1px solid var(--line); display: flex; overflow-x: auto; padding: 0 8px; }
+  nav.tabs button { border: 0; background: none; padding: 12px 14px; cursor: pointer; color: var(--ink2); font-weight: 600; white-space: nowrap; border-bottom: 3px solid transparent; }
+  nav.tabs button.on { color: var(--green); border-bottom-color: var(--green); }
+
+  .filters { background: #fff; border-bottom: 1px solid var(--line); padding: 10px 16px; display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; position: sticky; top: 0; z-index: 50; box-shadow: 0 2px 6px rgba(0,0,0,.04); }
+  .filters label { display: flex; flex-direction: column; font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; gap: 3px; }
+  .filters select { border: 1px solid var(--line); border-radius: 8px; padding: 6px 8px; background: #fff; color: var(--ink); min-width: 110px; max-width: 220px; font-size: 13px; text-transform: none; letter-spacing: 0; font-weight: 400; }
+  .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: #fff; }
+  .seg button { border: 0; background: none; padding: 6px 11px; cursor: pointer; font-size: 13px; color: var(--ink2); white-space: nowrap; }
+  .seg button + button { border-left: 1px solid var(--line); }
+  .seg button.on { background: var(--green); color: #fff; font-weight: 600; }
+  .yrq { display: flex; gap: 4px; flex-wrap: wrap; }
+  .yrq button { border: 1px solid var(--line); background: #fff; border-radius: 999px; padding: 3px 9px; font-size: 12px; cursor: pointer; color: var(--ink2); }
+  .yrq button.on { border-color: var(--green); color: var(--green); font-weight: 700; background: #ecfdf5; }
+  .scope { font-size: 12px; color: var(--ink2); align-self: center; flex: 1; min-width: 160px; }
+  .scope b { color: var(--ink); }
+
+  main.app { padding: 16px; max-width: 1400px; margin: 0 auto; }
+  section.tab { display: none; }
+  section.tab.on { display: block; }
+  h2 { font-size: 17px; margin: 22px 0 10px; }
+  h2:first-child { margin-top: 4px; }
+  h3 { font-size: 14px; margin: 0 0 4px; }
+  .sub { color: var(--ink2); font-size: 12px; margin: 0 0 10px; line-height: 1.45; }
+  .grid { display: grid; gap: 12px; }
+  .g2 { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px; min-width: 0; }
+  .kpi { border-top: 4px solid var(--kc, var(--line)); }
+  .kpi .l { font-size: 12px; color: var(--ink2); }
+  .kpi .v { font-size: 22px; font-weight: 700; margin-top: 2px; font-variant-numeric: tabular-nums; }
+  .kpi .s { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .kpi.hero { background: var(--green-d); color: #fff; border-color: var(--green-d); }
+  .kpi.hero .l, .kpi.hero .s { color: #a7f3d0; }
+  .story { background: linear-gradient(120deg, #ecfdf5, #fff7e6); border: 1px solid #c7ecd9; border-radius: 12px; padding: 14px 16px; margin-top: 12px; font-size: 15px; line-height: 1.5; }
+  .story b { color: var(--green-d); }
+  .chart { position: relative; height: 280px; }
+  .chart.tall { height: 360px; }
+  .sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; vertical-align: middle; margin-right: 5px; }
+
+  table { border-collapse: collapse; width: 100%; font-size: 13px; }
+  th, td { padding: 7px 8px; border-bottom: 1px solid var(--line); text-align: left; white-space: nowrap; }
+  th { font-size: 11px; text-transform: uppercase; letter-spacing: .04em; color: var(--ink2); background: #fafaf8; position: sticky; top: 0; cursor: pointer; user-select: none; z-index: 1; }
+  th.num, td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  th .ar { color: var(--green); }
+  tbody tr:hover { background: #f7f7f4; }
+  tfoot td { font-weight: 700; background: #fafaf8; position: sticky; bottom: 0; }
+  .tw { overflow: auto; max-height: 600px; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
+  .link { color: var(--share); cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+  td.c-div { color: var(--div); } td.c-bon { color: #9a5f00; } td.c-tot { font-weight: 700; }
+  .row-actions { display: flex; gap: 8px; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-bottom: 8px; }
+  .row-actions .l { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .pager { display: flex; gap: 8px; align-items: center; justify-content: flex-end; margin-top: 8px; font-size: 13px; color: var(--ink2); }
+  .note { font-size: 12px; color: var(--ink2); background: #fff; border: 1px dashed var(--base); border-radius: 10px; padding: 10px 12px; margin-top: 10px; line-height: 1.5; }
+  .note.warn { border-color: #eda100; background: #fff8e8; color: #7a4b00; }
+  input.search { border: 1px solid var(--line); border-radius: 8px; padding: 7px 10px; min-width: 240px; font-size: 14px; }
+  .mppHead { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; align-items: flex-start; }
+  .mppHead .nm { font-size: 22px; font-weight: 800; }
+  .mppHead .meta { color: var(--ink2); font-size: 13px; margin-top: 2px; }
+  .empty { padding: 40px 16px; text-align: center; color: var(--ink2); }
+
+  /* Member modal */
+  .modal { position: fixed; inset: 0; background: rgba(15,23,42,.55); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 12px; }
+  .modal .box { background: #fff; border-radius: 14px; width: 100%; max-width: 720px; max-height: 92vh; overflow: auto; padding: 18px; }
+  .modal .x { float: right; }
+
+  /* Presentation */
+  #pres { position: fixed; inset: 0; z-index: 300; background: rgba(15,23,42,.96); display: flex; flex-direction: column; }
+  #pres .chrome { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 14px; color: #cbd5e1; font-size: 13px; flex-wrap: wrap; }
+  #pres .chrome b { color: #fff; }
+  #pres .chrome .btn { background: rgba(255,255,255,.1); color: #fff; border-color: transparent; }
+  #pres .stage { flex: 1; display: flex; align-items: center; justify-content: center; padding: 6px; min-height: 0; }
+  .slide { display: none; container-type: inline-size; aspect-ratio: 16 / 9; width: min(96vw, calc((100vh - 110px) * 16 / 9)); background: #fff; color: #1e293b; border-radius: 12px; overflow: hidden; flex-direction: column; position: relative; box-shadow: 0 25px 60px rgba(0,0,0,.5); }
+  .slide.on { display: flex; }
+  .slide.dark { background: linear-gradient(130deg, #064e3b 0%, #047857 50%, #0f766e 100%); color: #fff; }
+  .s-head { display: flex; justify-content: space-between; align-items: flex-end; padding: 2.6cqw 4cqw 1.2cqw; border-bottom: .35cqw solid var(--div); }
+  .s-head .k { font-size: 1.05cqw; font-weight: 700; text-transform: uppercase; letter-spacing: .15em; color: #059669; }
+  .s-head .h { font-size: 2.5cqw; font-weight: 800; line-height: 1.15; }
+  .s-head .r { text-align: right; font-size: .9cqw; color: #94a3b8; display: flex; flex-direction: column; align-items: flex-end; gap: .3cqw; }
+  .s-head .r img { height: 2.6cqw; }
+  .s-body { flex: 1; padding: 2cqw 4cqw; min-height: 0; display: flex; flex-direction: column; }
+  .s-foot { background: #fff; padding: 1.1cqw 4cqw; display: flex; align-items: center; justify-content: space-between; }
+  .s-foot img.m { height: 3.6cqw; }
+  .s-foot .sp { display: flex; align-items: center; gap: 1cqw; }
+  .s-foot .sp span { font-size: .8cqw; letter-spacing: .14em; text-transform: uppercase; color: #94a3b8; font-weight: 600; }
+  .s-foot .sp img { height: 2.8cqw; }
+  .cover { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 0 6cqw; }
+  .cover .k { font-size: 1.2cqw; font-weight: 700; letter-spacing: .3em; text-transform: uppercase; color: #a7f3d0; }
+  .cover .nm { font-size: 5cqw; font-weight: 800; line-height: 1.08; margin-top: .8cqw; }
+  .cover .w { font-size: 1.5cqw; color: #d1fae5; margin-top: .8cqw; }
+  .tiles { display: grid; gap: 1.6cqw; margin-top: 3cqw; }
+  .tile { border-radius: 1.4cqw; padding: 1.6cqw 1.8cqw; background: rgba(255,255,255,.12); min-width: 0; }
+  .tile .l { font-size: 1.05cqw; letter-spacing: .12em; text-transform: uppercase; color: #d1fae5; }
+  .tile .v { font-size: 3.4cqw; font-weight: 800; margin-top: .5cqw; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .tile.w { background: #fff; color: var(--green-d); box-shadow: 0 1cqw 3cqw rgba(0,0,0,.2); }
+  .tile.w .l { color: #059669; font-weight: 700; }
+  .cover .msg { font-size: 1.7cqw; margin-top: 2.6cqw; color: #ecfdf5; }
+  .cover .msg b { color: #fff; }
+  .s-chart { flex: 1; min-height: 0; position: relative; }
+  .s-chart canvas { width: 100% !important; height: 100% !important; }
+  .s-side { display: grid; grid-template-columns: 1fr 27%; gap: 3cqw; flex: 1; min-height: 0; }
+  .facts { display: flex; flex-direction: column; gap: 1.2cqw; justify-content: center; }
+  .fact { border-left: .5cqw solid var(--fc); padding: .4cqw 0 .4cqw 1.2cqw; }
+  .fact .l { font-size: 1cqw; text-transform: uppercase; letter-spacing: .1em; color: #64748b; }
+  .fact .v { font-size: 2.3cqw; font-weight: 800; font-variant-numeric: tabular-nums; }
+  .fact .s { font-size: 1cqw; color: #64748b; }
+  .tops { display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(2, 1fr); gap: 1.3cqw; flex: 1; min-height: 0; }
+  .topc { border: .12cqw solid #e2e8f0; border-radius: 1.2cqw; padding: 1.2cqw; display: flex; flex-direction: column; min-width: 0; background: #f8fafc; }
+  .topc .rk { width: 2.6cqw; height: 2.6cqw; border-radius: 50%; background: var(--div); color: #fff; font-weight: 800; display: flex; align-items: center; justify-content: center; font-size: 1.2cqw; }
+  .topc .rk.g1 { background: #d4a106; } .topc .rk.g2 { background: #94a3b8; } .topc .rk.g3 { background: #b45309; }
+  .topc .n { font-size: 1.25cqw; font-weight: 700; margin-top: .8cqw; line-height: 1.2; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+  .topc .c { font-size: .85cqw; color: #64748b; }
+  .topc .big { font-size: 2cqw; font-weight: 800; color: var(--green-d); margin-top: auto; font-variant-numeric: tabular-nums; }
+  .topc .sm { font-size: .9cqw; color: #475569; line-height: 1.5; }
+  .s-table { width: 100%; border-collapse: collapse; font-size: 1.15cqw; }
+  .s-table th { position: static; background: #f1f5f9; font-size: .9cqw; padding: .55cqw .8cqw; color: #475569; cursor: default; }
+  .s-table td { padding: .5cqw .8cqw; border-bottom: .08cqw solid #e2e8f0; }
+  .s-table td.num, .s-table th.num { text-align: right; }
+  .s-table tfoot td { position: static; background: #ecfdf5; color: var(--green-d); }
+  .closing { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 8cqw; }
+  .closing .q { font-size: 3.4cqw; font-weight: 800; line-height: 1.2; }
+  .closing .p { font-size: 1.6cqw; margin-top: 2cqw; color: #d1fae5; line-height: 1.5; }
+  .pn { position: absolute; bottom: 1cqw; right: 1.6cqw; font-size: .9cqw; color: #94a3b8; }
+
+  @media (max-width: 640px) {
+    main.app { padding: 12px; }
+    .filters { position: static; }
+    .filters select { min-width: 0; max-width: none; width: 100%; }
+    .filters label.f { flex: 1 1 45%; }
+    .who { display: none; }
+    input.search { min-width: 0; width: 100%; }
+    .kpi .v { font-size: 19px; }
+  }
+  @media print {
+    @page { size: A4 landscape; margin: 0; }
+    body > *:not(#pres) { display: none !important; }
+    #pres { position: static; background: #fff; display: block; }
+    #pres .chrome { display: none; }
+    #pres .stage { display: block; padding: 0; }
+    .slide { display: flex !important; width: 297mm; height: 209mm; aspect-ratio: auto; border-radius: 0; box-shadow: none; break-after: page; page-break-after: always; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<div id="login">
+  <div class="brand">
+    <img class="main" src="__LOGO_SHREEJA__" alt="Shreeja Mahila Milk Producer Company" />
+    <div class="support"><span>Supported by</span>
+      <img src="__LOGO_NDDB__" alt="National Dairy Development Board" />
+      <img src="__LOGO_NDS__" alt="NDDB Dairy Services" />
+    </div>
+  </div>
+  <main>
+    <form id="lf" autocomplete="off">
+      <h1>Members Dividend &amp; Bonus</h1>
+      <p>Share capital invested and the dividend and bonus paid to members, FY 2014-15 to FY 2025-26. Sign in with the login ID and password you were given.</p>
+      <label for="uid">Login ID</label>
+      <input id="uid" required autocapitalize="characters" spellcheck="false" placeholder="e.g. ACO05" />
+      <label for="pw">Password</label>
+      <input id="pw" type="password" required autocapitalize="none" autocomplete="off" spellcheck="false" />
+      <button id="lb" type="submit">Open portal</button>
+      <div class="err" id="le" role="alert"></div>
+    </form>
+  </main>
+</div>
+
+<div id="app" class="hidden">
+  <header class="top">
+    <img src="__LOGO_SHREEJA__" alt="Shreeja" />
+    <div class="t"><b>Members Dividend &amp; Bonus</b><span id="hsub"></span></div>
+    <div class="who"><b id="wname"></b><span id="wrole"></span></div>
+    <button class="btn ghost" id="logout">Sign out</button>
+  </header>
+  <nav class="tabs" id="tabs">
+    <button data-t="overview" class="on">Overview</button>
+    <button data-t="years">Year-wise</button>
+    <button data-t="rank">Compare</button>
+    <button data-t="mpp">MPP &amp; presentation</button>
+    <button data-t="members">Members</button>
+    <button data-t="admin" id="adminTab" class="hidden">Admin</button>
+  </nav>
+  <div class="filters">
+    <label>Show<span class="seg" id="mode">
+      <button data-m="both" class="on">Dividend + Bonus</button><button data-m="div">Dividend only</button><button data-m="bon">Bonus only</button>
+    </span></label>
+    <label class="f">From<select id="y0"></select></label>
+    <label class="f">To<select id="y1"></select></label>
+    <label>Quick years<span class="yrq" id="yrq"></span></label>
+    <label class="f" id="fAcoW">ACO<select id="fAco"></select></label>
+    <label class="f">BMCU<select id="fBm"></select></label>
+    <label class="f">MPP<select id="fMpp"></select></label>
+    <button class="btn" id="fReset">Reset</button>
+    <button class="btn pri" id="presBtn">▶ Present this view</button>
+    <span class="scope" id="scope"></span>
+  </div>
+  <main class="app">
+    <section class="tab on" id="t-overview">
+      <div class="kpis" id="kpis"></div>
+      <div class="story" id="story"></div>
+      <div id="notes"></div>
+      <div class="grid g2" style="margin-top:14px">
+        <div class="card"><h3 id="cYearT">Paid each year</h3><p class="sub" id="cYearS"></p><div class="chart"><canvas id="chYear"></canvas></div></div>
+        <div class="card"><h3>Investment vs money received</h3><p class="sub">Cumulative amount received by members against the share capital they hold today.</p><div class="chart"><canvas id="chCum"></canvas></div></div>
+      </div>
+      <h2>Year by year</h2>
+      <div class="tw" id="yearTable"></div>
+    </section>
+
+    <section class="tab" id="t-years">
+      <h2>Year-wise matrix</h2>
+      <p class="sub">Amount paid per year for the selected benefit (Dividend + Bonus, Dividend only, or Bonus only) and years. Darker cells = more money.</p>
+      <div class="row-actions">
+        <div class="l"><span class="sub" style="margin:0">Rows:</span><span class="seg" id="mxBy"></span></div>
+        <button class="btn" id="mxCsv">Download (CSV)</button>
+      </div>
+      <div class="tw" id="mxTable"></div>
+    </section>
+
+    <section class="tab" id="t-rank">
+      <h2 id="rkTitle">Compare</h2>
+      <p class="sub">Tap a name to filter the whole portal to it. Columns sort on tap. "Per ₹100" = amount received for every ₹100 of share capital.</p>
+      <div class="row-actions">
+        <div class="l"><span class="sub" style="margin:0">Group by:</span><span class="seg" id="rkBy"></span><input class="search" id="rkQ" placeholder="Search name / code" /></div>
+        <button class="btn" id="rkCsv">Download (CSV)</button>
+      </div>
+      <div class="card" style="margin-bottom:12px"><h3 id="rkChartT"></h3><p class="sub">Top 15 by the amount received in the selected years.</p><div class="chart tall"><canvas id="chRank"></canvas></div></div>
+      <div class="tw" id="rkTable"></div>
+    </section>
+
+    <section class="tab" id="t-mpp">
+      <div id="mppPick">
+        <h2>Pick an MPP</h2>
+        <p class="sub">Every MPP has its own presentation for the members' meeting. Search, then tap ▶ to open it, or tap the name for the full MPP page.</p>
+        <div class="row-actions"><input class="search" id="mpQ" placeholder="Search MPP name / code / BMCU" /><span class="sub" id="mpCount" style="margin:0"></span></div>
+        <div class="tw" id="mpTable"></div>
+      </div>
+      <div id="mppView" class="hidden"></div>
+    </section>
+
+    <section class="tab" id="t-members">
+      <h2>Members</h2>
+      <p class="sub">Search a member by name, member code or folio. Tap a name for the year-by-year statement.</p>
+      <div class="row-actions"><input class="search" id="mbQ" placeholder="Name / member code / folio" /><div class="l"><span class="sub" id="mbCount" style="margin:0"></span><button class="btn" id="mbCsv">Download (CSV)</button></div></div>
+      <div class="tw" id="mbTable"></div>
+      <div class="pager"><button class="btn" id="pPrev">‹ Prev</button><span id="pInfo"></span><button class="btn" id="pNext">Next ›</button></div>
+    </section>
+
+    <section class="tab" id="t-admin">
+      <h2>ACO logins</h2>
+      <p class="sub">Each ACO signs in with their own ID and sees only their MPPs and members. Passwords are not stored in this page; they are on the login sheet.</p>
+      <div class="row-actions"><span></span><button class="btn" id="lgCsv">Download (CSV)</button></div>
+      <div class="tw" id="lgTable"></div>
+      <h2>Full data export</h2>
+      <p class="sub">Every member in the current filter with share capital and all 12 years of dividend and 11 years of bonus.</p>
+      <button class="btn pri" id="fullCsv">Download all member data (CSV)</button>
+      <div id="adminNotes"></div>
+    </section>
+  </main>
+</div>
+
+<div class="modal hidden" id="modal"><div class="box" id="mbox"></div></div>
+
+<div id="pres" class="hidden">
+  <div class="chrome">
+    <span><b id="pTitle"></b> · <span id="pPage"></span></span>
+    <span style="display:flex;gap:6px;flex-wrap:wrap">
+      <button class="btn" id="pPrevS">‹ Prev</button><button class="btn" id="pNextS">Next ›</button>
+      <button class="btn" id="pPrint">🖨 Print / Save PDF</button><button class="btn" id="pClose">✕ Close (Esc)</button>
+    </span>
+  </div>
+  <div class="stage" id="stage"></div>
+</div>
+
+<script>
+const LOCK = /*__LOCK__*/null;
+const SKEY = 'dividend-bonus-portal-session';
+const LOGO = { shreeja: '__LOGO_SHREEJA__', nddb: '__LOGO_NDDB__', nds: '__LOGO_NDS__' };
+class WrongPassword extends Error {}
+const b64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+const toB64 = (u8) => { let s = ''; for (const b of u8) s += String.fromCharCode(b); return btoa(s); };
+function loadScript(src) {
+  return new Promise((ok, fail) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = () => fail(new Error('Could not load ' + src)); document.head.appendChild(s); });
+}
+async function gunzip(buf) {
+  if (window.DecompressionStream) {
+    try { return await new Response(new Blob([buf]).stream().pipeThrough(new DecompressionStream('gzip'))).text(); } catch (_) { /* fall through */ }
+  }
+  // Older browsers (Safari < 16.4, old Android WebView): inflate with pako
+  if (!window.pako) await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako_inflate.min.js');
+  return window.pako.inflate(new Uint8Array(buf), { to: 'string' });
+}
+// d/<ID>.bin = salt(16) | iv(12) | AES-GCM ciphertext + tag
+async function fetchBlob(id) {
+  const r = await fetch('d/' + id + '.bin?v=' + LOCK.v, { cache: 'no-cache' });
+  if (!r.ok) throw new Error('Data file not found (' + r.status + ')');
+  const u8 = new Uint8Array(await r.arrayBuffer());
+  return { salt: u8.slice(0, 16), iv: u8.slice(16, 28), data: u8.slice(28) };
+}
+async function keyFrom(pw, salt) {
+  const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(pw), 'PBKDF2', false, ['deriveKey']);
+  return crypto.subtle.deriveKey({ name: 'PBKDF2', salt, iterations: LOCK.iter, hash: 'SHA-256' }, base, { name: 'AES-GCM', length: 256 }, true, ['decrypt']);
+}
+async function decryptBlob(blob, key) {
+  let buf;
+  try { buf = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: blob.iv }, key, blob.data); }
+  catch (_) { throw new WrongPassword(); }
+  return JSON.parse(await gunzip(buf));
+}
+
+(async () => {
+  try {
+    const saved = JSON.parse(sessionStorage.getItem(SKEY) || 'null');
+    if (saved && LOCK.ids.includes(saved.id)) {
+      const key = await crypto.subtle.importKey('raw', b64(saved.k), 'AES-GCM', false, ['decrypt']);
+      start(await decryptBlob(await fetchBlob(saved.id), key));
+    }
+  } catch (_) { try { sessionStorage.removeItem(SKEY); } catch (_) {} }
+})();
+
+document.getElementById('lf').addEventListener('submit', async (ev) => {
+  ev.preventDefault();
+  const btn = document.getElementById('lb'), err = document.getElementById('le');
+  const id = document.getElementById('uid').value.toUpperCase().replace(/\s+/g, '').replace(/^ACO0*(\d+)$/, (_, n) => 'ACO' + n.padStart(2, '0'));
+  err.textContent = '';
+  const fail = (msg) => { err.textContent = msg; btn.disabled = false; btn.textContent = 'Open portal'; };
+  if (!window.crypto || !crypto.subtle) return fail('This browser cannot open the portal. Please use the latest Chrome, Edge or Safari (the page must be opened over https).');
+  if (!LOCK.ids.includes(id)) return fail(`Login ID "${id}" not found. Check the ID on your login sheet (e.g. ACO05 or ADMIN).`);
+  btn.disabled = true;
+  let data, key, blob;
+  try {
+    btn.textContent = 'Downloading data…';
+    blob = await fetchBlob(id);
+  } catch (e) { return fail('Could not download the data. Check your internet connection and try again. (' + (e && e.message || e) + ')'); }
+  try {
+    btn.textContent = 'Checking password… (a few seconds on phones)';
+    key = await keyFrom(document.getElementById('pw').value.trim().toLowerCase(), blob.salt); // passwords are issued in lowercase; phones often capitalise
+    data = await decryptBlob(blob, key);
+  } catch (e) {
+    return fail(e instanceof WrongPassword ? 'Password is not correct for this login ID. Please try again.' : 'Could not open the data: ' + (e && e.message || e));
+  }
+  try { sessionStorage.setItem(SKEY, JSON.stringify({ id, k: toB64(new Uint8Array(await crypto.subtle.exportKey('raw', key))) })); } catch (_) {}
+  try { start(data); }
+  catch (e) { console.error(e); document.getElementById('app').classList.add('hidden'); document.getElementById('login').classList.remove('hidden'); fail('Signed in, but the portal failed to load: ' + (e && e.message || e) + '. Please reload the page.'); }
+});
+document.getElementById('logout').addEventListener('click', () => {
+  try { sessionStorage.removeItem(SKEY); } catch (_) {}
+  location.reload();
+});
+
+/* ================= Portal ================= */
+// member row: [mpp, aco, code, name, folio, allotted, share, div[12], bonus[12]]
+// mpp row:    [unkey, mppCode, name, bmcu, plantCode]
+const C = { share: '#2a78d6', div: '#047857', bon: '#d98a00', tot: '#4a3aa7' };
+const MODES = { both: 'Dividend + Bonus', div: 'Dividend', bon: 'Bonus' };
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const num = (n, d = 0) => n == null || isNaN(n) ? '–' : Number(n).toLocaleString('en-IN', { maximumFractionDigits: d, minimumFractionDigits: d });
+const inr = (n) => '₹' + num(Math.round(n));
+function inrS(n) {
+  const a = Math.abs(n);
+  if (a >= 1e7) return '₹' + num(n / 1e7, a >= 1e9 ? 0 : 2) + ' Cr';
+  if (a >= 1e5) return '₹' + num(n / 1e5, a >= 1e6 ? 1 : 2) + ' L';
+  return inr(n);
+}
+const per100 = (got, share) => share > 0 ? Math.round(got * 100 / share) : null;
+
+let D, M, MP, Y, F, idx = [], dv, bn, charts = {}, curTab = 'overview';
+const isAdmin = () => D.user.role === 'admin';
+const useD = () => F.mode !== 'bon', useB = () => F.mode !== 'div';
+const yrLabel = (i) => D.meta.years[i].replace('FY ', '');
+const rangeLabel = () => F.y0 === F.y1 ? D.meta.years[F.y0] : `${D.meta.years[F.y0]} to ${D.meta.years[F.y1]}`;
+const bmcuOf = (m) => MP[m[0]][3];
+const tot = (i) => (useD() ? dv[i] : 0) + (useB() ? bn[i] : 0);
+
+function start(data) {
+  D = data; M = D.members; MP = D.mpps; Y = D.meta.years.length;
+  F = { mode: 'both', y0: 0, y1: Y - 1, aco: '', bmcu: '', mpp: '' };
+  dv = new Float64Array(M.length); bn = new Float64Array(M.length);
+  $('login').classList.add('hidden');
+  $('app').classList.remove('hidden');
+  $('wname').textContent = D.user.name;
+  $('wrole').textContent = D.user.id + ' · ' + D.user.roleLabel;
+  $('hsub').textContent = `Share capital up to ${D.meta.shareAsOf} · dividend & bonus FY 2014-15 to 2025-26`;
+  if (isAdmin()) $('adminTab').classList.remove('hidden');
+  if (D.acos.length < 2) $('fAcoW').classList.add('hidden');
+  if (window.Chart) {
+    Chart.defaults.font.family = "system-ui, -apple-system, 'Segoe UI', sans-serif";
+    Chart.defaults.color = '#52514e';
+    Chart.defaults.borderColor = '#e1e0d9';
+    Chart.defaults.maintainAspectRatio = false;
+    Chart.defaults.plugins.legend.labels.boxWidth = 10;
+  }
+  const yOpts = D.meta.years.map((y, i) => `<option value="${i}">${y}</option>`).join('');
+  $('y0').innerHTML = yOpts; $('y1').innerHTML = yOpts;
+  wire();
+  syncControls(); recompute(); render();
+}
+
+function wire() {
+  $('tabs').addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-t]'); if (!b) return;
+    curTab = b.dataset.t;
+    for (const x of $('tabs').children) x.classList.toggle('on', x === b);
+    for (const s of document.querySelectorAll('section.tab')) s.classList.toggle('on', s.id === 't-' + curTab);
+    render();
+  });
+  $('mode').addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) set({ mode: b.dataset.m }); });
+  $('y0').onchange = () => { const v = +$('y0').value; set({ y0: v, y1: Math.max(v, F.y1) }); };
+  $('y1').onchange = () => { const v = +$('y1').value; set({ y1: v, y0: Math.min(v, F.y0) }); };
+  $('yrq').addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) set({ y0: +b.dataset.a, y1: +b.dataset.b }); });
+  $('fAco').onchange = () => set({ aco: $('fAco').value, bmcu: '', mpp: '' });
+  $('fBm').onchange = () => set({ bmcu: $('fBm').value, mpp: '' });
+  $('fMpp').onchange = () => set({ mpp: $('fMpp').value });
+  $('fReset').onclick = () => set({ mode: 'both', y0: 0, y1: Y - 1, aco: '', bmcu: '', mpp: '' });
+  $('presBtn').onclick = () => openPres();
+  $('modal').addEventListener('click', (e) => { if (e.target.id === 'modal' || e.target.closest('[data-close]')) $('modal').classList.add('hidden'); });
+  $('rkQ').oninput = () => renderRank();
+  $('mpQ').oninput = () => renderMppPick();
+  $('mbQ').oninput = () => { mbPage = 0; renderMembers(); };
+  $('pPrev').onclick = () => { mbPage = Math.max(0, mbPage - 1); renderMembers(); };
+  $('pNext').onclick = () => { mbPage++; renderMembers(); };
+  $('pPrevS').onclick = () => go(-1); $('pNextS').onclick = () => go(1);
+  $('pClose').onclick = closePres; $('pPrint').onclick = () => window.print();
+  document.addEventListener('keydown', (e) => {
+    if ($('pres').classList.contains('hidden')) { if (e.key === 'Escape') $('modal').classList.add('hidden'); return; }
+    if (e.key === 'Escape') closePres();
+    if (['ArrowRight', ' ', 'PageDown'].includes(e.key)) { e.preventDefault(); go(1); }
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); go(-1); }
+  });
+  let sx = null;
+  $('stage').addEventListener('touchstart', (e) => { sx = e.touches[0].clientX; }, { passive: true });
+  $('stage').addEventListener('touchend', (e) => { if (sx == null) return; const dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1); sx = null; });
+}
+
+function set(p) {
+  const yrs = 'y0' in p || 'y1' in p;
+  Object.assign(F, p);
+  syncControls();
+  if (yrs) recompute(); else scope();
+  if ('mpp' in p || 'bmcu' in p || 'aco' in p) mbPage = 0;
+  render();
+}
+
+function syncControls() {
+  for (const b of $('mode').children) b.classList.toggle('on', b.dataset.m === F.mode);
+  $('y0').value = F.y0; $('y1').value = F.y1;
+  const L = Y - 1;
+  const q = [['All 12 years', 0, L], ['Last 5', L - 4, L], ['Last 3', L - 2, L], ['Latest year', L, L]];
+  $('yrq').innerHTML = q.map(([t, a, b]) => `<button data-a="${a}" data-b="${b}" class="${F.y0 === a && F.y1 === b ? 'on' : ''}">${t}</button>`).join('');
+  const opt = (v, t, sel) => `<option value="${esc(v)}"${sel ? ' selected' : ''}>${esc(t)}</option>`;
+  $('fAco').innerHTML = opt('', `All ACOs (${D.acos.length})`) + D.acos.map((a, i) => [a, i]).sort((x, y) => x[0].localeCompare(y[0])).map(([a, i]) => opt(i, a, String(i) === String(F.aco))).join('');
+  const bms = new Set(), mpps = new Set();
+  for (const m of M) {
+    if (F.aco !== '' && m[1] !== +F.aco) continue;
+    bms.add(bmcuOf(m));
+    if (F.bmcu && bmcuOf(m) !== F.bmcu) continue;
+    mpps.add(m[0]);
+  }
+  $('fBm').innerHTML = opt('', `All BMCUs (${bms.size})`) + [...bms].sort().map((b) => opt(b, b, b === F.bmcu)).join('');
+  $('fMpp').innerHTML = opt('', `All MPPs (${mpps.size})`) + [...mpps].sort((a, b) => MP[a][2].localeCompare(MP[b][2])).map((i) => opt(i, `${MP[i][2]} (${MP[i][0]})`, String(i) === String(F.mpp))).join('');
+}
+
+function recompute() {
+  for (let i = 0; i < M.length; i++) {
+    const d = M[i][7], b = M[i][8]; let sd = 0, sb = 0;
+    for (let y = F.y0; y <= F.y1; y++) { sd += d[y]; sb += b[y]; }
+    dv[i] = sd; bn[i] = sb;
+  }
+  scope();
+}
+
+function scope() {
+  idx = [];
+  const a = F.aco === '' ? -1 : +F.aco, p = F.mpp === '' ? -1 : +F.mpp;
+  for (let i = 0; i < M.length; i++) {
+    const m = M[i];
+    if (a >= 0 && m[1] !== a) continue;
+    if (F.bmcu && MP[m[0]][3] !== F.bmcu) continue;
+    if (p >= 0 && m[0] !== p) continue;
+    idx.push(i);
+  }
+}
+
+function scopeName() {
+  if (F.mpp !== '') return MP[+F.mpp][2];
+  if (F.bmcu) return F.bmcu + ' BMCU';
+  if (F.aco !== '') return 'ACO ' + D.acos[+F.aco];
+  return isAdmin() ? 'All ACOs' : 'ACO ' + D.acos[0];
+}
+function scopeWhere() {
+  if (F.mpp !== '') { const p = MP[+F.mpp], m = M[idx[0]]; return `MPP code ${p[0]} · ${p[3]} BMCU${m ? ' · ACO ' + D.acos[m[1]] : ''}`; }
+  if (F.bmcu) { const acos = new Set(idx.map((i) => D.acos[M[i][1]])); return 'ACO ' + [...acos].join(', '); }
+  return 'Shreeja Mahila Milk Producer Company';
+}
+
+function agg(list) {
+  const r = { n: list.length, share: 0, d: 0, b: 0, mpps: new Set(), yd: new Array(Y).fill(0), yb: new Array(Y).fill(0), paid: 0 };
+  for (const i of list) {
+    const m = M[i];
+    r.share += m[6]; r.d += dv[i]; r.b += bn[i]; r.mpps.add(m[0]);
+    for (let y = 0; y < Y; y++) { r.yd[y] += m[7][y]; r.yb[y] += m[8][y]; }
+    if (tot(i) > 0) r.paid++;
+  }
+  r.t = (useD() ? r.d : 0) + (useB() ? r.b : 0);
+  return r;
+}
+
+function render() {
+  const a = agg(idx);
+  $('scope').innerHTML = `<b>${esc(scopeName())}</b> · ${num(a.n)} members · ${MODES[F.mode]} · ${esc(rangeLabel())}`;
+  $('presBtn').textContent = F.mpp !== '' ? '▶ MPP presentation' : '▶ Present this view';
+  if (curTab === 'overview') renderOverview(a);
+  if (curTab === 'years') renderMatrix();
+  if (curTab === 'rank') renderRank();
+  if (curTab === 'mpp') renderMpp(a);
+  if (curTab === 'members') renderMembers();
+  if (curTab === 'admin') renderAdmin();
+}
+
+/* ---------- Overview ---------- */
+function kpi(l, v, s, c, hero) { return `<div class="card kpi${hero ? ' hero' : ''}" style="--kc:${c || 'var(--line)'}"><div class="l">${l}</div><div class="v">${v}</div>${s ? `<div class="s">${s}</div>` : ''}</div>`; }
+function kpiHtml(a) {
+  const k = [kpi('Members', num(a.n), `${num(a.mpps.size)} MPPs`), kpi('Share capital invested', inrS(a.share), `up to ${D.meta.shareAsOf}`, C.share)];
+  if (useD()) k.push(kpi('Dividend received', inrS(a.d), rangeLabel(), C.div));
+  if (useB()) k.push(kpi('Bonus received', inrS(a.b), rangeLabel(), C.bon));
+  if (F.mode === 'both') k.push(kpi('Dividend + Bonus', inrS(a.t), 'total received', C.tot, true));
+  k.push(kpi('Per ₹100 invested', a.share ? '₹' + num(per100(a.t, a.share)) : '–', `${MODES[F.mode].toLowerCase()} received`, C.tot));
+  return k.join('');
+}
+function storyHtml(a) {
+  if (!a.n) return 'No members in this selection.';
+  const p = per100(a.t, a.share), x = a.share ? a.t / a.share : 0;
+  const what = F.mode === 'both' ? 'dividend and bonus' : MODES[F.mode].toLowerCase();
+  let s = `Members of <b>${esc(scopeName())}</b> have invested <b>${inrS(a.share)}</b> as share capital and received <b>${inrS(a.t)}</b> as ${what} in ${esc(rangeLabel())}. `;
+  if (p != null) s += x >= 1 ? `That is <b>${num(x, 1)} times</b> their investment — <b>₹${num(p)}</b> for every ₹100 — and they still own their shares.` : `That is <b>₹${num(p)}</b> back for every ₹100 invested, and they still own their shares.`;
+  return s;
+}
+function renderOverview(a) {
+  $('kpis').innerHTML = kpiHtml(a);
+  $('story').innerHTML = storyHtml(a);
+  $('notes').innerHTML = (D.meta.notes || []).map((n) => `<div class="note warn">⚠ ${esc(n)}</div>`).join('');
+  const ys = []; for (let y = F.y0; y <= F.y1; y++) ys.push(y);
+  const ds = [];
+  if (useD()) ds.push({ label: 'Dividend', data: ys.map((y) => a.yd[y]), backgroundColor: C.div, stack: 's' });
+  if (useB()) ds.push({ label: 'Bonus', data: ys.map((y) => a.yb[y]), backgroundColor: C.bon, stack: 's' });
+  $('cYearT').textContent = MODES[F.mode] + ' paid each year';
+  $('cYearS').textContent = `${esc(scopeName())} · bonus is paid from FY 2015-16.`;
+  chart('chYear', { type: 'bar', data: { labels: ys.map(yrLabel), datasets: ds }, options: moneyOpts(true) });
+  let c = 0; const cum = ys.map((y) => (c += (useD() ? a.yd[y] : 0) + (useB() ? a.yb[y] : 0)));
+  chart('chCum', { type: 'line', data: { labels: ys.map(yrLabel), datasets: [
+    { label: 'Cumulative ' + MODES[F.mode].toLowerCase(), data: cum, borderColor: C.tot, backgroundColor: 'rgba(74,58,167,.12)', fill: true, tension: .25, pointRadius: 3 },
+    { label: 'Share capital (today)', data: ys.map(() => a.share), borderColor: C.share, borderDash: [6, 4], pointRadius: 0 },
+  ] }, options: moneyOpts(false) });
+  // Year table
+  let cd = 0, cb = 0;
+  const rows = ys.map((y) => { cd += a.yd[y]; cb += a.yb[y]; const t = (useD() ? a.yd[y] : 0) + (useB() ? a.yb[y] : 0); return { y, d: a.yd[y], b: a.yb[y], t, c: (useD() ? cd : 0) + (useB() ? cb : 0) }; });
+  const cols = [['Year', (r) => D.meta.years[r.y]]];
+  if (useD()) cols.push(['Dividend', (r) => inr(r.d), 'num c-div']);
+  if (useB()) cols.push(['Bonus', (r) => r.y < D.meta.bonusFrom ? '–' : inr(r.b), 'num c-bon']);
+  if (F.mode === 'both') cols.push(['Total', (r) => inr(r.t), 'num c-tot']);
+  cols.push(['Cumulative', (r) => inr(r.c), 'num'], ['Per ₹100 (cum.)', (r) => a.share ? '₹' + num(per100(r.c, a.share)) : '–', 'num']);
+  $('yearTable').innerHTML = `<table><thead><tr>${cols.map((c) => `<th class="${c[2] && c[2].includes('num') ? 'num' : ''}" style="cursor:default">${c[0]}</th>`).join('')}</tr></thead><tbody>${rows.map((r) => `<tr>${cols.map((c) => `<td class="${c[2] || ''}">${c[1](r)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+}
+
+function moneyOpts(stacked) {
+  return {
+    animation: false,
+    plugins: { tooltip: { callbacks: { label: (c) => `${c.dataset.label}: ${inr(c.parsed.y)}` } }, legend: { position: 'bottom' } },
+    scales: { x: { stacked, grid: { display: false } }, y: { stacked, beginAtZero: true, ticks: { callback: (v) => inrS(v) } } },
+  };
+}
+function chart(id, cfg) {
+  if (!window.Chart) return;
+  if (charts[id]) charts[id].destroy();
+  charts[id] = new Chart($(id), cfg);
+}
+
+/* ---------- Grouping ---------- */
+const BY = {
+  aco: { t: 'ACO', key: (m) => m[1], name: (k) => D.acos[k], sub: () => '' },
+  bmcu: { t: 'BMCU', key: (m) => MP[m[0]][3], name: (k) => k, sub: () => '' },
+  mpp: { t: 'MPP', key: (m) => m[0], name: (k) => MP[k][2], sub: (k) => MP[k][0] },
+};
+function byOptions() {
+  const o = [];
+  if (D.acos.length > 1 && F.aco === '' && !F.bmcu && F.mpp === '') o.push('aco');
+  if (!F.bmcu && F.mpp === '') o.push('bmcu');
+  o.push('mpp');
+  return o;
+}
+function groups(by) {
+  const g = new Map(), B = BY[by];
+  for (const i of idx) {
+    const m = M[i], k = B.key(m);
+    let r = g.get(k);
+    if (!r) g.set(k, r = { k, name: B.name(k), sub: B.sub(k), n: 0, share: 0, d: 0, b: 0, mpps: new Set(), bmcu: MP[m[0]][3], aco: m[1], yd: new Array(Y).fill(0), yb: new Array(Y).fill(0) });
+    r.n++; r.share += m[6]; r.d += dv[i]; r.b += bn[i]; r.mpps.add(m[0]);
+    for (let y = F.y0; y <= F.y1; y++) { r.yd[y] += m[7][y]; r.yb[y] += m[8][y]; }
+  }
+  return [...g.values()].map((r) => Object.assign(r, { t: (useD() ? r.d : 0) + (useB() ? r.b : 0), nm: r.mpps.size }));
+}
+function drill(by, k) {
+  if (by === 'aco') set({ aco: String(k), bmcu: '', mpp: '' });
+  else if (by === 'bmcu') set({ bmcu: k, mpp: '' });
+  else set({ mpp: String(k) });
+}
+function segHtml(el, opts, cur, cb) {
+  el.innerHTML = opts.map((o) => `<button data-v="${o}" class="${o === cur ? 'on' : ''}">${BY[o].t}</button>`).join('');
+  el.onclick = (e) => { const b = e.target.closest('button'); if (b) cb(b.dataset.v); };
+}
+
+/* Generic sortable table */
+const sortState = {};
+function table(el, id, cols, rows, { foot, limit, defaultSort, onSort } = {}) {
+  const st = sortState[id] || (sortState[id] = defaultSort || { c: cols.findIndex((c) => c.sort) , dir: -1 });
+  const col = cols[st.c];
+  if (col && col.sort) rows = rows.slice().sort((a, b) => { const x = col.sort(a), y = col.sort(b); return (x > y ? 1 : x < y ? -1 : 0) * st.dir; });
+  const shown = limit ? rows.slice(0, limit) : rows;
+  el.innerHTML = `<table><thead><tr>${cols.map((c, i) => `<th data-i="${i}" class="${c.num ? 'num' : ''}">${c.h}${i === st.c ? `<span class="ar"> ${st.dir > 0 ? '▲' : '▼'}</span>` : ''}</th>`).join('')}</tr></thead>
+    <tbody>${shown.map((r, ri) => `<tr data-r="${ri}">${cols.map((c) => `<td class="${c.num ? 'num ' : ''}${c.cls || ''}">${c.v(r)}</td>`).join('')}</tr>`).join('')}</tbody>
+    ${foot ? `<tfoot><tr>${cols.map((c, i) => `<td class="${c.num ? 'num' : ''}">${foot[i] ?? ''}</td>`).join('')}</tr></tfoot>` : ''}</table>
+    ${limit && rows.length > limit ? `<div class="sub" style="padding:8px">Showing ${limit} of ${num(rows.length)}. Use search or download the CSV for all.</div>` : ''}`;
+  el.querySelector('thead').onclick = (e) => {
+    const th = e.target.closest('th'); if (!th) return;
+    const i = +th.dataset.i; if (!cols[i].sort) return;
+    sortState[id] = { c: i, dir: st.c === i ? -st.dir : (cols[i].num ? -1 : 1) };
+    if (onSort) onSort(); else table(el, id, cols, rows, { foot, limit, defaultSort });
+  };
+  return shown;
+}
+function moneyCols() {
+  const c = [];
+  c.push({ h: 'Share capital', num: true, v: (r) => inr(r.share), sort: (r) => r.share });
+  if (useD()) c.push({ h: 'Dividend', num: true, cls: 'c-div', v: (r) => inr(r.d), sort: (r) => r.d });
+  if (useB()) c.push({ h: 'Bonus', num: true, cls: 'c-bon', v: (r) => inr(r.b), sort: (r) => r.b });
+  if (F.mode === 'both') c.push({ h: 'Total received', num: true, cls: 'c-tot', v: (r) => inr(r.t), sort: (r) => r.t });
+  c.push({ h: 'Per ₹100', num: true, v: (r) => r.share ? '₹' + num(per100(r.t, r.share)) : '–', sort: (r) => r.share ? r.t / r.share : -1 });
+  return c;
+}
+function moneyFoot(a, lead) {
+  const f = [...lead, inr(a.share)];
+  if (useD()) f.push(inr(a.d));
+  if (useB()) f.push(inr(a.b));
+  if (F.mode === 'both') f.push(inr(a.t));
+  f.push(a.share ? '₹' + num(per100(a.t, a.share)) : '–');
+  return f;
+}
+
+/* ---------- Year-wise matrix ---------- */
+let mxBy = null;
+function renderMatrix() {
+  const opts = byOptions(); if (!opts.includes(mxBy)) mxBy = opts[0];
+  segHtml($('mxBy'), opts, mxBy, (v) => { mxBy = v; renderMatrix(); });
+  const g = groups(mxBy), ys = [];
+  for (let y = F.y0; y <= F.y1; y++) ys.push(y);
+  const val = (r, y) => (useD() ? r.yd[y] : 0) + (useB() ? r.yb[y] : 0);
+  let max = 0; for (const r of g) for (const y of ys) max = Math.max(max, val(r, y));
+  const rgb = F.mode === 'div' ? '4,120,87' : F.mode === 'bon' ? '217,138,0' : '74,58,167';
+  const cell = (v) => `<span style="display:block;margin:-7px -8px;padding:7px 8px;background:rgba(${rgb},${max ? (v / max * .55).toFixed(3) : 0})">${num(Math.round(v))}</span>`;
+  const cols = [{ h: BY[mxBy].t, v: (r) => `<span class="link" data-k="${esc(r.k)}">${esc(r.name)}</span>${r.sub ? ` <span class="sub">${esc(r.sub)}</span>` : ''}`, sort: (r) => r.name }];
+  for (const y of ys) cols.push({ h: yrLabel(y), num: true, v: (r) => cell(val(r, y)), sort: (r) => val(r, y) });
+  cols.push({ h: 'Total', num: true, cls: 'c-tot', v: (r) => inr(r.t), sort: (r) => r.t });
+  const a = agg(idx);
+  const foot = ['All', ...ys.map((y) => num(Math.round((useD() ? a.yd[y] : 0) + (useB() ? a.yb[y] : 0)))), inr(a.t)];
+  sortState['mx' + mxBy + ys.join()] = sortState['mx' + mxBy + ys.join()] || { c: cols.length - 1, dir: -1 };
+  table($('mxTable'), 'mx' + mxBy + ys.join(), cols, g, { foot, limit: 1000 });
+  $('mxTable').onclick = (e) => { const l = e.target.closest('.link'); if (l) drill(mxBy, mxBy === 'bmcu' ? l.dataset.k : +l.dataset.k); };
+  $('mxCsv').onclick = () => csv(`${MODES[F.mode]}_yearwise_by_${mxBy}.csv`, [[BY[mxBy].t, ...(mxBy === 'mpp' ? ['MPP code', 'BMCU'] : []), ...ys.map((y) => D.meta.years[y]), 'Total'],
+    ...g.sort((x, y) => y.t - x.t).map((r) => [r.name, ...(mxBy === 'mpp' ? [r.sub, r.bmcu] : []), ...ys.map((y) => Math.round(val(r, y))), Math.round(r.t)])]);
+}
+
+/* ---------- Compare / rank ---------- */
+let rkBy = null;
+function renderRank() {
+  const opts = byOptions(); if (!opts.includes(rkBy)) rkBy = opts[0];
+  segHtml($('rkBy'), opts, rkBy, (v) => { rkBy = v; renderRank(); });
+  $('rkTitle').textContent = 'Compare ' + BY[rkBy].t + 's — ' + scopeName();
+  $('rkChartT').textContent = `${MODES[F.mode]} received by ${BY[rkBy].t}`;
+  const all = groups(rkBy);
+  const q = $('rkQ').value.trim().toLowerCase();
+  const g = q ? all.filter((r) => (r.name + ' ' + r.sub).toLowerCase().includes(q)) : all;
+  const top = all.slice().sort((x, y) => y.t - x.t).slice(0, 15);
+  const ds = [];
+  if (useD()) ds.push({ label: 'Dividend', data: top.map((r) => r.d), backgroundColor: C.div, stack: 's' });
+  if (useB()) ds.push({ label: 'Bonus', data: top.map((r) => r.b), backgroundColor: C.bon, stack: 's' });
+  const o = moneyOpts(true); o.indexAxis = 'y'; o.scales = { x: { stacked: true, ticks: { callback: (v) => inrS(v) } }, y: { stacked: true, grid: { display: false } } };
+  o.plugins.tooltip.callbacks.label = (c) => `${c.dataset.label}: ${inr(c.parsed.x)}`;
+  chart('chRank', { type: 'bar', data: { labels: top.map((r) => r.name.length > 22 ? r.name.slice(0, 21) + '…' : r.name), datasets: ds }, options: o });
+  const cols = [{ h: '#', v: (r) => r._rk, num: true }, { h: BY[rkBy].t, v: (r) => `<span class="link" data-k="${esc(r.k)}">${esc(r.name)}</span>${r.sub ? ` <span class="sub">${esc(r.sub)}</span>` : ''}`, sort: (r) => r.name }];
+  if (rkBy === 'mpp') cols.push({ h: 'BMCU', v: (r) => esc(r.bmcu), sort: (r) => r.bmcu });
+  if (rkBy !== 'aco' && D.acos.length > 1) cols.push({ h: 'ACO', v: (r) => esc(D.acos[r.aco]), sort: (r) => D.acos[r.aco] });
+  if (rkBy !== 'mpp') cols.push({ h: 'MPPs', num: true, v: (r) => num(r.nm), sort: (r) => r.nm });
+  cols.push({ h: 'Members', num: true, v: (r) => num(r.n), sort: (r) => r.n }, ...moneyCols());
+  if (rkBy === 'mpp') cols.push({ h: '', v: (r) => `<button class="btn sm pri" data-p="${r.k}">▶ Present</button>` });
+  all.slice().sort((x, y) => y.t - x.t).forEach((r, i) => { r._rk = i + 1; });
+  const totalSort = cols.findIndex((c) => c.h === (F.mode === 'both' ? 'Total received' : MODES[F.mode]));
+  const id = 'rk' + rkBy + F.mode;
+  if (!sortState[id]) sortState[id] = { c: totalSort, dir: -1 };
+  const a = agg(idx);
+  const lead = cols.slice(0, cols.length - moneyCols().length - (rkBy === 'mpp' ? 1 : 0)).map((c) => c.h === BY[rkBy].t ? 'Total' : c.h === 'Members' ? num(a.n) : c.h === 'MPPs' ? num(a.mpps.size) : '');
+  table($('rkTable'), id, cols, g, { foot: moneyFoot(a, lead), limit: 500 });
+  $('rkTable').onclick = (e) => {
+    const p = e.target.closest('[data-p]'); if (p) return openPres(+p.dataset.p);
+    const l = e.target.closest('.link'); if (l) drill(rkBy, rkBy === 'bmcu' ? l.dataset.k : +l.dataset.k);
+  };
+  $('rkCsv').onclick = () => csv(`compare_${rkBy}_${MODES[F.mode]}.csv`, [[BY[rkBy].t, ...(rkBy === 'mpp' ? ['MPP code', 'BMCU'] : []), 'ACO', 'MPPs', 'Members', 'Share capital', 'Dividend', 'Bonus', MODES[F.mode] + ' received', 'Per Rs 100'],
+    ...g.sort((x, y) => y.t - x.t).map((r) => [r.name, ...(rkBy === 'mpp' ? [r.sub, r.bmcu] : []), rkBy === 'aco' ? r.name : D.acos[r.aco], r.nm, r.n, r.share, Math.round(r.d), Math.round(r.b), Math.round(r.t), per100(r.t, r.share) ?? ''])]);
+}
+
+/* ---------- MPP ---------- */
+function renderMpp(a) {
+  const has = F.mpp !== '';
+  $('mppPick').classList.toggle('hidden', has);
+  $('mppView').classList.toggle('hidden', !has);
+  if (!has) return renderMppPick();
+  const p = MP[+F.mpp];
+  const v = $('mppView');
+  v.innerHTML = `<div class="card mppHead"><div><div class="nm">${esc(p[2])}</div><div class="meta">${esc(scopeWhere())} · ${num(a.n)} members</div></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="mvBack">‹ All MPPs</button><button class="btn" id="mvCsv">Members (CSV)</button><button class="btn pri" id="mvPres">▶ Open MPP presentation</button></div></div>
+    <div class="kpis" style="margin-top:12px">${kpiHtml(a)}</div>
+    <div class="story">${storyHtml(a)}</div>
+    <div class="grid g2" style="margin-top:14px">
+      <div class="card"><h3>${MODES[F.mode]} paid each year</h3><p class="sub">${esc(rangeLabel())}</p><div class="chart"><canvas id="chMppY"></canvas></div></div>
+      <div class="card"><h3>Top 10 members</h3><p class="sub">By ${MODES[F.mode].toLowerCase()} received.</p><div class="chart"><canvas id="chMppT"></canvas></div></div>
+    </div>
+    <h2>Members of ${esc(p[2])}</h2>
+    <div class="tw" id="mvTable"></div>`;
+  $('mvBack').onclick = () => set({ mpp: '' });
+  $('mvPres').onclick = () => openPres();
+  const ys = []; for (let y = F.y0; y <= F.y1; y++) ys.push(y);
+  const ds = [];
+  if (useD()) ds.push({ label: 'Dividend', data: ys.map((y) => a.yd[y]), backgroundColor: C.div, stack: 's' });
+  if (useB()) ds.push({ label: 'Bonus', data: ys.map((y) => a.yb[y]), backgroundColor: C.bon, stack: 's' });
+  chart('chMppY', { type: 'bar', data: { labels: ys.map(yrLabel), datasets: ds }, options: moneyOpts(true) });
+  const rows = memberRows(idx);
+  const top = rows.slice().sort((x, y) => y.t - x.t).slice(0, 10);
+  const o = moneyOpts(true); o.indexAxis = 'y'; o.scales = { x: { stacked: true, ticks: { callback: (v) => inrS(v) } }, y: { stacked: true, grid: { display: false } } };
+  o.plugins.tooltip.callbacks.label = (c) => `${c.dataset.label}: ${inr(c.parsed.x)}`;
+  const tds = [];
+  if (useD()) tds.push({ label: 'Dividend', data: top.map((r) => r.d), backgroundColor: C.div, stack: 's' });
+  if (useB()) tds.push({ label: 'Bonus', data: top.map((r) => r.b), backgroundColor: C.bon, stack: 's' });
+  chart('chMppT', { type: 'bar', data: { labels: top.map((r) => r.name), datasets: tds }, options: o });
+  memberTable($('mvTable'), 'mv', rows, a, false);
+  $('mvCsv').onclick = () => memberCsv(`${p[2]}_members.csv`, rows);
+}
+function renderMppPick() {
+  const all = groups('mpp');
+  const q = $('mpQ').value.trim().toLowerCase();
+  const g = q ? all.filter((r) => `${r.name} ${r.sub} ${r.bmcu}`.toLowerCase().includes(q)) : all;
+  $('mpCount').textContent = `${num(g.length)} MPPs`;
+  const cols = [{ h: 'MPP', v: (r) => `<span class="link" data-k="${r.k}">${esc(r.name)}</span>`, sort: (r) => r.name }, { h: 'Code', v: (r) => esc(r.sub), sort: (r) => r.sub },
+    { h: 'BMCU', v: (r) => esc(r.bmcu), sort: (r) => r.bmcu }];
+  if (D.acos.length > 1) cols.push({ h: 'ACO', v: (r) => esc(D.acos[r.aco]), sort: (r) => D.acos[r.aco] });
+  cols.push({ h: 'Members', num: true, v: (r) => num(r.n), sort: (r) => r.n }, ...moneyCols(), { h: 'Presentation', v: (r) => `<button class="btn sm pri" data-p="${r.k}">▶ Present</button>` });
+  if (!sortState.mp) sortState.mp = { c: 0, dir: 1 };
+  table($('mpTable'), 'mp', cols, g, { limit: 300 });
+  $('mpTable').onclick = (e) => {
+    const p = e.target.closest('[data-p]'); if (p) return openPres(+p.dataset.p);
+    const l = e.target.closest('.link'); if (l) set({ mpp: l.dataset.k });
+  };
+}
+
+/* ---------- Members ---------- */
+let mbPage = 0;
+const PAGE = 100;
+function memberRows(list) {
+  return list.map((i) => {
+    const m = M[i];
+    return { i, code: m[2], name: m[3], folio: m[4], allot: m[5], mpp: MP[m[0]][2], mc: MP[m[0]][0], bmcu: MP[m[0]][3], aco: D.acos[m[1]], share: m[6], d: dv[i], b: bn[i], t: tot(i) };
+  });
+}
+function memberCols(showMpp) {
+  const cols = [{ h: 'Member', v: (r) => `<span class="link" data-i="${r.i}">${esc(r.name)}</span>`, sort: (r) => r.name }, { h: 'Member code', v: (r) => esc(r.code), sort: (r) => r.code }, { h: 'Folio', v: (r) => esc(r.folio), sort: (r) => r.folio }];
+  if (showMpp) cols.push({ h: 'MPP', v: (r) => esc(r.mpp), sort: (r) => r.mpp });
+  cols.push({ h: 'First allotment', v: (r) => allotTxt(r.allot), sort: (r) => r.allot }, ...moneyCols());
+  return cols;
+}
+function memberTable(el, id, rows, a, showMpp, onSort) {
+  const cols = memberCols(showMpp);
+  if (!sortState[id] || !cols[sortState[id].c]) sortState[id] = { c: cols.length - 2, dir: -1 };
+  const lead = cols.slice(0, cols.length - moneyCols().length).map((c, i) => i === 0 ? `Total · ${num(a.n)} members` : '');
+  table(el, id, cols, rows, { foot: moneyFoot(a, lead), onSort });
+  el.onclick = (e) => { const l = e.target.closest('[data-i]'); if (l) showMember(+l.dataset.i); };
+}
+function allotTxt(s) {
+  if (!s) return '–';
+  if (s === 'NEW') return 'New member';
+  const [y, m, d] = s.split('-'); return `${d}-${m}-${y}`;
+}
+function renderMembers() {
+  const q = $('mbQ').value.trim().toLowerCase();
+  let list = idx;
+  if (q) list = idx.filter((i) => { const m = M[i]; return m[3].toLowerCase().includes(q) || m[2].includes(q) || m[4].toLowerCase().includes(q); });
+  const rows = memberRows(list);
+  const a = agg(list);
+  $('mbCount').textContent = `${num(rows.length)} members`;
+  // Sort once, then page
+  const pages = Math.max(1, Math.ceil(rows.length / PAGE));
+  mbPage = Math.min(mbPage, pages - 1);
+  const cols = memberCols(true);
+  if (!sortState.mb || !cols[sortState.mb.c]) sortState.mb = { c: cols.length - 2, dir: -1 };
+  const { c, dir } = sortState.mb, f = cols[c].sort;
+  rows.sort((x, y) => { const p = f(x), q = f(y); return (p > q ? 1 : p < q ? -1 : 0) * dir; });
+  const pageRows = rows.slice(mbPage * PAGE, (mbPage + 1) * PAGE);
+  memberTable($('mbTable'), 'mb', pageRows, a, true, () => { mbPage = 0; renderMembers(); });
+  $('pInfo').textContent = `Page ${mbPage + 1} of ${pages}`;
+  $('pPrev').disabled = mbPage === 0; $('pNext').disabled = mbPage >= pages - 1;
+  $('mbCsv').onclick = () => memberCsv('members.csv', rows);
+}
+function memberCsv(name, rows) {
+  csv(name, [['Member code', 'Member name', 'Folio', 'MPP', 'MPP code', 'BMCU', 'ACO', 'First allotment', 'Share capital', 'Dividend', 'Bonus', MODES[F.mode] + ' received', 'Per Rs 100'],
+    ...rows.map((r) => [r.code, r.name, r.folio, r.mpp, r.mc, r.bmcu, r.aco, allotTxt(r.allot), r.share, round2(r.d), round2(r.b), round2(r.t), per100(r.t, r.share) ?? ''])]);
+}
+const round2 = (v) => Math.round(v * 100) / 100;
+
+function showMember(i) {
+  const m = M[i], p = MP[m[0]];
+  let cd = 0, cb = 0, rows = '';
+  for (let y = 0; y < Y; y++) {
+    cd += m[7][y]; cb += m[8][y];
+    const inR = y >= F.y0 && y <= F.y1;
+    rows += `<tr style="${inR ? '' : 'color:#aaa'}"><td>${D.meta.years[y]}</td><td class="num c-div">${inr(m[7][y])}</td><td class="num c-bon">${y < D.meta.bonusFrom ? '–' : inr(m[8][y])}</td><td class="num c-tot">${inr(m[7][y] + m[8][y])}</td><td class="num">${inr(cd + cb)}</td></tr>`;
+  }
+  const td = m[7].reduce((s, v) => s + v, 0), tb = m[8].reduce((s, v) => s + v, 0);
+  $('mbox').innerHTML = `<button class="btn x" data-close>✕</button>
+    <h2 style="margin-top:0">${esc(m[3])}</h2>
+    <p class="sub">Member code ${esc(m[2])} · Folio ${esc(m[4])} · First allotment ${allotTxt(m[5])}<br>${esc(p[2])} (${esc(p[0])}) · ${esc(p[3])} BMCU · ACO ${esc(D.acos[m[1]])}</p>
+    <div class="kpis">${kpi('Share capital', inr(m[6]), 'invested', C.share)}${kpi('Dividend', inr(td), '12 years', C.div)}${kpi('Bonus', inr(tb), '11 years', C.bon)}${kpi('Total received', inr(td + tb), m[6] ? `₹${num(per100(td + tb, m[6]))} per ₹100` : '', C.tot, true)}</div>
+    <div class="tw" style="margin-top:12px;max-height:none"><table><thead><tr><th style="cursor:default">Year</th><th class="num">Dividend</th><th class="num">Bonus</th><th class="num">Total</th><th class="num">Cumulative</th></tr></thead><tbody>${rows}</tbody>
+    <tfoot><tr><td>Total</td><td class="num">${inr(td)}</td><td class="num">${inr(tb)}</td><td class="num">${inr(td + tb)}</td><td></td></tr></tfoot></table></div>
+    <p class="sub" style="margin-top:8px">Greyed years are outside the selected year range.</p>`;
+  $('modal').classList.remove('hidden');
+}
+
+/* ---------- Admin ---------- */
+function renderAdmin() {
+  if (!isAdmin()) return;
+  const g = new Map(groups('aco').map((r) => [r.name, r]));
+  const rows = (D.logins || []).map(([id, name]) => Object.assign({ id, name }, g.get(name) || { n: 0, nm: 0, share: 0, d: 0, b: 0, t: 0 }));
+  const cols = [{ h: 'Login ID', v: (r) => `<b>${esc(r.id)}</b>`, sort: (r) => r.id }, { h: 'ACO', v: (r) => `<span class="link" data-n="${esc(r.name)}">${esc(r.name)}</span>`, sort: (r) => r.name },
+    { h: 'MPPs', num: true, v: (r) => num(r.nm), sort: (r) => r.nm }, { h: 'Members', num: true, v: (r) => num(r.n), sort: (r) => r.n }, ...moneyCols()];
+  if (!sortState.lg) sortState.lg = { c: 0, dir: 1 };
+  table($('lgTable'), 'lg', cols, rows);
+  $('lgTable').onclick = (e) => { const l = e.target.closest('[data-n]'); if (l) { set({ aco: String(D.acos.indexOf(l.dataset.n)), bmcu: '', mpp: '' }); } };
+  $('lgCsv').onclick = () => csv('aco_logins.csv', [['Login ID', 'ACO', 'MPPs', 'Members', 'Share capital', 'Dividend', 'Bonus'], ...rows.map((r) => [r.id, r.name, r.nm, r.n, r.share, Math.round(r.d), Math.round(r.b)])]);
+  $('fullCsv').onclick = () => csv('members_dividend_bonus_full.csv', [
+    ['ACO', 'BMCU', 'Plant code', 'Unkey', 'MPP code', 'MPP name', 'Member code', 'Member name', 'Folio', 'First allotment', 'Share capital',
+      ...D.meta.years.map((y) => 'Dividend ' + y), 'Total dividend', ...D.meta.years.slice(D.meta.bonusFrom).map((y) => 'Bonus ' + y), 'Total bonus', 'Dividend + Bonus'],
+    ...idx.map((i) => { const m = M[i], p = MP[m[0]], td = m[7].reduce((s, v) => s + v, 0), tb = m[8].reduce((s, v) => s + v, 0);
+      return [D.acos[m[1]], p[3], p[4], p[0], p[1], p[2], m[2], m[3], m[4], allotTxt(m[5]), m[6], ...m[7], round2(td), ...m[8].slice(D.meta.bonusFrom), round2(tb), round2(td + tb)]; })]);
+  $('adminNotes').innerHTML = (D.meta.notes || []).map((n) => `<div class="note warn">⚠ ${esc(n)}</div>`).join('');
+}
+
+function csv(name, rows) {
+  const q = (v) => { const s = String(v ?? ''); return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
+  const blob = new Blob(['﻿' + rows.map((r) => r.map(q).join(',')).join('\r\n')], { type: 'text/csv;charset=utf-8' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name.replace(/[^\w.\- ]+/g, '_');
+  document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+}
+
+/* ================= Presentation ================= */
+let slides = [], si = 0, presCharts = [], presRestore = null;
+const chunk = (a, n) => { const o = []; for (let i = 0; i < a.length; i += n) o.push(a.slice(i, i + n)); return o; };
+function openPres(mppIdx) {
+  if (mppIdx != null && String(mppIdx) !== F.mpp) { presRestore = F.mpp; Object.assign(F, { mpp: String(mppIdx) }); scope(); }
+  buildPres();
+  $('pres').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+function closePres() {
+  $('pres').classList.add('hidden');
+  document.body.style.overflow = '';
+  presCharts.forEach((c) => c.destroy()); presCharts = [];
+  if (presRestore != null) { F.mpp = presRestore; presRestore = null; scope(); render(); }
+}
+function go(d) { show(Math.max(0, Math.min(slides.length - 1, si + d))); }
+function show(i) {
+  si = i;
+  slides.forEach((s, k) => s.classList.toggle('on', k === i));
+  $('pPage').textContent = `Slide ${i + 1} of ${slides.length}`;
+}
+function head(k, h, pg) { return `<div class="s-head"><div><div class="k">${esc(k)}</div><div class="h">${h}</div></div><div class="r"><img src="${LOGO.shreeja}" alt="Shreeja" />${pg}</div></div>`; }
+const foot = () => `<div class="s-foot"><img class="m" src="${LOGO.shreeja}" alt="Shreeja Mahila Milk Producer Company" /><div class="sp"><span>Supported by</span><img src="${LOGO.nddb}" alt="NDDB" /><img src="${LOGO.nds}" alt="NDDB Dairy Services" /></div></div>`;
+
+function buildPres() {
+  presCharts.forEach((c) => c.destroy()); presCharts = [];
+  const a = agg(idx), name = scopeName(), isMpp = F.mpp !== '';
+  const what = F.mode === 'both' ? 'Dividend & Bonus' : MODES[F.mode];
+  const per = per100(a.t, a.share);
+  const ys = []; for (let y = F.y0; y <= F.y1; y++) ys.push(y);
+  const rows = memberRows(idx).sort((x, y) => y.t - x.t);
+  const S = [];
+
+  // 1. Cover
+  const tiles = [`<div class="tile"><div class="l">Share capital invested</div><div class="v fit">${inr(a.share)}</div></div>`];
+  if (useD()) tiles.push(`<div class="tile${F.mode === 'div' ? ' w' : ''}"><div class="l">Dividend received</div><div class="v fit">${inr(a.d)}</div></div>`);
+  if (useB()) tiles.push(`<div class="tile${F.mode === 'bon' ? ' w' : ''}"><div class="l">Bonus received</div><div class="v fit">${inr(a.b)}</div></div>`);
+  if (F.mode === 'both') tiles.push(`<div class="tile w"><div class="l">Total received</div><div class="v fit">${inr(a.t)}</div></div>`);
+  S.push({ dark: true, html: `<div class="cover"><div class="k">Members ${esc(what)} · ${esc(rangeLabel())}</div><div class="nm">${esc(name)}</div>
+    <div class="w">${esc(scopeWhere())} · ${num(a.n)} members${isMpp ? '' : ` · ${num(a.mpps.size)} MPPs`}</div>
+    <div class="tiles" style="grid-template-columns:repeat(${tiles.length},1fr)">${tiles.join('')}</div>
+    ${per != null ? `<div class="msg">For every <b>₹100</b> invested, members have received <b>₹${num(per)}</b> back as ${esc(what.toLowerCase())} — and they still own their shares.</div>` : ''}</div>${foot()}` });
+
+  // 2. Year-wise
+  S.push({ chart: 'year', html: (pg) => `${head(name, `${esc(what)} paid, year after year`, pg)}<div class="s-body"><div class="s-side"><div class="s-chart"><canvas></canvas></div><div class="facts">
+    ${useD() ? `<div class="fact" style="--fc:${C.div}"><div class="l">Dividend</div><div class="v">${inrS(a.d)}</div><div class="s">${esc(rangeLabel())}</div></div>` : ''}
+    ${useB() ? `<div class="fact" style="--fc:${C.bon}"><div class="l">Bonus</div><div class="v">${inrS(a.b)}</div><div class="s">paid from FY 2015-16</div></div>` : ''}
+    ${(() => { const best = ys.reduce((b, y) => { const v = (useD() ? a.yd[y] : 0) + (useB() ? a.yb[y] : 0); return v > b.v ? { y, v } : b; }, { y: -1, v: -1 }); return best.y >= 0 ? `<div class="fact" style="--fc:${C.tot}"><div class="l">Highest year</div><div class="v">${inrS(best.v)}</div><div class="s">${D.meta.years[best.y]}</div></div>` : ''; })()}
+    </div></div></div>` });
+
+  // 3. Investment vs returns
+  let c = 0, payback = null; const cum = ys.map((y) => { c += (useD() ? a.yd[y] : 0) + (useB() ? a.yb[y] : 0); if (payback == null && a.share && c >= a.share) payback = y; return c; });
+  S.push({ chart: 'cum', cum, html: (pg) => `${head(name, 'Your investment has paid back', pg)}<div class="s-body"><div class="s-side"><div class="s-chart"><canvas></canvas></div><div class="facts">
+    <div class="fact" style="--fc:${C.share}"><div class="l">Share capital</div><div class="v">${inrS(a.share)}</div><div class="s">invested, up to ${D.meta.shareAsOf}</div></div>
+    <div class="fact" style="--fc:${C.tot}"><div class="l">Received</div><div class="v">${inrS(a.t)}</div><div class="s">${esc(what.toLowerCase())}</div></div>
+    <div class="fact" style="--fc:${C.div}"><div class="l">Return</div><div class="v">${a.share ? num(a.t / a.share, 2) + '×' : '–'}</div><div class="s">${payback != null ? 'money received crossed share capital in ' + D.meta.years[payback] : per != null ? '₹' + num(per) + ' per ₹100 so far' : ''}</div></div>
+    </div></div></div>` });
+
+  // 4. Top members (MPP) or leaderboard of child units
+  if (isMpp) {
+    for (const page of chunk(rows.slice(0, 10), 10)) {
+      S.push({ html: (pg) => `${head(name, 'Top members', pg)}<div class="s-body"><div class="tops">${page.map((r, k) => `<div class="topc"><div class="rk g${k + 1}">${k + 1}</div><div class="n">${esc(r.name)}</div><div class="c">${esc(r.code)}</div>
+        <div class="sm">Share ₹${num(r.share)}${useD() ? `<br>Dividend ₹${num(Math.round(r.d))}` : ''}${useB() ? `<br>Bonus ₹${num(Math.round(r.b))}` : ''}</div><div class="big">${inr(r.t)}</div></div>`).join('')}</div></div>` });
+    }
+    const pages = chunk(rows, 14);
+    pages.forEach((page, pi) => S.push({ html: (pg) => `${head(name, `All members${pages.length > 1 ? ` (${pi + 1}/${pages.length})` : ''}`, pg)}<div class="s-body">${slideTable(page, pi * 14, pi === pages.length - 1 ? a : null)}</div>` }));
+  } else {
+    const by = byOptions()[0];
+    const g = groups(by).sort((x, y) => y.t - x.t);
+    const pages = chunk(g, 12).slice(0, 8); // keep the deck short: top 96
+    pages.forEach((page, pi) => S.push({ html: (pg) => `${head(name, `${BY[by].t}s ranked by ${esc(what.toLowerCase())}${pages.length > 1 ? ` (${pi + 1}/${pages.length})` : ''}`, pg)}<div class="s-body">${slideBoard(page, pi * 12, by, pi === pages.length - 1 ? a : null)}</div>` }));
+  }
+
+  // Closing
+  S.push({ dark: true, html: `<div class="closing"><div class="q">Your milk. Your company. Your share of the profit.</div>
+    <div class="p">${per != null ? `₹${num(per)} back for every ₹100 invested in ${esc(rangeLabel())}. ` : ''}Keep pouring milk to Shreeja — the more you pour, the bigger your bonus.</div></div>${foot()}` });
+
+  $('pTitle').textContent = `${what} presentation · ${name}`;
+  const stage = $('stage');
+  stage.innerHTML = S.map((s, k) => `<div class="slide${s.dark ? ' dark' : ''}">${typeof s.html === 'function' ? s.html(`${k + 1} / ${S.length}`) : s.html}${s.dark ? `<div class="pn" style="color:#a7f3d0;top:1.4cqw;bottom:auto">${k + 1} / ${S.length}</div>` : ''}</div>`).join('');
+  slides = [...stage.children];
+  show(0);
+  // Charts: drawn at a fixed size and scaled by CSS so they render while hidden and print correctly
+  S.forEach((s, k) => {
+    if (!s.chart || !window.Chart) return;
+    const cv = slides[k].querySelector('canvas'); cv.width = 1100; cv.height = 620;
+    const opt = { responsive: false, animation: false, devicePixelRatio: 2, plugins: { legend: { position: 'bottom', labels: { font: { size: 18 } } }, tooltip: { enabled: false } },
+      scales: { x: { grid: { display: false }, ticks: { font: { size: 17 } } }, y: { beginAtZero: true, ticks: { font: { size: 16 }, callback: (v) => inrS(v) } } } };
+    if (s.chart === 'year') {
+      const ds = [];
+      if (useD()) ds.push({ label: 'Dividend', data: ys.map((y) => a.yd[y]), backgroundColor: C.div, stack: 's', borderRadius: 4 });
+      if (useB()) ds.push({ label: 'Bonus', data: ys.map((y) => a.yb[y]), backgroundColor: C.bon, stack: 's', borderRadius: 4 });
+      opt.scales.x.stacked = opt.scales.y.stacked = true;
+      presCharts.push(new Chart(cv, { type: 'bar', data: { labels: ys.map(yrLabel), datasets: ds }, options: opt, plugins: [barTotals] }));
+    } else {
+      presCharts.push(new Chart(cv, { type: 'line', data: { labels: ys.map(yrLabel), datasets: [
+        { label: 'Money received (cumulative)', data: s.cum, borderColor: C.tot, backgroundColor: 'rgba(74,58,167,.15)', fill: true, tension: .25, borderWidth: 4, pointRadius: 5 },
+        { label: 'Share capital invested', data: ys.map(() => a.share), borderColor: C.share, borderDash: [10, 6], borderWidth: 3, pointRadius: 0 },
+      ] }, options: opt }));
+    }
+  });
+  fitText();
+}
+// Short totals above each stacked bar
+const barTotals = { id: 'barTotals', afterDatasetsDraw(ch) {
+  const { ctx } = ch, n = ch.data.labels.length, metas = ch.data.datasets.map((_, i) => ch.getDatasetMeta(i));
+  ctx.save(); ctx.font = '600 15px system-ui, sans-serif'; ctx.fillStyle = '#334155'; ctx.textAlign = 'center';
+  for (let j = 0; j < n; j++) {
+    const t = ch.data.datasets.reduce((s, d) => s + (d.data[j] || 0), 0); if (!t) continue;
+    const top = Math.min(...metas.map((m) => m.data[j].y));
+    ctx.fillText(inrS(t), metas[0].data[j].x, top - 8);
+  }
+  ctx.restore();
+} };
+function slideTable(page, off, a) {
+  return `<table class="s-table"><thead><tr><th>#</th><th>Member</th><th>Code</th><th class="num">Share</th>${useD() ? '<th class="num">Dividend</th>' : ''}${useB() ? '<th class="num">Bonus</th>' : ''}${F.mode === 'both' ? '<th class="num">Total</th>' : ''}<th class="num">Per ₹100</th></tr></thead>
+    <tbody>${page.map((r, k) => `<tr><td>${off + k + 1}</td><td><b>${esc(r.name)}</b></td><td>${esc(r.code)}</td><td class="num">${inr(r.share)}</td>${useD() ? `<td class="num">${inr(r.d)}</td>` : ''}${useB() ? `<td class="num">${inr(r.b)}</td>` : ''}${F.mode === 'both' ? `<td class="num"><b>${inr(r.t)}</b></td>` : ''}<td class="num">${r.share ? '₹' + num(per100(r.t, r.share)) : '–'}</td></tr>`).join('')}</tbody>
+    ${a ? `<tfoot><tr><td></td><td>All ${num(a.n)} members</td><td></td><td class="num">${inr(a.share)}</td>${useD() ? `<td class="num">${inr(a.d)}</td>` : ''}${useB() ? `<td class="num">${inr(a.b)}</td>` : ''}${F.mode === 'both' ? `<td class="num">${inr(a.t)}</td>` : ''}<td class="num">${a.share ? '₹' + num(per100(a.t, a.share)) : '–'}</td></tr></tfoot>` : ''}</table>`;
+}
+function slideBoard(page, off, by, a) {
+  return `<table class="s-table"><thead><tr><th>#</th><th>${BY[by].t}</th>${by === 'mpp' ? '<th>BMCU</th>' : '<th class="num">MPPs</th>'}<th class="num">Members</th><th class="num">Share</th>${useD() ? '<th class="num">Dividend</th>' : ''}${useB() ? '<th class="num">Bonus</th>' : ''}${F.mode === 'both' ? '<th class="num">Total</th>' : ''}<th class="num">Per ₹100</th></tr></thead>
+    <tbody>${page.map((r, k) => `<tr><td>${off + k + 1}</td><td><b>${esc(r.name)}</b></td>${by === 'mpp' ? `<td>${esc(r.bmcu)}</td>` : `<td class="num">${num(r.nm)}</td>`}<td class="num">${num(r.n)}</td><td class="num">${inrS(r.share)}</td>${useD() ? `<td class="num">${inrS(r.d)}</td>` : ''}${useB() ? `<td class="num">${inrS(r.b)}</td>` : ''}${F.mode === 'both' ? `<td class="num"><b>${inrS(r.t)}</b></td>` : ''}<td class="num">${r.share ? '₹' + num(per100(r.t, r.share)) : '–'}</td></tr>`).join('')}</tbody></table>`;
+}
+// Shrink big rupee figures to fit their tile
+function fitText() {
+  requestAnimationFrame(() => {
+    for (const el of document.querySelectorAll('#stage .fit')) {
+      const s = el.closest('.slide'), was = s.classList.contains('on');
+      if (!was) s.classList.add('on');
+      el.style.fontSize = '';
+      const box = el.parentElement.clientWidth - parseFloat(getComputedStyle(el.parentElement).paddingLeft) * 2;
+      if (box > 0 && el.scrollWidth > box) el.style.fontSize = (parseFloat(getComputedStyle(el).fontSize) * box / el.scrollWidth * .97) + 'px';
+      if (!was) s.classList.remove('on');
+    }
+  });
+}
+window.addEventListener('resize', () => { if (!$('pres').classList.contains('hidden')) fitText(); });
+</script>
+</body>
+</html>
