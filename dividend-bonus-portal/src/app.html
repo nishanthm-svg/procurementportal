@@ -177,6 +177,94 @@
   .closing .p { font-size: 1.6cqw; margin-top: 2cqw; color: #475569; line-height: 1.5; }
   .pn { position: absolute; bottom: 1cqw; right: 1.6cqw; font-size: .9cqw; color: #94a3b8; }
 
+  /* Landing */
+  #landing { background: #fff; color: #0f172a; }
+  .lp-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 24px; border-bottom: 1px solid #e2e8f0; position: sticky; top: 0; background: rgba(255,255,255,.96); z-index: 60; }
+  .lp-top img.main { height: 44px; }
+  .lp-top .r { display: flex; align-items: center; gap: 14px; }
+  .lp-cta { border: 0; background: var(--pri); color: #fff; font-weight: 700; font-size: 16px; padding: 13px 22px; border-radius: 12px; cursor: pointer; box-shadow: 0 8px 20px rgba(29,78,216,.25); }
+  .lp-cta:hover { background: var(--pri-d); }
+  .lp-cta.sm { font-size: 14px; padding: 9px 16px; box-shadow: none; }
+  .lp-ghost { display: inline-block; padding: 13px 18px; border-radius: 12px; color: var(--pri-d); font-weight: 600; text-decoration: none; border: 1px solid var(--pri-m); background: #fff; }
+  .lp-hero { position: relative; min-height: 600px; display: flex; align-items: center; overflow: hidden; }
+  .lp-hero > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: right center; }
+  .lp-hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(255,255,255,.97) 0%, rgba(255,255,255,.9) 34%, rgba(255,255,255,0) 58%); }
+  .lp-hero-in { position: relative; z-index: 1; max-width: 1200px; width: 100%; margin: 0 auto; padding: 48px 24px 96px; }
+  .lp-hero-in > div { max-width: 540px; }
+  .lp-kicker { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--pri); background: var(--pri-l); border: 1px solid var(--pri-m); padding: 5px 12px; border-radius: 999px; }
+  .lp-hero h1 { font-size: 46px; line-height: 1.08; margin: 18px 0 14px; color: #0f172a; letter-spacing: -.02em; }
+  .lp-hero h1 span { color: var(--pri); }
+  .lp-hero p { font-size: 18px; line-height: 1.55; color: #334155; margin: 0 0 26px; }
+  .lp-hero p b { color: #0f172a; }
+  .lp-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+  .lp-wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+  .lp-stats { margin-top: -56px; position: relative; z-index: 2; }
+  .lp-stats .g { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+  .lp-stat { background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 18px; box-shadow: 0 12px 30px rgba(15,23,42,.08); border-top: 4px solid var(--c); }
+  .lp-stat .l { font-size: 13px; color: #64748b; font-weight: 600; }
+  .lp-stat .v { font-size: 28px; font-weight: 800; margin-top: 4px; color: #0f172a; font-variant-numeric: tabular-nums; }
+  .lp-stat .s { font-size: 12px; color: #94a3b8; margin-top: 2px; }
+  .lp-stat.hero { background: var(--pri-d); border-color: var(--pri-d); }
+  .lp-stat.hero .l, .lp-stat.hero .s { color: var(--pri-m); }
+  .lp-stat.hero .v { color: #fff; }
+  .lp-sec { padding: 72px 0 0; }
+  .lp-sec h2 { font-size: 32px; margin: 0 0 8px; letter-spacing: -.01em; color: #0f172a; }
+  .lp-sec .lead { font-size: 17px; color: #475569; margin: 0 0 28px; max-width: 720px; line-height: 1.55; }
+  .lp-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .lp-card { border: 1px solid #e2e8f0; border-radius: 18px; overflow: hidden; background: #fff; display: flex; flex-direction: column; }
+  .lp-card img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; }
+  .lp-card .b { padding: 18px 20px 22px; flex: 1; display: flex; flex-direction: column; }
+  .lp-card .n { width: 30px; height: 30px; border-radius: 50%; background: var(--c); color: #fff; font-weight: 800; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .lp-card h3 { font-size: 20px; margin: 12px 0 6px; }
+  .lp-card p { font-size: 15px; line-height: 1.55; color: #475569; margin: 0 0 14px; flex: 1; }
+  .lp-card .f { font-size: 24px; font-weight: 800; color: var(--c2, var(--c)); }
+  .lp-card .f small { display: block; font-size: 12px; font-weight: 600; color: #94a3b8; }
+  .lp-yrs { border: 1px solid #e2e8f0; border-radius: 18px; padding: 24px 20px 14px; background: linear-gradient(180deg, #fff, #f8fafc); }
+  .lp-bars { display: flex; align-items: flex-end; gap: 10px; height: 280px; }
+  .lp-bar { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; height: 100%; min-width: 0; }
+  .lp-bar .t { font-size: 12px; font-weight: 700; color: #334155; text-align: center; margin-bottom: 4px; white-space: nowrap; }
+  .lp-bar i { display: block; }
+  .lp-bar i.b { background: var(--bon); border-radius: 6px 6px 0 0; }
+  .lp-bar i.d { background: var(--div); }
+  .lp-bar .y { font-size: 12px; color: #64748b; text-align: center; margin-top: 6px; white-space: nowrap; }
+  .lp-leg { display: flex; gap: 18px; font-size: 13px; color: #475569; margin-top: 12px; }
+  .lp-leg span::before { content: ''; display: inline-block; width: 11px; height: 11px; border-radius: 3px; background: var(--c); margin-right: 6px; vertical-align: -1px; }
+  .lp-feat { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .lp-f { border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px; background: #fff; }
+  .lp-f .i { width: 42px; height: 42px; border-radius: 12px; background: var(--pri-l); color: var(--pri); display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; }
+  .lp-f h3 { font-size: 16px; margin: 12px 0 4px; }
+  .lp-f p { font-size: 14px; color: #64748b; margin: 0; line-height: 1.5; }
+  .lp-band { margin: 72px 0 0; background: linear-gradient(120deg, #1e40af, #1d4ed8 60%, #2563eb); color: #fff; }
+  .lp-band .lp-wrap { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-top: 40px; padding-bottom: 40px; flex-wrap: wrap; }
+  .lp-band h2 { margin: 0; font-size: 26px; }
+  .lp-band p { margin: 6px 0 0; color: #dbeafe; }
+  .lp-band .lp-cta { background: #fff; color: var(--pri-d); }
+  .lp-foot { padding: 22px 24px; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; font-size: 12px; color: #94a3b8; }
+  .lp-foot img { height: 34px; }
+  .back { display: inline-block; margin-bottom: 12px; color: var(--pri); font-size: 13px; text-decoration: none; }
+  @media (max-width: 900px) {
+    .lp-stats .g { grid-template-columns: repeat(2, 1fr); }
+    .lp-stat.hero { grid-column: 1 / -1; }
+    .lp-cards, .lp-feat { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 640px) {
+    .lp-top { padding: 8px 14px; }
+    .lp-top img.main { height: 36px; }
+    .lp-top .support { display: none; }
+    .lp-hero { flex-direction: column; min-height: 0; }
+    .lp-hero > img { position: static; height: 240px; object-position: 70% center; }
+    .lp-hero::after { display: none; }
+    .lp-hero-in { padding: 22px 16px 76px; }
+    .lp-hero h1 { font-size: 32px; }
+    .lp-hero p { font-size: 16px; }
+    .lp-wrap { padding: 0 16px; }
+    .lp-stat .v { font-size: 22px; }
+    .lp-sec { padding-top: 48px; }
+    .lp-sec h2 { font-size: 24px; }
+    .lp-cards, .lp-feat { grid-template-columns: 1fr; }
+    .lp-bars { gap: 4px; height: 220px; }
+    .lp-bar .t, .lp-bar .y { font-size: 9px; }
+  }
   @media (max-width: 640px) {
     main.app { padding: 12px; }
     .filters { position: static; }
@@ -197,7 +285,56 @@
 </style>
 </head>
 <body>
-<div id="login">
+<div id="landing">
+  <header class="lp-top">
+    <img class="main" src="__LOGO_SHREEJA__" alt="Shreeja Mahila Milk Producer Company" />
+    <div class="r">
+      <div class="support"><span>Supported by</span><img src="__LOGO_NDDB__" alt="National Dairy Development Board" /><img src="__LOGO_NDS__" alt="NDDB Dairy Services" /></div>
+      <button class="lp-cta sm" data-login>Sign in</button>
+    </div>
+  </header>
+  <section class="lp-hero">
+    <img src="__IMG_HERO__" alt="A woman dairy farmer with her HF cow, holding her passbook" />
+    <div class="lp-hero-in"><div>
+      <span class="lp-kicker">Members Dividend &amp; Bonus · 12 years</span>
+      <h1>Your milk. Your company.<br /><span>Your share of the profit.</span></h1>
+      <p id="lpLead"></p>
+      <div class="lp-btns"><button class="lp-cta" data-login>Sign in to the portal →</button><a class="lp-ghost" href="#lpHow">How it works</a></div>
+    </div></div>
+  </section>
+  <section class="lp-stats"><div class="lp-wrap"><div class="g" id="lpStats"></div></div></section>
+  <section class="lp-sec" id="lpHow"><div class="lp-wrap">
+    <h2>Three ways membership pays</h2>
+    <p class="lead">Every woman member is an owner of Shreeja. She invests in shares, and the company returns money to her every year.</p>
+    <div class="lp-cards">
+      <div class="lp-card" style="--c:var(--share)"><img src="__IMG_SHARE__" alt="A member paying her share money at the milk centre" loading="lazy" /><div class="b"><div class="n">1</div><h3>Share capital</h3><p>Members buy shares in their own milk producer company. The shares stay theirs, and they have a say in how the company is run.</p><div class="f" id="lpF1"></div></div></div>
+      <div class="lp-card" style="--c:var(--div)"><img src="__IMG_DIV__" alt="Women members looking at their passbooks at a village meeting" loading="lazy" /><div class="b"><div class="n">2</div><h3>Dividend</h3><p>Each year, part of the company's profit is paid back on the shares a member holds, straight into her bank account.</p><div class="f" id="lpF2"></div></div></div>
+      <div class="lp-card" style="--c:var(--bon);--c2:#b45309"><img src="__IMG_BON__" alt="A member pouring milk at the collection centre" loading="lazy" /><div class="b"><div class="n">3</div><h3>Bonus</h3><p>Bonus is paid back on the milk a member pours. The more regularly she pours to Shreeja, the bigger her bonus.</p><div class="f" id="lpF3"></div></div></div>
+    </div>
+  </div></section>
+  <section class="lp-sec"><div class="lp-wrap">
+    <h2>Paid back, year after year</h2>
+    <p class="lead">Dividend and bonus paid to all members in each financial year.</p>
+    <div class="lp-yrs"><div class="lp-bars" id="lpBars"></div>
+      <div class="lp-leg"><span style="--c:var(--div)">Dividend</span><span style="--c:var(--bon)">Bonus</span></div></div>
+  </div></section>
+  <section class="lp-sec"><div class="lp-wrap">
+    <h2>What the field team can see</h2>
+    <p class="lead">Each ACO signs in and sees only their own MPPs and members.</p>
+    <div class="lp-feat">
+      <div class="lp-f"><div class="i">₹</div><h3>Dividend, bonus or both</h3><p>For any year or range of years, from FY 2014-15 to FY 2025-26.</p></div>
+      <div class="lp-f"><div class="i">▶</div><h3>MPP presentations</h3><p>A ready slide deck for every MPP's members' meeting. Print or save as PDF.</p></div>
+      <div class="lp-f"><div class="i">≡</div><h3>Member statements</h3><p>Find any member by name, code or folio and show her year-by-year returns.</p></div>
+      <div class="lp-f"><div class="i">↕</div><h3>Compare and rank</h3><p>BMCUs and MPPs ranked by money returned, with year-wise tables to download.</p></div>
+    </div>
+  </div></section>
+  <section class="lp-band"><div class="lp-wrap">
+    <div><h2>Field staff: open your portal</h2><p>Use the login ID and password from your login sheet.</p></div>
+    <button class="lp-cta" data-login>Sign in →</button>
+  </div></section>
+  <footer class="lp-foot"><img src="__LOGO_SHREEJA__" alt="Shreeja" /><span>Shreeja Mahila Milk Producer Company Limited · Share capital up to March 2026</span></footer>
+</div>
+<div id="login" class="hidden">
   <div class="brand">
     <img class="main" src="__LOGO_SHREEJA__" alt="Shreeja Mahila Milk Producer Company" />
     <div class="support"><span>Supported by</span>
@@ -207,6 +344,7 @@
   </div>
   <main>
     <form id="lf" autocomplete="off">
+      <a class="back" id="lback" href="#">‹ Back to home</a>
       <h1>Members Dividend &amp; Bonus</h1>
       <p>Share capital invested and the dividend and bonus paid to members, FY 2014-15 to FY 2025-26. Sign in with the login ID and password you were given.</p>
       <label for="uid">Login ID</label>
@@ -372,6 +510,34 @@ async function decryptBlob(blob, key) {
   } catch (_) { try { sessionStorage.removeItem(SKEY); } catch (_) {} }
 })();
 
+/* ---------- Landing ---------- */
+(() => {
+  const P = LOCK.pub; if (!P) return;
+  const n = (v, d = 0) => Number(v).toLocaleString('en-IN', { maximumFractionDigits: d, minimumFractionDigits: d });
+  const cr = (v) => '₹' + n(v / 1e7, 2) + ' Cr';
+  const tot = P.div + P.bon, per = Math.round(tot * 100 / P.share);
+  document.getElementById('lpLead').innerHTML = `Over 12 years, <b>${n(P.members)}</b> women members invested <b>${cr(P.share)}</b> in their company and received <b>${cr(tot)}</b> back as dividend and bonus: <b>₹${per} for every ₹100</b> invested. And they still own their shares.`;
+  const st = (l, v, sub, c, hero) => `<div class="lp-stat${hero ? ' hero' : ''}" style="--c:${c}"><div class="l">${l}</div><div class="v">${v}</div><div class="s">${sub}</div></div>`;
+  document.getElementById('lpStats').innerHTML = st('Members', n(P.members), `${n(P.mpps)} MPPs`, '#94a3b8') + st('Share capital invested', cr(P.share), 'up to March 2026', 'var(--share)') +
+    st('Dividend paid', cr(P.div), 'FY 2014-15 to 2025-26', 'var(--div)') + st('Bonus paid', cr(P.bon), 'FY 2015-16 to 2025-26', 'var(--bon)') + st('Total returned', cr(tot), `₹${per} for every ₹100 invested`, 'var(--pri-d)', true);
+  document.getElementById('lpF1').innerHTML = `${cr(P.share)}<small>invested by members</small>`;
+  document.getElementById('lpF2').innerHTML = `${cr(P.div)}<small>dividend paid in 12 years</small>`;
+  document.getElementById('lpF3').innerHTML = `${cr(P.bon)}<small>bonus paid in 11 years</small>`;
+  const max = Math.max(...P.yd.map((d, i) => d + P.yb[i]));
+  document.getElementById('lpBars').innerHTML = P.years.map((y, i) => {
+    const t = P.yd[i] + P.yb[i];
+    return `<div class="lp-bar" title="${y}: dividend ${cr(P.yd[i])}, bonus ${cr(P.yb[i])}"><div class="t">${n(t / 1e7, t >= 1e7 ? 1 : 2)} Cr</div><i class="b" style="height:${P.yb[i] / max * 85}%"></i><i class="d" style="height:${P.yd[i] / max * 85}%;${P.yb[i] ? '' : 'border-radius:6px 6px 0 0'}"></i><div class="y">${y.replace('FY 20', '')}</div></div>`;
+  }).join('');
+})();
+function showLogin(on) {
+  document.getElementById('landing').classList.toggle('hidden', on);
+  document.getElementById('login').classList.toggle('hidden', !on);
+  window.scrollTo(0, 0);
+  if (on) setTimeout(() => document.getElementById('uid').focus(), 50);
+}
+document.querySelectorAll('[data-login]').forEach((b) => b.addEventListener('click', () => showLogin(true)));
+document.getElementById('lback').addEventListener('click', (e) => { e.preventDefault(); showLogin(false); });
+
 document.getElementById('lf').addEventListener('submit', async (ev) => {
   ev.preventDefault();
   const btn = document.getElementById('lb'), err = document.getElementById('le');
@@ -433,6 +599,7 @@ function start(data) {
   F = { mode: 'both', y0: 0, y1: Y - 1, aco: '', bmcu: '', mpp: '' };
   dv = new Float64Array(M.length); bn = new Float64Array(M.length);
   $('login').classList.add('hidden');
+  $('landing').classList.add('hidden');
   $('app').classList.remove('hidden');
   $('wname').textContent = D.user.name;
   $('wrole').textContent = D.user.id + ' · ' + D.user.roleLabel;

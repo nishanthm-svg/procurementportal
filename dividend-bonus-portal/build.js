@@ -68,12 +68,28 @@ for (const p of people) {
   p.mpps = s.mpps.length
 }
 
+// Company-wide totals for the public landing page (no member-level data)
+const pub = { members: data.members.length, mpps: data.mpps.length, acos: data.acos.length, share: 0, div: 0, bon: 0,
+  years: data.meta.years, yd: data.meta.years.map(() => 0), yb: data.meta.years.map(() => 0) }
+for (const m of data.members) {
+  pub.share += m[6]
+  m[7].forEach((v, y) => { pub.yd[y] += v; pub.div += v })
+  m[8].forEach((v, y) => { pub.yb[y] += v; pub.bon += v })
+}
+for (const k of ['share', 'div', 'bon']) pub[k] = Math.round(pub[k])
+pub.yd = pub.yd.map(Math.round); pub.yb = pub.yb.map(Math.round)
+
 const logo = (f) => 'data:image/png;base64,' + fs.readFileSync(path.join(root, 'assets', f)).toString('base64')
+const photo = (f) => 'data:image/jpeg;base64,' + fs.readFileSync(path.join(root, 'assets', 'landing', f)).toString('base64')
 const html = fs.readFileSync(path.join(root, 'src', 'app.html'), 'utf8')
-  .replace('/*__LOCK__*/null', () => JSON.stringify({ iter: ITER, ids: people.map((p) => p.c.id), v: Date.now().toString(36) }))
+  .replace('/*__LOCK__*/null', () => JSON.stringify({ iter: ITER, ids: people.map((p) => p.c.id), v: Date.now().toString(36), pub }))
   .replaceAll('__LOGO_SHREEJA__', logo('shreeja_logo.png'))
   .replaceAll('__LOGO_NDDB__', logo('nddb_logo.png'))
   .replaceAll('__LOGO_NDS__', logo('nddb_dairy_services_logo.png'))
+  .replace('__IMG_HERO__', photo('hero.jpg'))
+  .replace('__IMG_SHARE__', photo('share.jpg'))
+  .replace('__IMG_DIV__', photo('dividend.jpg'))
+  .replace('__IMG_BON__', photo('bonus.jpg'))
 fs.writeFileSync(path.join(dist, 'index.html'), html)
 
 const q = (v) => /[",\n]/.test(String(v)) ? `"${String(v).replace(/"/g, '""')}"` : String(v)

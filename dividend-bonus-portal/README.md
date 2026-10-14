@@ -11,6 +11,9 @@ member, MPP, BMCU and ACO.
   MPP & presentation, Members (search + year-by-year statement), Admin (ACO logins, full export).
 - **Presentation:** every MPP (and any ACO / BMCU / all view) has a slide deck: cover,
   year-wise, investment paid back, top 10 members, all members. Print / Save PDF gives A4 landscape.
+- **Landing page:** public front page with Gemini-generated photos (`assets/landing/`, HF cows),
+  company-wide totals (members, share capital, dividend, bonus, year-wise bars) and a Sign in button.
+  Only these aggregate totals are unencrypted; member data stays behind the login.
 - **Logins:** ADMIN sees everything; ACO01–ACO34 each see only their own MPPs and members.
 
 Each login's slice is gzipped and encrypted separately (AES-256-GCM, PBKDF2-SHA256 250k) into
