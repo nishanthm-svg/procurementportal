@@ -10,7 +10,7 @@ rows = list(csv.reader(open(HERE / 'dist' / 'credentials.csv', encoding='utf-8-s
 wb = Workbook(); ws = wb.active; ws.title = 'Logins'
 ws.append(['Members Dividend & Bonus portal: ' + URL])
 ws['A1'].font = Font(bold=True)
-ws.append(['Passwords are lowercase. Each ACO sees only their own MPPs and members; ADMIN sees everything.'])
+ws.append(['Type the Login ID column (e.g. ADMIN, ACO05) in the Login ID box, not the name. Passwords are lowercase.'])
 ws.append([])
 for r in rows:
     ws.append([int(v) if v.isdigit() and i >= 4 else v for i, v in enumerate(r)])

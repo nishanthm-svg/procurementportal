@@ -374,7 +374,8 @@ async function decryptBlob(blob, key) {
 document.getElementById('lf').addEventListener('submit', async (ev) => {
   ev.preventDefault();
   const btn = document.getElementById('lb'), err = document.getElementById('le');
-  const id = document.getElementById('uid').value.toUpperCase().replace(/\s+/g, '').replace(/^ACO0*(\d+)$/, (_, n) => 'ACO' + n.padStart(2, '0'));
+  const id = document.getElementById('uid').value.toUpperCase().replace(/\s+/g, '').replace(/^ACO0*(\d+)$/, (_, n) => 'ACO' + n.padStart(2, '0'))
+    .replace(/^(ADMINISTRATOR|ADMN|ADMINLOGIN)$/, 'ADMIN');
   err.textContent = '';
   const fail = (msg) => { err.textContent = msg; btn.disabled = false; btn.textContent = 'Open portal'; };
   if (!window.crypto || !crypto.subtle) return fail('This browser cannot open the portal. Please use the latest Chrome, Edge or Safari (the page must be opened over https).');
